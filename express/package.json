@@ -9,6 +9,7 @@
     },
     "author": "",
     "license": "ISC",
+    "type": "module",
     "description": "",
     "devDependencies": {
         "cors": "^2.8.5",
