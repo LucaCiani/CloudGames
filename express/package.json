@@ -1,21 +1,23 @@
 {
-    "name": "express",
-    "version": "1.0.0",
-    "main": "main.js",
-    "scripts": {
-        "start": "node --env-file=.env main.js",
-        "watch": "node --env-file=.env --watch main.js",
-        "dev": "nodemon --env-file=.env main.js"
-    },
-    "author": "",
-    "license": "ISC",
-    "type": "module",
-    "description": "",
-    "devDependencies": {
-        "cors": "^2.8.5",
-        "dotenv": "^17.2.2",
-        "express": "^5.1.0",
-        "mysql2": "^3.14.4",
-        "nodemon": "^3.1.10"
-    }
+  "name": "express",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node --env-file=.env main.js",
+    "watch": "node --env-file=.env --watch main.js",
+    "dev": "nodemon --env-file=.env main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
