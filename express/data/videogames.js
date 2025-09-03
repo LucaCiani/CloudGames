@@ -210,6 +210,19 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     quantity: 71,
     vote: 4.8,
   },
+  {
+    id: 15,
+    name: "Red Dead Redemption 2",
+    description: `Red Dead Redemption 2 per PC è un gioco d’azione ambientato in un open world in cui il giocatore può vagare liberamente con alcuni elementi che si svolgono in terza persona, altri in modalità di gioco in prima persona. Il giocatore può commettere crimini, ma dovrà però essere pronto a fronteggiare le forze dell'ordine che vorranno far valere l'intero peso della legge sul miscredente!`,
+    price: 59.99,
+    promo_price: 12.99,
+    developer: ["Rockstar Games"],
+    release_date: "5 dicembre 2019",
+    image_url:
+      "https://gaming-cdn.com/images/products/5679/616x353/red-dead-redemption-2-pc-gioco-rockstar-cover.jpg?v=1713793245",
+    quantity: 71,
+    vote: 4.8,
+  },
 ];
 
 export default videogames;
