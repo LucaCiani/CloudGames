@@ -5,7 +5,7 @@ export default function HeaderComponent() {
         <>
             <nav className="navbar navbar-expand-lg navbar-fixed-transparent">
                 <div className="container">
-                    <h2>CLOUDGAMES</h2>
+                   <img src="/logo_navbar.png" alt="logo" className="logo_navbar" />
                     <ul className="navbar-nav ms-auto d-flex flex-row gap-3">
                         <li className="nav-item">
                             <NavLink
