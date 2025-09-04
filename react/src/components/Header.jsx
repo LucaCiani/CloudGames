@@ -1,14 +1,23 @@
 import BlurText from "./BlurText";
 import { NavLink } from "react-router-dom";
 
+import { Helmet } from "react-helmet";
+
 const handleAnimationComplete = () => {
     console.log("Animation completed!");
 };
 
 export default function HeaderComponent() {
-    return (
-        <>
+
+  return (
+    <>
+      <Helmet>
+        <title>Home | CloudGames 👾</title>
+      </Helmet>
+      <nav className="navbar navbar-expand-lg navbar-fixed-transparent">
+
             <nav className="navbar navbar-expand-lg navbar-fixed-transparent">
+
                 <div className="container">
                     <h2>CLOUDGAMES</h2>
                     <ul className="navbar-nav ms-auto d-flex flex-row gap-3">
