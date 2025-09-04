@@ -6,13 +6,67 @@ import connection from "../db/connection.js";
 /* index (read all) */
 function index(req, res) {
   // definiamo una query SQL che seleziona tutta la tabella "videogames"
-  const sql = "SELECT * FROM videogames";
+  const sql = `
+  SELECT
+    v.id,
+    v.name,
+    v.description,
+    v.price,
+    v.promo_price,
+    v.developer,
+    v.release_date,
+    v.image_url,
+    v.quantity,
+    v.vote,
+    GROUP_CONCAT(DISTINCT p.name) AS platforms,
+    GROUP_CONCAT(DISTINCT g.name) AS genres,
+    GROUP_CONCAT(DISTINCT m.media_url) AS media_urls
+  FROM videogames AS v
+  LEFT JOIN platform_videogame AS pv ON v.id = pv.videogame_id
+  LEFT JOIN platforms AS p ON pv.platform_id = p.id
+  LEFT JOIN videogame_genre AS vg ON v.id = vg.videogame_id
+  LEFT JOIN genres AS g ON vg.genre_id = g.id
+  LEFT JOIN media AS m ON v.id = m.videogame_id
+  GROUP BY v.id;`;
   // eseguiamo la query usando la connessione al database
   connection.query(sql, (err, results) => {
     // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
     if (err) return res.status(500).json({ error: "Database query failed" });
     // se non ci sono errori, restituiamo i risultati della query in formato JSON
-    res.json(results);
+
+    console.log(results);
+
+    const formattedResult = results.map((result) => {
+      return {
+        id: result.id,
+        name: result.name,
+        description: result.description,
+        price: result.price,
+        promo_price: result.promo_price,
+        developer: result.developer,
+        release_date: result.release_date,
+        image_url: result.image_url,
+        quantity: result.quantity,
+        vote: result.vote,
+        platforms: result.platforms.split(","),
+        genres: result.genres.split(","),
+        media: result.media_urls.split(",").map((media_url) => {
+          if (media_url.includes("https://www.youtube.com/embed/")) {
+            return {
+              type: "video",
+              url: media_url,
+            };
+          } else {
+            return {
+              type: "img",
+              url: media_url,
+            };
+          }
+        }),
+      };
+    });
+
+    res.json(formattedResult);
   });
 }
 
