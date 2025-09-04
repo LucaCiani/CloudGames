@@ -1,19 +1,23 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 const GlobalContext = createContext();
 
 function GlobalProvider({ children }) {
-  return (
-    <GlobalContext.Provider
-      value={
-        {
-          /* context values here */
-        }
-      }
-    >
-      {children}
-    </GlobalContext.Provider>
-  );
+    return (
+        <GlobalContext.Provider
+            value={
+                {
+                    /* context values here */
+                }
+            }
+        >
+            {children}
+        </GlobalContext.Provider>
+    );
 }
 
-export { GlobalProvider };
+function useGlobalContext() {
+    return useContext(GlobalContext);
+}
+
+export { GlobalProvider, useGlobalContext };
