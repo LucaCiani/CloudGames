@@ -1,9 +1,4 @@
-import BlurText from "./BlurText";
 import { NavLink } from "react-router-dom";
-
-const handleAnimationComplete = () => {
-    console.log("Animation completed!");
-};
 
 export default function HeaderComponent() {
     return (
@@ -13,13 +8,28 @@ export default function HeaderComponent() {
                     <h2>CLOUDGAMES</h2>
                     <ul className="navbar-nav ms-auto d-flex flex-row gap-3">
                         <li className="nav-item">
-                            <NavLink to="/">Home</NavLink>
+                            <NavLink
+                                className="link-underline link-underline-opacity-0"
+                                to="/"
+                            >
+                                Home
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to="/aboutus">About</NavLink>
+                            <NavLink
+                                className="link-underline link-underline-opacity-0"
+                                to="/aboutus"
+                            >
+                                About
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to="/videogames">Videogames</NavLink>
+                            <NavLink
+                                className="link-underline link-underline-opacity-0"
+                                to="/videogames"
+                            >
+                                Videogames
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

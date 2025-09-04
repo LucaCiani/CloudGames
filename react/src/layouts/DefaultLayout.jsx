@@ -8,7 +8,7 @@ export default function DefaultLayout() {
             <header>
                 <Header />
             </header>
-            <main className="my-4">
+            <main>
                 <Outlet />
             </main>
             <footer>

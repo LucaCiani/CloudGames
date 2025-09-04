@@ -1,3 +1,9 @@
+import BlurText from "../components/BlurText";
+
+const handleAnimationComplete = () => {
+    console.log("Animation completed!");
+};
+
 export default function HomePage() {
     return (
         <>
