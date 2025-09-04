@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const buildKeyframes = (from, steps) => {
   const keys = new Set([
