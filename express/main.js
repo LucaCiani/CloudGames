@@ -1,5 +1,6 @@
 // importiamo express
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = process.env.port;
 
@@ -15,9 +16,11 @@ const videogamesRoute = require("./routers/videogamesRoute");
 // registro il body-parser
 app.use(express.json());
 
+app.use(cors());
+
 // definiamo la prima rotta
 app.get("/", (req, res) => {
-  res.send("Server del mio blog");
+    res.send("Server del mio blog");
 });
 
 // indichiamo con use che esistono nuove rotte
@@ -29,5 +32,5 @@ app.use(serverError);
 
 // mettiamo il server in ascolto
 app.listen(port, () => {
-  console.log(`Server in ascolto sulla porta ${port}`);
+    console.log(`Server in ascolto sulla porta ${port}`);
 });
