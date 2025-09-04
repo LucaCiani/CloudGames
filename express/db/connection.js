@@ -1,5 +1,5 @@
 // importiamo il modulo mysql2
-const mysql = require("mysql2");
+import { createConnection } from "mysql2";
 
 // creo un oggetto contenente le credenziali per connettersi al database MySQL
 const credentials = {
@@ -10,7 +10,7 @@ const credentials = {
 };
 
 // creo una connessione al database
-const connection = mysql.createConnection(credentials);
+const connection = createConnection(credentials);
 
 // tento di stabilire la connessione al database
 connection.connect((err) => {
@@ -24,4 +24,4 @@ connection.connect((err) => {
 });
 
 // Esporta il modulo "connection"
-module.exports = connection;
+export default connection;

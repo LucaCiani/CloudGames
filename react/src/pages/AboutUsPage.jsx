@@ -1,7 +1,7 @@
 export default function AboutUsPage() {
-    return (
-        <>
-            <h2>About Us</h2>
-        </>
-    );
+  return (
+    <>
+      <h2>About Us</h2>
+    </>
+  );
 }

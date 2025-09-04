@@ -1,9 +1,9 @@
 // importiamo express
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
 // importiamo le funzioni del controller
-const videogamesController = require("../controllers/videogamesController");
+import videogamesController from "../controllers/videogamesController.js";
 
 /* rotte CRUD */
 
@@ -32,4 +32,4 @@ router.patch("/:id", videogamesController.modify);
 router.delete("/:id", videogamesController.destroy);
 
 // esportiamo router
-module.exports = router;
+export default router;
