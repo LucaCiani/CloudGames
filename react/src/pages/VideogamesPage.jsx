@@ -1,21 +1,12 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
 export default function VideogamesPage() {
-    const videogamesApiUrl = "http://localhost:3030/videogames/";
-    const [videogames, setVideogames] = useState();
-
-    useEffect(() => {
-        fetch(videogamesApiUrl)
-            .then((res) => res.json())
-            .then((data) => setVideogames(data));
-    }, []);
-
+    const { videogames } = useGlobalContext();
     console.log(videogames);
 
     return (
         <>
-            <div className="container"></div>
+            <div className="container my-5"></div>
         </>
     );
 }
