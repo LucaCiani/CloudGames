@@ -7,7 +7,7 @@ const videogames = [
         Il modo migliore per giocare è iniziare da solo, costruendo le navi e i corrieri di cui hai bisogno per continuare il tuo viaggio quando ne senti la necessità. Scopri quanto puoi viaggiare lontano, commerciando, estraendo risorse e, contemporaneamente, combattendo.`,
     price: 59.99,
     promo_price: 19.99,
-    developer: ["Hello Games"],
+    developer: "Hello Games",
     release_date: "12 agosto 2016",
     image_url:
       "https://gaming-cdn.com/images/products/414/616x353/no-man-s-sky-pc-mac-steam-cover.jpg?v=1756388676",
@@ -22,7 +22,7 @@ const videogames = [
         Non esiste un arco narrativo, in quanto tale: dipende interamente da te e da ciò che vuoi ottenere. Puoi costruire città o una dimora rurale, allevare pecore o andare a pescare. Il gioco è esattamente quello che tu e la tua immaginazione volete che sia.`,
     price: 29.99,
     promo_price: 14.99,
-    developer: ["Xbox Game Studios"],
+    developer: "Xbox Game Studios",
     release_date: "19 novembre 2015",
     image_url:
       "https://gaming-cdn.com/images/products/442/616x353/minecraft-java-bedrock-edition-java-bedrock-edition-pc-gioco-cover.jpg?v=1716387513",
@@ -36,7 +36,7 @@ const videogames = [
         I giocatori su PC possono trasferire i progressi di gioco della modalità Storia di GTAV e i personaggi e progressi di GTA Online con un trasferimento unico dalla versione classica di GTAV a GTAV Enhanced. `,
     price: 17.99,
     promo_price: 9.99,
-    developer: ["Xbox Game Studios"],
+    developer: "Xbox Game Studios",
     release_date: "19 novembre 2011",
     image_url:
       "https://gaming-cdn.com/images/products/4211/616x353/grand-theft-auto-v-enhanced-pc-rockstar-cover.jpg?v=1750336095",
@@ -51,7 +51,7 @@ Catapultati su Kairos nei panni di uno dei nuovi Cacciatori della Cripta alla ca
 Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina il popolo dall'alto. Ma una catastrofe di proporzioni globali rischia di mettere a repentaglio il suo perfetto Ordine, gettando l'intero pianeta nel Caos più profondo.`,
     price: 51.99,
     promo_price: 46.99,
-    developer: ["Rockstar North"],
+    developer: "Rockstar North",
     release_date: "	3 settembre 2025",
     image_url:
       "https://gaming-cdn.com/images/products/15381/616x353/borderlands-4-pc-steam-cover.jpg?v=1755588316",
@@ -65,7 +65,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Riempi la tua piccola libreria con diversi libri e oggetti, aprila vicino paesaggi scenici e avvia la tua libreria di libri usati mentre impari a conoscere le persone del luogo.`,
     price: 19.99,
     promo_price: 14.99,
-    developer: ["neoludic games"],
+    developer: "neoludic games",
     release_date: "	7 agosto 2025",
     image_url:
       "https://gaming-cdn.com/images/products/19631/616x353/tiny-bookshop-pc-mac-steam-cover.jpg?v=1756883267",
@@ -80,7 +80,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Clair Obscur: Expedition 33 è un innovativo GDR a turni con meccaniche di gioco in tempo reale che rendono le battaglie più immersive e coinvolgenti che mai. Esplora un mondo di fantasia ispirato alla Francia della Belle Époque, in cui dovrai affrontare nemici devastanti.`,
     price: 59.99,
     promo_price: 27.99,
-    developer: ["Sandfall interactive"],
+    developer: "Sandfall interactive",
     release_date: "24 aprile 2025",
     image_url:
       "https://gaming-cdn.com/images/products/17015/616x353/clair-obscur-expedition-33-pc-steam-cover.jpg?v=1750336145",
@@ -95,7 +95,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Unisciti agli Helldiver per combattere in nome della libertà in una galassia ostile in questo frenetico e feroce sparatutto in terza persona.`,
     price: 39.99,
     promo_price: 29.99,
-    developer: ["Arrowhead Game Studios", "Arrowhead Game Studios AB"],
+    developer: "Arrowhead Game Studios",
     release_date: "8 febbraio 2024",
     image_url:
       "https://gaming-cdn.com/images/products/9575/616x353/helldivers-2-pc-gioco-steam-europe-us-canada-cover.jpg?v=1732563825",
@@ -109,7 +109,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Lanciati in pista come giocatore singolo o competi con amici online in modalità multigiocatore. Personalizza la tua esperienza di guida regolando le impostazioni di guida e di gara, per ottenere il tuo personale stile guida. Grazie al suo motore fisico avanzato, basato su caratteristiche reali delle auto, questa Ultimate Edition offre un livello di realismo mai provato prima.`,
     price: 19.99,
     promo_price: 4.99,
-    developer: ["Kunos Simulazioni"],
+    developer: "Kunos Simulazioni",
     release_date: "19 dicembre 2014",
     image_url:
       "https://gaming-cdn.com/images/products/3098/616x353/assetto-corsa-ultimate-edition-ultimate-edition-pc-gioco-steam-cover.jpg?v=1715265138",
@@ -122,7 +122,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     description: `Un emozionante GdR d'azione a mondo aperto incentrato su un'avvincente trama, ambientato nell'Europa medievale del XV secolo. Vivi l'avventura medievale definitiva attraverso gli occhi del giovane Henry, affrontando un'impresa di proporzioni epiche.`,
     price: 49.99,
     promo_price: 22.99,
-    developer: ["Warhorse Studios"],
+    developer: "Warhorse Studios",
     release_date: "4 febbraio 2025",
     image_url:
       "https://gaming-cdn.com/images/products/17459/616x353/kingdom-come-deliverance-ii-gold-edition-pc-steam-cover.jpg?v=1750336386",
@@ -136,7 +136,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Sei stato risvegliato da una voce misteriosa che ti guida attraverso la tormentata città di Krat, un luogo un tempo vivace che è stato avvelenato dalla follia e dalla sete di sangue. Nel nostro soulslike, dovrai adattare te e le tue armi per affrontare orrori indicibili, districare gli insondabili segreti delle élite della città e scegliere se affrontare i problemi con la verità o con le menzogne, per superarli nel viaggio per ritrovare te stesso.`,
     price: 59.99,
     promo_price: 19.89,
-    developer: ["NEOWIZ"],
+    developer: "NEOWIZ",
     release_date: "18 settembre 2023",
     image_url:
       "https://gaming-cdn.com/images/products/8855/616x353/lies-of-p-pc-gioco-steam-cover.jpg?v=1734358617",
@@ -149,7 +149,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     description: `La Storia di Arkham inizia con Batman: Arkham Origins, che presenta un racconto cruciale che si svolge alla vigilia di Natale quando Batman è perseguitato da otto dei più letali assassini dell’universo DC. I giocatori possono impersonane un giovane Batman ai suoi primi scontri contro i tanti personaggi che cambieranno il suo futuro.`,
     price: 59.99,
     promo_price: 19.89,
-    developer: ["Warner Bros. Interactive Entertainment"],
+    developer: "Warner Bros. Interactive Entertainment",
     release_date: "25 ottobre 2013",
     image_url:
       "https://gaming-cdn.com/images/products/184/616x353/batman-arkham-origins-pc-gioco-steam-cover.jpg?v=1683619090",
@@ -164,7 +164,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
         Costruite la fattoria tra i fiumi sinuosi e gli storici montacarichi da cereali del Nord America, tra gli specchi d'acqua dell'Europa centrale o in un rigoglioso panorama dell'Asia orientale ricco di risaie accanto a una città portuale dalle mille luci. Coltivate i campi, allevate gli animali, datevi alla silvicoltura e gestite un vero e proprio impero con negozi, produzioni e costruzioni!`,
     price: 59.99,
     promo_price: 19.89,
-    developer: ["Giants Software"],
+    developer: "Giants Software",
     release_date: "12 novembre 2024",
     image_url:
       "https://gaming-cdn.com/images/products/16993/616x353/farming-simulator-25-pc-mac-gioco-steam-europe-us-canada-cover.jpg?v=1746786479",
@@ -177,7 +177,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     description: `Lotta per salvare il tuo mondo. Salva tua sorella. Salva la tua anima.`,
     price: 59.99,
     promo_price: 19.89,
-    developer: ["Ultizero Games"],
+    developer: "Ultizero Games",
     release_date: "29 agosto 2025",
     image_url:
       "https://gaming-cdn.com/images/products/18920/616x353/lost-soul-aside-deluxe-edition-pc-steam-cover.jpg?v=1756474122",
@@ -190,7 +190,7 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     description: `Ghost of Tsushima per PC è un pluripremiato gioco d'azione e avventura open world, con una prospettiva per il giocatore in terza persona. È ambientato nell'antico Giappone feudale, ma i problemi affrontati dal protagonista saranno facilmente compresi dai giocatori occidentali e moderni.`,
     price: 59.99,
     promo_price: 37.99,
-    developer: ["Sucker Punch Productions", "Nixxes Software"],
+    developer: "Sucker Punch Productions",
     release_date: "29 agosto 2024",
     image_url:
       "https://gaming-cdn.com/images/products/18920/616x353/lost-soul-aside-deluxe-edition-pc-steam-cover.jpg?v=1756474122",
@@ -203,24 +203,24 @@ Sfuggi all'opprimente giogo del Cronocustode, uno spietato dittatore che domina 
     description: `Red Dead Redemption 2 per PC è un gioco d’azione ambientato in un open world in cui il giocatore può vagare liberamente con alcuni elementi che si svolgono in terza persona, altri in modalità di gioco in prima persona. Il giocatore può commettere crimini, ma dovrà però essere pronto a fronteggiare le forze dell'ordine che vorranno far valere l'intero peso della legge sul miscredente!`,
     price: 59.99,
     promo_price: 12.99,
-    developer: ["Rockstar Games"],
+    developer: "Rockstar Games",
     release_date: "5 dicembre 2019",
     image_url:
       "https://gaming-cdn.com/images/products/5679/616x353/red-dead-redemption-2-pc-gioco-rockstar-cover.jpg?v=1713793245",
-    quantity: 71,
+    quantity: 101,
     vote: 4.8,
   },
   {
-    id: 15,
+    id: 16,
     name: "Red Dead Redemption 2",
     description: `Red Dead Redemption 2 per PC è un gioco d’azione ambientato in un open world in cui il giocatore può vagare liberamente con alcuni elementi che si svolgono in terza persona, altri in modalità di gioco in prima persona. Il giocatore può commettere crimini, ma dovrà però essere pronto a fronteggiare le forze dell'ordine che vorranno far valere l'intero peso della legge sul miscredente!`,
     price: 59.99,
     promo_price: 12.99,
-    developer: ["Rockstar Games"],
+    developer: "Rockstar Games",
     release_date: "5 dicembre 2019",
     image_url:
       "https://gaming-cdn.com/images/products/5679/616x353/red-dead-redemption-2-pc-gioco-rockstar-cover.jpg?v=1713793245",
-    quantity: 71,
+    quantity: 99,
     vote: 4.8,
   },
 ];
