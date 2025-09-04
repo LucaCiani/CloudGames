@@ -1,5 +1,7 @@
 import BlurText from "./BlurText";
 
+import { Helmet } from "react-helmet";
+
 const handleAnimationComplete = () => {
   console.log("Animation completed!");
 };
@@ -7,7 +9,9 @@ const handleAnimationComplete = () => {
 export default function HeaderComponent() {
   return (
     <>
-      
+      <Helmet>
+        <title>Home | CloudGames 👾</title>
+      </Helmet>
       <nav className="navbar navbar-expand-lg navbar-fixed-transparent">
                 <div className="container">
                     <h2>CLOUDGAMES</h2>
