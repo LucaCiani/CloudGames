@@ -31,7 +31,7 @@ function index(req, res) {
   // eseguiamo la query usando la connessione al database
   connection.query(sql, (err, results) => {
     // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
-    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // se non ci sono errori, restituiamo i risultati della query in formato JSON
 
     const formattedResult = results.map((result) => {
@@ -46,9 +46,9 @@ function index(req, res) {
         image_url: result.image_url,
         quantity: result.quantity,
         vote: result.vote,
-        platforms: result.platforms.split(","),
-        genres: result.genres.split(","),
-        media: result.media_urls.split(",").map((media_url) => {
+        platforms: result.platforms?.split(","),
+        genres: result.genres?.split(","),
+        media: result.media_urls?.split(",").map((media_url) => {
           if (media_url.includes("https://www.youtube.com/embed/")) {
             return {
               type: "video",
@@ -100,7 +100,7 @@ function show(req, res) {
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // se si verifica un errore durante la connessione o l'esecuzione della query
-    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // se non viene trovato alcun risultato (l'ID non esiste nella tabella "videogames"),
     if (results.length === 0)
       return res.status(404).json({ error: "Videogames not found" });
@@ -118,9 +118,9 @@ function show(req, res) {
         image_url: result.image_url,
         quantity: result.quantity,
         vote: result.vote,
-        platforms: result.platforms.split(","),
-        genres: result.genres.split(","),
-        media: result.media_urls.split(",").map((media_url) => {
+        platforms: result.platforms?.split(","),
+        genres: result.genres?.split(","),
+        media: result.media_urls?.split(",").map((media_url) => {
           if (media_url.includes("https://www.youtube.com/embed/")) {
             return {
               type: "video",
