@@ -16,5 +16,23 @@ function index(req, res) {
   });
 }
 
+/* show (read) */
+function show(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  // definiamo la query SQL per selezionare un singolo codice sconto tramite ID
+  const sql = "SELECT * FROM discounts WHERE id = ? ;";
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(sql, [id], (err, results) => {
+    // se si verifica un errore durante la connessione o l'esecuzione della query
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    // se non viene trovato alcun risultato (l'ID non esiste nella tabella "discounts"),
+    if (results.length === 0)
+      return res.status(404).json({ error: "Invoice not found" });
+    // se l'elemento è stato trovato, lo restituisce come risposta JSON
+    return res.json(results[0]);
+  });
+}
+
 // esportiamo tutto
-export default { index };
+export default { index, show };
