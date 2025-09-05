@@ -46,21 +46,23 @@ function index(req, res) {
         image_url: result.image_url,
         quantity: result.quantity,
         vote: result.vote,
-        platforms: result.platforms?.split(","),
-        genres: result.genres?.split(","),
-        media: result.media_urls?.split(",").map((media_url) => {
-          if (media_url.includes("https://www.youtube.com/embed/")) {
-            return {
-              type: "video",
-              url: media_url,
-            };
-          } else {
-            return {
-              type: "img",
-              url: media_url,
-            };
-          }
-        }),
+        platforms: result.platforms ? result.platforms.split(",") : null,
+        genres: result.genres ? result.genres.split(",") : null,
+        media: result.media_urls
+          ? result.media_urls.split(",").map((media_url) => {
+              if (media_url.includes("https://www.youtube.com/embed/")) {
+                return {
+                  type: "video",
+                  url: media_url,
+                };
+              } else {
+                return {
+                  type: "img",
+                  url: media_url,
+                };
+              }
+            })
+          : null,
       };
     });
 
@@ -118,21 +120,23 @@ function show(req, res) {
         image_url: result.image_url,
         quantity: result.quantity,
         vote: result.vote,
-        platforms: result.platforms?.split(","),
-        genres: result.genres?.split(","),
-        media: result.media_urls?.split(",").map((media_url) => {
-          if (media_url.includes("https://www.youtube.com/embed/")) {
-            return {
-              type: "video",
-              url: media_url,
-            };
-          } else {
-            return {
-              type: "img",
-              url: media_url,
-            };
-          }
-        }),
+        platforms: result.platforms ? result.platforms.split(",") : null,
+        genres: result.genres ? result.genres.split(",") : null,
+        media: result.media_urls
+          ? result.media_urls.split(",").map((media_url) => {
+              if (media_url.includes("https://www.youtube.com/embed/")) {
+                return {
+                  type: "video",
+                  url: media_url,
+                };
+              } else {
+                return {
+                  type: "img",
+                  url: media_url,
+                };
+              }
+            })
+          : null,
       };
     });
 
@@ -225,7 +229,7 @@ function modify(req, res) {
       return res.status(404).json({ error: "Videogame not found" });
     }
     // Se tutto è andato bene, restituisce un messaggio di successo
-    res.json({ message: "Videogame updated successfully" });
+    res.status(204).send();
   });
 }
 

@@ -54,19 +54,21 @@ function index(req, res) {
         payment_provider: invoice.payment_provider,
         created_at: invoice.created_at,
         completed_at: invoice.completed_at,
-        videogames: invoice.videogame_ids.split("|").map((videogame_id, i) => {
-          return {
-            id: videogame_id,
-            name: invoice.videogame_names.split("|")[i],
-            description: invoice.videogame_descriptions.split("|")[i],
-            price: invoice.videogame_prices.split("|")[i],
-            promo_price: invoice.videogame_promo_prices.split("|")[i],
-            developer: invoice.videogame_developers.split("|")[i],
-            release_date: invoice.videogame_release_dates.split("|")[i],
-            vote: invoice.videogame_votes.split("|")[i],
-            order_quantity: invoice.order_quantities.split("|")[i],
-          };
-        }),
+        videogames: invoice.videogame_ids
+          ? invoice.videogame_ids.split("|").map((videogame_id, i) => {
+              return {
+                id: videogame_id,
+                name: invoice.videogame_names.split("|")[i],
+                description: invoice.videogame_descriptions.split("|")[i],
+                price: invoice.videogame_prices.split("|")[i],
+                promo_price: invoice.videogame_promo_prices.split("|")[i],
+                developer: invoice.videogame_developers.split("|")[i],
+                release_date: invoice.videogame_release_dates.split("|")[i],
+                vote: invoice.videogame_votes.split("|")[i],
+                order_quantity: invoice.order_quantities.split("|")[i],
+              };
+            })
+          : null,
         discount: invoice.discount_code
           ? {
               code: invoice.discount_code,
@@ -150,19 +152,21 @@ async function show(req, res) {
         payment_provider: invoice.payment_provider,
         created_at: invoice.created_at,
         completed_at: invoice.completed_at,
-        videogames: invoice.videogame_ids.split("|").map((videogame_id, i) => {
-          return {
-            id: videogame_id,
-            name: invoice.videogame_names.split("|")[i],
-            description: invoice.videogame_descriptions.split("|")[i],
-            price: invoice.videogame_prices.split("|")[i],
-            promo_price: invoice.videogame_promo_prices.split("|")[i],
-            developer: invoice.videogame_developers.split("|")[i],
-            release_date: invoice.videogame_release_dates.split("|")[i],
-            vote: invoice.videogame_votes.split("|")[i],
-            order_quantity: invoice.order_quantities.split("|")[i],
-          };
-        }),
+        videogames: invoice.videogame_ids
+          ? invoice.videogame_ids.split("|").map((videogame_id, i) => {
+              return {
+                id: videogame_id,
+                name: invoice.videogame_names.split("|")[i],
+                description: invoice.videogame_descriptions.split("|")[i],
+                price: invoice.videogame_prices.split("|")[i],
+                promo_price: invoice.videogame_promo_prices.split("|")[i],
+                developer: invoice.videogame_developers.split("|")[i],
+                release_date: invoice.videogame_release_dates.split("|")[i],
+                vote: invoice.videogame_votes.split("|")[i],
+                order_quantity: invoice.order_quantities.split("|")[i],
+              };
+            })
+          : null,
         discount: invoice.discount_code
           ? {
               code: invoice.discount_code,
