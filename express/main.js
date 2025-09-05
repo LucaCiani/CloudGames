@@ -1,21 +1,29 @@
-// importiamo express
+// Importiamo express e il middleware json per il body parsing
 import express, { json } from "express";
+
+// Importiamo cors per gestire le richieste da domini diversi
 import cors from "cors";
+
+// Creiamo un'applicazione express
 const app = express();
+
+// Recuperiamo la porta dalle variabili d'ambiente
 const port = process.env.port;
 
 // middleware per gestire le richieste a rotte non esistenti (errore 404)
 import notFound from "./middlewares/notFound.js";
 
-// middleware per la gestione centralizzata degli errori
+// middleware per la gestione centralizzata degli errori (errore 500)
 import serverError from "./middlewares/serverError.js";
 
-// importiamo router
+// importiamo i router
 import videogamesRoute from "./routers/videogamesRoute.js";
+import invoicesRoute from "./routers/invoicesRoute.js";
 
-// registro il body-parser
+// Registriamo il body-parser integrato in express
 app.use(json());
 
+//// Abilitiamo CORS per permettere richieste da client esterni
 app.use(cors());
 
 // definiamo la prima rotta
@@ -23,8 +31,9 @@ app.get("/", (req, res) => {
   res.send("Server del mio blog");
 });
 
-// indichiamo con use che esistono nuove rotte
+// Definiamo le rotte principali dell’app
 app.use("/videogames", videogamesRoute);
+app.use("/invoices", invoicesRoute);
 
 // registro le middleware
 app.use(notFound);
