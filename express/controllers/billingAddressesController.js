@@ -5,9 +5,9 @@ import connection from "../db/connection.js";
 
 /* store (create) */
 function store(req, res) {
-  // estraiamo i dati (invoices_id, full_name, ecc) dal corpo della richiesta HTTP
+  // estraiamo i dati (invoice_id, full_name, ecc) dal corpo della richiesta HTTP
   const {
-    invoices_id,
+    invoice_id,
     full_name,
     address_line,
     city,
@@ -25,7 +25,7 @@ function store(req, res) {
   connection.query(
     sql,
     [
-      invoices_id,
+      invoice_id,
       full_name,
       address_line,
       city,
