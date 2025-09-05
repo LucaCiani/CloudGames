@@ -101,7 +101,7 @@ function show(req, res) {
   connection.query(sql, [id], (err, results) => {
     // se si verifica un errore durante la connessione o l'esecuzione della query
     if (err) return res.status(500).json({ error: "Database query failed" });
-    // se non viene trovato alcun risultato (l'ID non esiste nella tabella "posts"),
+    // se non viene trovato alcun risultato (l'ID non esiste nella tabella "videogames"),
     if (results.length === 0)
       return res.status(404).json({ error: "Videogames not found" });
     // se l'elemento è stato trovato, lo restituisce come risposta JSON
