@@ -19,6 +19,7 @@ import serverError from "./middlewares/serverError.js";
 // importiamo i router
 import videogamesRoute from "./routers/videogamesRoute.js";
 import invoicesRoute from "./routers/invoicesRoute.js";
+import discountsRoute from "./routers/discountsRoute.js";
 
 // Registriamo il body-parser integrato in express
 app.use(json());
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 // Definiamo le rotte principali dell’app
 app.use("/videogames", videogamesRoute);
 app.use("/invoices", invoicesRoute);
+app.use("/discounts", discountsRoute);
 
 // registro le middleware
 app.use(notFound);
