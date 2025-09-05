@@ -48,24 +48,36 @@ const invoices = {
   payment_provider: null,
   created_at: "24-10-02",
   completed_at: null,
+  videogames: [
+    {
+      id: 10,
+      name: "...",
+      description: `...`,
+      price: 59.99,
+      promo_price: 19.89,
+      developer: "...",
+      release_date: "24-05-10",
+      image_url: "...",
+      vote: 4.7,
+      order_quantity: 54,
+    },
+  ],
   discount:
     {
       code: "ABCDEFGHIJKLMNOPQRST",
       discount_percentage: 10,
       expires_at: "24-10-05",
     } || null,
-  billing_addresses:
-    [
-      {
-        id: 10,
-        full_name: "Mario Rossi",
-        address_line: "Via Sesso",
-        city: "Reggio Emilia",
-        postal_code: "ABC100OK",
-        country: "IT",
-        created_at: "24-10-05",
-      },
-    ] || null,
+  billing_address:
+    {
+      id: 10,
+      full_name: "Mario Rossi",
+      address_line: "Via Sesso",
+      city: "Reggio Emilia",
+      postal_code: "ABC100OK",
+      country: "IT",
+      created_at: "24-10-05",
+    } || null,
 };
 
 // API BILLING_ADDRESS
