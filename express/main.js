@@ -20,11 +20,12 @@ import serverError from "./middlewares/serverError.js";
 import videogamesRoute from "./routers/videogamesRoute.js";
 import invoicesRoute from "./routers/invoicesRoute.js";
 import discountsRoute from "./routers/discountsRoute.js";
+import billingAddressesRoute from "./routers/billingAddressesRoute.js";
 
 // Registriamo il body-parser integrato in express
 app.use(json());
 
-//// Abilitiamo CORS per permettere richieste da client esterni
+// Abilitiamo CORS per permettere richieste da client esterni
 app.use(cors());
 
 // definiamo la prima rotta
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 app.use("/videogames", videogamesRoute);
 app.use("/invoices", invoicesRoute);
 app.use("/discounts", discountsRoute);
+app.use("/billing-addresses", billingAddressesRoute);
 
 // registro le middleware
 app.use(notFound);
