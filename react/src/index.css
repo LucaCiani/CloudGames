@@ -1,65 +1,58 @@
 @import "bootstrap";
 
+/* JUMBOTRON - Solo override necessari */
 
-/* JUMBOTRON */
 .header-img-container {
-    position: relative;
-    width: 100%;
-    height: 50vh;
-    overflow: hidden;
+  width: 100%;
+  height: 440px;  /* fissa in pixel */
 }
-
-/* ✦─────────────────────────────✦  */
-/*      🎆 JUMBOTRON + BLURTEXT     */
-/* ✦─────────────────────────────✦ */
-
 
 .jumbotron-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 39%; /* sposta il focus più in basso */
+  display: block;
 }
 
-.jumbotron-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-}
 
-/* NAVBAR */
+/* .jumbotron-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgb(0, 0, 0);
+} */
+
+/* NAVBAR - Solo override necessari */
 .navbar-fixed-transparent {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.021);
-    backdrop-filter: blur(100px);
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+  background: rgba(15, 15, 15, 0.938) !important;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
 }
 
 .logo_navbar {
-    width: 48px;
-    height: 48px;
-   
+  height: 60px;
+  object-fit: contain;
 }
 
-/* HTML */
+/* BODY */
 body {
-    margin: 0;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #b4b4b8 0%, #33384f 60%, #1d202d 100%);
+  background: linear-gradient(
+    to top,
+    #181818 0%,
+    #b08d2f 40%,
+    #a67c1d 70%,
+    #c9b037 100%
+  );
 }
 
+/* CARD */
 .card {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none;
 }

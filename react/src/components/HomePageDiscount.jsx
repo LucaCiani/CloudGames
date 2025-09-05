@@ -3,12 +3,12 @@
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { useState, useEffect } from "react";
 
-export default function Highlighted() {
+export default function HomePageDiscount() {
   const { videogames } = useGlobalContext();
 
   // Filtra solo i videogiochi con ID 1, 3, 5, 7, 9, 11, 12
   const filteredVideogames =
-    videogames?.filter((vg) => [,1, 3, 5, 7, 9, 11, 13,15].includes(vg.id)) || [];
+    videogames?.filter((vg) => [2,4,6,8,10,12,14].includes(vg.id)) || [];
 
   // Slider state con responsività
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -51,7 +51,7 @@ export default function Highlighted() {
       <button
         onClick={handlePrev}
         className="btn btn-dark position-absolute top-50 translate-middle-y"
-        style={{ left: "-0px", zIndex: 2 }}
+        style={{ left: "0px", zIndex: 2 }}
         disabled={currentIndex === 0}
       >
         &#10094;
@@ -99,7 +99,7 @@ export default function Highlighted() {
       <button
         onClick={handleNext}
         className="btn btn-dark position-absolute top-50 translate-middle-y"
-        style={{ right: "-0px", zIndex: 2 }}
+        style={{ right: "0px", zIndex: 2 }}
         disabled={currentIndex >= filteredVideogames.length - visibleSlides}
       >
         &#10095;
