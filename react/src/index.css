@@ -1,5 +1,6 @@
 @import "bootstrap";
 
+
 /* JUMBOTRON */
 .header-img-container {
     position: relative;
@@ -7,6 +8,11 @@
     height: 50vh;
     overflow: hidden;
 }
+
+/* ✦─────────────────────────────✦  */
+/*      🎆 JUMBOTRON + BLURTEXT     */
+/* ✦─────────────────────────────✦ */
+
 
 .jumbotron-img {
     width: 100%;
