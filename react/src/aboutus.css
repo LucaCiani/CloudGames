@@ -1,0 +1,221 @@
+/* ABOUT US SECTION */
+.aboutus-section {
+  padding: 80px 20px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.aboutus-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  background: white;
+  padding: 60px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.aboutus-title {
+  font-size: 3rem;
+  margin-bottom: 40px;
+  color: #1a1a1a;
+  font-weight: bold;
+  position: relative;
+}
+
+.aboutus-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(45deg, #b08d2f, #c9b037);
+  border-radius: 2px;
+}
+
+.aboutus-paragraph {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  color: #555;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aboutus-subtitle {
+  font-size: 2.2rem;
+  margin: 50px 0 30px 0;
+  color: #2c2c2c;
+  font-weight: 600;
+}
+
+.aboutus-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.aboutus-point {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.aboutus-point:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-color: #c9b037;
+}
+
+.aboutus-point h4 {
+  font-size: 1.4rem;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.aboutus-point p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.github-section {
+  margin-top: 60px;
+  padding: 40px 0;
+  border-top: 2px solid #e9ecef;
+}
+
+.github-title {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #2c2c2c;
+  font-weight: 600;
+}
+
+.github-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.github-member {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.github-member:hover {
+  transform: scale(1.1);
+}
+
+.github-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.github-link:hover {
+  color: #0066cc;
+}
+
+.github-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #e9ecef;
+  transition: border-color 0.3s ease;
+  object-fit: cover;
+}
+
+.github-link:hover .github-avatar {
+  border-color: #0066cc;
+}
+
+.github-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.github-role {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .aboutus-section {
+    padding: 40px 15px;
+  }
+  
+  .aboutus-container {
+    padding: 40px 25px;
+    border-radius: 15px;
+  }
+  
+  .aboutus-title {
+    font-size: 2.2rem;
+  }
+  
+  .aboutus-subtitle {
+    font-size: 1.8rem;
+  }
+  
+  .aboutus-paragraph {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  .aboutus-points {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .github-container {
+    gap: 20px;
+  }
+  
+  .github-avatar {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutus-title {
+    font-size: 1.8rem;
+  }
+  
+  .aboutus-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .aboutus-paragraph {
+    font-size: 1rem;
+  }
+  
+  .aboutus-container {
+    padding: 30px 20px;
+  }
+  
+  .github-container {
+    gap: 15px;
+  }
+}
