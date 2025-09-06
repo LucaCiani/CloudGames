@@ -1,57 +1,61 @@
 @import "bootstrap";
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-/* ✦─────────────────────────────✦  */
-/*      🎆 JUMBOTRON + BLURTEXT     */
-/* ✦─────────────────────────────✦ */
-.header-img-container {
-    height: 50vh;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-}
-
-.header-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
-.header-text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    color: #fff;
-    text-align: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-}
+/* JUMBOTRON - Solo override necessari */
 
 .header-img-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    height: 50vh;
+  width: 100%;
+   height: 580px; /* fissa in pixel */
 }
 
-/* ✦─────────────────────────────✦  */
-/*              NAVBAR              */
-/* ✦─────────────────────────────✦ */
+.jumbotron-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 39%; /* sposta il focus più in basso */
+  display: block;
+}
 
+
+/* .jumbotron-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgb(0, 0, 0);
+} */
+
+/* NAVBAR - Solo override necessari */
 .navbar-fixed-transparent {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.021); /* bianco trasparente */
-    backdrop-filter: blur(100px); /* effetto vetro */
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+  background: rgba(15, 15, 15, 0.938) !important;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+}
+
+.logo_navbar {
+  height: 60px;
+  object-fit: contain;
+}
+
+/* BODY */
+body {
+  background: linear-gradient(
+    to bottom,
+    #1818184b,
+    #b08d2f,
+    #a67c1d ,
+    #c9b037
+  );
+}
+
+/* CARD */
+.card {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none;
 }
 
 /* footer */
@@ -126,3 +130,19 @@ ul {
   .git {
     background: linear-gradient(to right, #6e6c6c, #939297);
   }
+
+
+/* Tablet: max-width 991px */
+@media (max-width: 991px) {
+  .header-img-container {
+    height: 320px;
+  }
+}
+
+/* Mobile: max-width 575px */
+@media (max-width: 575px) {
+  .header-img-container {
+    height: 160px;
+  }
+}
+

@@ -1,35 +1,23 @@
-import BlurText from "../components/BlurText";
+/* import JumbotronText from "../components/JumbotronText"; */
+import Highlighted from "../components/Highlighted";
+import HomePageDiscount from "../components/HomePageDiscount";
 
-const handleAnimationComplete = () => {
-    console.log("Animation completed!");
-};
+/* const handleAnimationComplete = () => {
+  console.log("Animation completed!");
+}; */
 
 export default function HomePage() {
-    return (
-        <>
-            <div className="header-img-container">
-                <img
-                    src="/jumbotron.png"
-                    alt="jumbotron"
-                    className="w-100 h-100"
-                    style={{
-                        objectFit: "cover",
-                        objectPosition: "center",
-                    }}
-                />
-                <div className="position-absolute top-50 start-50 translate-middle text-center text-white w-100 px-3">
-                    <BlurText
-                        text="Isn't this so cool?!"
-                        delay={150}
-                        animateBy="words"
-                        direction="top"
-                        onAnimationComplete={handleAnimationComplete}
-                        className="fs-1 mb-4 justify-content-center text-center"
-                        style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
-                    />
-                </div>
-            </div>
-            <h2>Homepage</h2>
-        </>
-    );
+  return (
+    <>
+      <div className="header-img-container">
+        <img
+          src="/jumbo3.jpg"
+          alt="Cloud Games Jumbotron"
+          className="jumbotron-img img-fluid w-100"
+        />
+      </div>
+      <Highlighted />
+      <HomePageDiscount />
+    </>
+  );
 }

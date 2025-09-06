@@ -16,6 +16,7 @@ export default function Footer() {
     <>
 
 
+
       <div >
         <div>
           <div className="row row-cols-1 row-cols-md-4 justify-content-between" style={{ margin: 0 }} >
@@ -156,6 +157,7 @@ export default function Footer() {
         </div>
 
       </div>
+
     </>
   );
 }
