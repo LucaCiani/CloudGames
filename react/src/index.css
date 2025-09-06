@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import 'bootstrap-icons/font/bootstrap-icons';
 
 /* ✦─────────────────────────────✦  */
 /*      🎆 JUMBOTRON + BLURTEXT     */
@@ -52,3 +53,76 @@
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
 }
+
+/* footer */
+
+ul {
+    padding: 0;
+
+    li {
+    list-style: none;
+
+    
+    
+}
+}
+
+
+.payment-methods {
+    width: 100%;    
+    margin: 0;
+    
+    li {
+        scale: 2;
+    }
+}
+
+
+
+.social-container {
+  display: flex;
+  gap: 12px;
+}
+
+.social-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.social-button:hover {
+  opacity: 0.8;
+}
+
+.social-icon {
+  color: white;
+  font-size: 22px;
+  
+}
+
+.ig{
+   
+    background: linear-gradient(to right, #a855f7, #ec4899);
+
+  }
+  .fb{
+    background: linear-gradient(to right, #281dc0, #250d7b);
+  }
+  .discord {
+    background: linear-gradient(to right, #410249, #83069f);
+  }
+  .x {
+    background: linear-gradient(to right, #101010, #474748);
+  }
+  .youtube{
+    background: linear-gradient(to right, #aa0000, #dd5858);
+  }
+  .git {
+    background: linear-gradient(to right, #6e6c6c, #939297);
+  }
