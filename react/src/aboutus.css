@@ -5,7 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  
+ 
+
 }
 
 .aboutus-container {
@@ -219,3 +221,4 @@
     gap: 15px;
   }
 }
+
