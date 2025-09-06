@@ -17,7 +17,7 @@ export default function Footer() {
 
 
 
-      <div className="row row-cols-1 row-cols-md-4 justify-content-center" style={{ margin: 0 }} >
+      <div className="row row-cols-1 row-cols-md-4 justify-content-center" style={{ margin: 0, paddingTop: "2rem" }} >
 
 
 
