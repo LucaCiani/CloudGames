@@ -1,4 +1,4 @@
-import BlurText from "./BlurText";
+/* import BlurText from "./BlurText";
 
 export default function JumbotronText({ onAnimationComplete }) {
   return (
@@ -13,4 +13,4 @@ export default function JumbotronText({ onAnimationComplete }) {
       />
     </div>
   );
-}
+} */
