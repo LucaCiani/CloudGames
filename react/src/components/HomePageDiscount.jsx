@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function HomePageDiscount() {
   const { videogames } = useGlobalContext();
+  const [hoveredVideo, setHoveredVideo] = useState(null);
 
   // Filtra solo i videogiochi con un promo_price
   const filteredVideogames =
@@ -39,7 +40,9 @@ export default function HomePageDiscount() {
   const handlePrev = () => {
     setCurrentIndex((prev) =>
       // Se siamo al primo elemento (0), vai all'ultimo, altrimenti vai al precedente
-      prev === 0 ? Math.max(0, filteredVideogames.length - visibleSlides) : prev - 1
+      prev === 0
+        ? Math.max(0, filteredVideogames.length - visibleSlides)
+        : prev - 1
     );
   };
 
@@ -50,6 +53,18 @@ export default function HomePageDiscount() {
       // Se siamo all'ultimo elemento, torna istantaneamente al primo
       return prev >= maxIndex ? 0 : prev + 1;
     });
+  };
+
+  // Converte URL YouTube in embed con autoplay
+  const getEmbedVideoUrl = (videogame) => {
+    const video = videogame.media?.find((media) => media.type === "video");
+    if (!video) return null;
+
+    // Estrae l'ID del video da YouTube
+    const videoId = video.url.split("/").pop();
+
+    // Crea URL embed con autoplay e mute
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`;
   };
 
   return (
@@ -92,16 +107,47 @@ export default function HomePageDiscount() {
                   to={`/product/${videogame.id}`}
                   className="text-decoration-none"
                 >
-                  <div className="card border-0 h-100">
-                    <img
-                      src={videogame.image_url}
-                      alt={videogame.name}
-                      className="card-img-top rounded"
-                      style={{
-                        height: "220px",
-                        objectFit: "cover",
-                      }}
-                    />
+                  <div
+                    className="card border-0 h-100"
+                    onMouseEnter={() => setHoveredVideo(videogame.id)}
+                    onMouseLeave={() => setHoveredVideo(null)}
+                    style={{
+                      transform:
+                        hoveredVideo === videogame.id
+                          ? "scale(1.05)"
+                          : "scale(1)",
+                      transition: "transform 0.3s ease",
+                      zIndex: hoveredVideo === videogame.id ? 10 : 1,
+                    }}
+                  >
+                    {/* Video in hover con autoplay */}
+                    {hoveredVideo === videogame.id &&
+                    getEmbedVideoUrl(videogame) ? (
+                      <iframe
+                        src={getEmbedVideoUrl(videogame)}
+                        className="card-img-top rounded"
+                        style={{
+                          height: "220px",
+                          width: "100%",
+                          border: "none",
+                          pointerEvents: "none", // Disabilita il click sul video
+                        }}
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                      />
+                    ) : (
+                      /* Immagine di default */
+                      <img
+                        src={videogame.image_url}
+                        alt={videogame.name}
+                        className="card-img-top rounded"
+                        style={{
+                          height: "220px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
                       <span className="fw-bold text-truncate">
                         {videogame.name}
