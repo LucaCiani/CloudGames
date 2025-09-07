@@ -27,11 +27,22 @@ export default function VideogamesPage() {
                         }}
                       />
                       <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                        <span className="fw-bold text-truncate text-dark">
+                        <span className="fw-bold text-truncate text-white">
                           {videogame.name}
                         </span>
-                        <span className="fw-bold text-dark">
-                          €{videogame.price}
+                        <span>
+                          {videogame.promo_price ? (
+                            <>
+                              <span className="text-success fw-bold">
+                                €{videogame.promo_price}
+                              </span>{" "}
+                              <span className="text-decoration-line-through text-secondary">
+                                €{videogame.price}
+                              </span>
+                            </>
+                          ) : (
+                            <>€{videogame.price}</>
+                          )}
                         </span>
                       </div>
                     </div>

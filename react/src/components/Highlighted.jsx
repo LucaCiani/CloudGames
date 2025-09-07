@@ -107,10 +107,10 @@ export default function Highlighted() {
                       <span className="fw-bold text-truncate">
                         {videogame.name}
                       </span>
-                      <span className="fw-bold">
+                      <span>
                         {videogame.promo_price ? (
                           <>
-                            <span className="text-success">
+                            <span className="text-success fw-bold">
                               €{videogame.promo_price}
                             </span>{" "}
                             <span className="text-decoration-line-through text-secondary">

@@ -36,6 +36,45 @@
   display: block;
 }
 
+.search-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent; /* truly transparent */
+  border: 1px solid var(--bs-link-color);
+  border-right: none;
+  color: var(--bs-link-color);
+  border-radius: 50px;
+  height: 40px;
+  width: 100%;
+}
+
+.search-bar input[type="search"],
+.search-bar input[type="text"] {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--bs-body-color);
+  padding: 8px 12px;
+  flex: 1 1 auto;
+  font-size: 1rem;
+}
+
+.search-bar input::placeholder {
+  opacity: 0.6;
+  color: var(--bs-link-color);
+}
+
+.search-bar .search-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bs-link-color);
+  color: var(--bs-color-dark);
+  border: none;
+  cursor: pointer;
+}
+
 /* .jumbotron-text {
   position: absolute;
   top: 50%;
@@ -156,5 +195,9 @@ ul {
 
   .jumbo-description {
     display: none;
+  }
+
+  .search-bar {
+    max-width: 320px;
   }
 }
