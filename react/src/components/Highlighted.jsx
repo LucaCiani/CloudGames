@@ -5,21 +5,22 @@ import { useState, useEffect } from "react";
 export default function Highlighted() {
   const { videogames } = useGlobalContext();
   const [hgVideogames, setHgVideogames] = useState([]);
+  const [hoveredVideo, setHoveredVideo] = useState(null);
 
-  useEffect(() => {
-    // Filtra videogiochi in evidenza (a random, max 15)
-    const filteredVideogames =
-      videogames
-        ?.map((vg) => vg)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 15) || [];
+    useEffect(() => {
+        // Filtra videogiochi in evidenza (a random, max 15)
+        const filteredVideogames =
+            videogames
+                ?.map((vg) => vg)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 15) || [];
 
-    setHgVideogames(filteredVideogames);
-  }, [videogames]);
+        setHgVideogames(filteredVideogames);
+    }, [videogames]);
 
-  // Slider state con responsività
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleSlides, setVisibleSlides] = useState(3);
+    // Slider state con responsività
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [visibleSlides, setVisibleSlides] = useState(3);
 
   // Gestisce il numero di slide visibili in base alla larghezza dello schermo
   useEffect(() => {
@@ -32,24 +33,39 @@ export default function Highlighted() {
       } else {
         setVisibleSlides(3); // Desktop: 3 card
       }
-      setCurrentIndex(0); // Reset dell'indice quando cambia la dimensione
+      setCurrentIndex(0);
     };
 
-    // Esegui al caricamento e ad ogni resize
     handleResize();
     window.addEventListener("resize", handleResize);
-
-    // Cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Funzione per navigare al media precedente nello slider
   const handlePrev = () => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+    setCurrentIndex((prev) =>
+      prev === 0 ? Math.max(0, hgVideogames.length - visibleSlides) : prev - 1
+    );
   };
 
+  // Funzione per navigare al media successivo nello slider
   const handleNext = () => {
-    if (currentIndex < hgVideogames.length - visibleSlides)
-      setCurrentIndex(currentIndex + 1);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, hgVideogames.length - visibleSlides);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
+  };
+
+  // Converte URL YouTube in embed con autoplay
+  const getEmbedVideoUrl = (videogame) => {
+    const video = videogame.media?.find((media) => media.type === "video");
+    if (!video) return null;
+
+    // Estrae l'ID del video da YouTube
+    const videoId = video.url.split("/").pop();
+
+    // Crea URL embed con autoplay e mute
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`;
   };
 
   return (
@@ -62,9 +78,8 @@ export default function Highlighted() {
         {/* Freccia sinistra */}
         <button
           onClick={handlePrev}
-          className="btn btn-dark position-absolute top-50 translate-middle-y"
+          className="btn btn-light position-absolute top-50 translate-middle-y"
           style={{ left: "-15px", zIndex: 2 }}
-          disabled={currentIndex === 0}
         >
           &#10094;
         </button>
@@ -93,24 +108,55 @@ export default function Highlighted() {
                   to={`/product/${videogame.id}`}
                   className="text-decoration-none"
                 >
-                  <div className="card border-0 h-100">
-                    <img
-                      src={videogame.image_url}
-                      alt={videogame.name}
-                      className="card-img-top rounded"
-                      style={{
-                        height: "220px",
-                        objectFit: "cover",
-                      }}
-                    />
+                  <div
+                    className="card border-0 h-100"
+                    onMouseEnter={() => setHoveredVideo(videogame.id)}
+                    onMouseLeave={() => setHoveredVideo(null)}
+                    style={{
+                      transform:
+                        hoveredVideo === videogame.id
+                          ? "scale(1.05)"
+                          : "scale(1)",
+                      transition: "transform 0.3s ease",
+                      zIndex: hoveredVideo === videogame.id ? 10 : 1,
+                    }}
+                  >
+                    {/* Video in hover con autoplay */}
+                    {hoveredVideo === videogame.id &&
+                    getEmbedVideoUrl(videogame) ? (
+                      <iframe
+                        src={getEmbedVideoUrl(videogame)}
+                        className="card-img-top rounded"
+                        style={{
+                          height: "220px",
+                          width: "100%",
+                          border: "none",
+                          pointerEvents: "none", // Disabilita il click sul video
+                        }}
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                      />
+                    ) : (
+                      /* Immagine di default */
+                      <img
+                        src={videogame.image_url}
+                        alt={videogame.name}
+                        className="card-img-top rounded"
+                        style={{
+                          height: "220px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
                       <span className="fw-bold text-truncate">
                         {videogame.name}
                       </span>
-                      <span>
+                      <span className="fw-bold">
                         {videogame.promo_price ? (
                           <>
-                            <span className="text-success fw-bold">
+                            <span className="text-success">
                               €{videogame.promo_price}
                             </span>{" "}
                             <span className="text-decoration-line-through text-secondary">
@@ -132,9 +178,8 @@ export default function Highlighted() {
         {/* Freccia destra */}
         <button
           onClick={handleNext}
-          className="btn btn-dark position-absolute top-50 translate-middle-y"
-          style={{ right: "-15px", zIndex: 2 }}
-          disabled={currentIndex >= hgVideogames.length - visibleSlides}
+          className="btn btn-light position-absolute top-50 translate-middle-y"
+          style={{ right: "-20px", zIndex: 2 }}
         >
           &#10095;
         </button>

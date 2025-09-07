@@ -43,6 +43,8 @@ export default function ProductPage() {
   // Ottiene il media attualmente selezionato (immagine o video)
   const currentMedia = SingleVideogame.media[currentMediaIndex];
 
+
+
   return (
     <div className="container my-5">
       <div className="row">
@@ -102,14 +104,13 @@ export default function ProductPage() {
                     media.type === "img"
                       ? media.url
                       : `https://img.youtube.com/vi/${media.url
-                          .split("/")
-                          .pop()}/mqdefault.jpg`
+                        .split("/")
+                        .pop()}/mqdefault.jpg`
                   }
                   alt={`${SingleVideogame.name} ${index + 1}`}
                   // Aggiunge bordo blu se è il media attualmente selezionato
-                  className={` cursor-pointer ${
-                    index === currentMediaIndex ? "border-primary border-3" : ""
-                  }`}
+                  className={` cursor-pointer ${index === currentMediaIndex ? "border-primary border-3" : ""
+                    }`}
                   style={{
                     width: "100%",
                     height: "70px",
@@ -130,7 +131,7 @@ export default function ProductPage() {
 
           {/* Valutazione e sviluppatore */}
           <div className="mb-3">
-            <span className="badge bg-warning text-dark me-2">
+            <span className="me-2">
               ⭐ {parseFloat(SingleVideogame.vote).toString()}
             </span>
             <span className="text-secondary">
@@ -164,7 +165,7 @@ export default function ProductPage() {
             <h6>Piattaforme:</h6>
             <div className="d-flex gap-2">
               {SingleVideogame.platforms.map((platform, index) => (
-                <span key={index} className="badge bg-secondary">
+                <span key={index} className={`badge ${platform.toLowerCase()}`}>
                   {platform}
                 </span>
               ))}
@@ -176,7 +177,7 @@ export default function ProductPage() {
             <h6>Generi:</h6>
             <div className="d-flex gap-2">
               {SingleVideogame.genres.map((genre, index) => (
-                <span key={index} className="badge bg-info">
+                <span key={index} className={`badge genre-${genre.toLowerCase()}`}>
                   {genre}
                 </span>
               ))}
@@ -204,7 +205,7 @@ export default function ProductPage() {
 
           {/* Pulsante di acquisto - disabilitato se non disponibile */}
           <button
-            className="btn btn-primary btn-lg w-100"
+            className="btn-gradient w-100"
             disabled={SingleVideogame.quantity === 0}
           >
             {SingleVideogame.quantity > 0

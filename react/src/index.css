@@ -1,78 +1,111 @@
+/* ================================
+   🎨 IMPORTS
+================================ */
 @import "bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
 
+/* ================================
+   🌈 ROOT VARIABLES
+================================ */
 :root {
-  --bs-body-bg: transparent;
-  --bs-body-color: #fff;
-  --bs-link-color: #f0ad4e;
-  --bs-link-hover-color: #ec971f;
-  --bs-color-dark: rgb(39, 39, 37);
+    --bs-body-bg: transparent;
+    --bs-body-color: #fff;
+    --bs-link-color: #f0ad4e;
+    --bs-link-hover-color: #ec971f;
+    --bs-color-dark: rgb(39, 39, 37);
 }
 
-/* JUMBOTRON - Solo override necessari */
+/* Royal Aurora */
+/*  #3e2f5b ,
+    #e94560 ,
+    #3f305e  */
 
+/* Emerald Chrome */
+/* #004e92,
+    #000428,
+    #004e93 */
+
+/* Emerald Depth */
+/*  #0f2027,
+    #28623a,
+    #0f2026 */
+
+/* Phantom Purple 
+    #2b2e4a,
+    #e84545,
+    #2b2e4a */
+
+/* Noir Lavender 
+    #0d0d0d,
+    #5f4b8b,
+    #cbbbf6 */
+
+/* ================================
+   🖼️ JUMBOTRON
+   (Solo override necessari)
+================================ */
 .header-img-container {
-  width: 100%;
-  height: 580px; /* fissa in pixel */
-  position: relative;
+    width: 100%;
+    height: 580px; /* fissa in pixel */
+    position: relative;
 
-  h1,
-  p {
-    text-shadow: 2px 2px 4px rgb(0, 0, 0);
-  }
+    h1,
+    p {
+        text-shadow: 2px 2px 4px rgb(0, 0, 0);
+    }
 }
 
 .on-display {
-  display: block;
-  top: 10px;
-  left: 10px;
+    display: block;
+    top: 10px;
+    left: 10px;
 }
 
 .jumbotron-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 39%; /* sposta il focus più in basso */
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 39%; /* sposta il focus più in basso */
+    display: block;
 }
 
 .search-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent; /* truly transparent */
-  border: 1px solid var(--bs-link-color);
-  border-right: none;
-  color: var(--bs-link-color);
-  border-radius: 50px;
-  height: 40px;
-  width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent; /* truly transparent */
+    border: 1px solid var(--bs-link-color);
+    border-right: none;
+    color: var(--bs-link-color);
+    border-radius: 50px;
+    height: 40px;
+    width: 100%;
 }
 
 .search-bar input[type="search"],
 .search-bar input[type="text"] {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--bs-body-color);
-  padding: 8px 12px;
-  flex: 1 1 auto;
-  font-size: 1rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--bs-body-color);
+    padding: 8px 12px;
+    flex: 1 1 auto;
+    font-size: 1rem;
 }
 
 .search-bar input::placeholder {
-  opacity: 0.6;
-  color: var(--bs-link-color);
+    opacity: 0.6;
+    color: var(--bs-link-color);
 }
 
 .search-bar .search-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--bs-link-color);
-  color: var(--bs-color-dark);
-  border: none;
-  cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bs-link-color);
+    color: var(--bs-color-dark);
+    border: none;
+    cursor: pointer;
 }
 
 /* .jumbotron-text {
@@ -86,8 +119,12 @@
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
 } */
 
-/* NAVBAR - Solo override necessari */
+/* ================================
+   🧭 NAVBAR
+   (Solo override necessari)
+================================ */
 .navbar-fixed-transparent {
+
   background: rgba(15, 15, 15, 0.938) !important;
   backdrop-filter: blur(100px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
@@ -96,118 +133,242 @@
   width: 100%; 
   
   
+
+   
+
 }
 
 .logo_navbar {
-  height: 60px;
-  object-fit: contain;
+    height: 60px;
+    object-fit: contain;
 }
 
-/* BODY */
+/* ================================
+   📄 BODY
+================================ */
 body {
-  background: var(--bs-color-dark);
+    background: var(--bs-color-dark);
 }
  
 /* MAIN */
 
+
 main {
     padding-top: 86px;
 }
-/* CARD */
+
+
+/* ================================
+   🃏 CARDS
+================================ */
+
 .card {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none;
+}
+    
+
+/* PLATFORM-BADGE COLORS */
+
+.badge {
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    
 }
 
-/* footer */
+    
 
+
+
+.playstation {
+    background-color: #003791;
+}
+.xbox {
+    background-color: #107C10;
+}
+.pc {
+    background-color: #666666;
+}
+.nintendo {
+    background-color: #E60012;
+}
+
+
+/* GENRE-BADGE COLORS */
+
+.genre-horror {
+    background-color: #FF33A8;
+}
+
+.genre-action {
+    background-color: #FF5733;
+}
+
+.genre-adventure {
+    background-color: #33C1FF;
+}
+
+.genre-rpg {
+    background-color: #8D33FF;
+}
+
+.genre-strategy {
+    background-color: #4ccb36;
+}
+
+.genre-sports {
+    background-color: #FFC300;
+}
+
+.genre-racing {
+    background-color: #3375FF;
+}
+
+.genre-simulation {
+    background-color: #A833FF;
+}
+
+.genre-puzzle {
+    background-color: #33FFF6;
+}
+
+.genre-fighting {
+    background-color: #FF4444;
+}
+
+
+
+
+/* ================================
+   👣 FOOTER
+================================ */
 ul {
-  padding: 0;
+    padding: 0;
 
-  li {
-    list-style: none;
-    padding: 0.5rem 0;
-  }
+    li {
+        list-style: none;
+        padding: 0.5rem 0;
+    }
 }
 
 .text-main {
-  color: var(--bs-link-color);
-  text-decoration: none;
+    color: var(--bs-link-color);
+    text-decoration: none;
 }
 
 .payment-methods {
-  width: 100%;
-  margin: 0;
+    width: 100%;
+    margin: 0;
 
-  li {
-    scale: 2;
-  }
+    li {
+        scale: 2;
+    }
 }
 
 .social-container {
-  display: flex;
-  gap: 12px;
+    display: flex;
+    gap: 12px;
 }
 
 .social-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
 
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  text-decoration: none;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .social-button:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .social-icon {
-  color: white;
-  font-size: 15px;
+    color: white;
+    font-size: 15px;
 }
 
 .ig {
-  background: linear-gradient(to right, #a855f7, #ec4899);
+    background: linear-gradient(to right, #a855f7, #ec4899);
 }
 .fb {
-  background: linear-gradient(to right, #281dc0, #250d7b);
+    background: linear-gradient(to right, #281dc0, #250d7b);
 }
 .discord {
-  background: linear-gradient(to right, #410249, #83069f);
+    background: linear-gradient(to right, #410249, #83069f);
 }
 .x {
-  background: linear-gradient(to right, #101010, #474748);
+    background: linear-gradient(to right, #101010, #474748);
 }
 .youtube {
-  background: linear-gradient(to right, #aa0000, #dd5858);
+    background: linear-gradient(to right, #aa0000, #dd5858);
 }
 .git {
-  background: linear-gradient(to right, #6e6c6c, #939297);
+    background: linear-gradient(to right, #6e6c6c, #939297);
 }
+
+/* ================================
+   🌟 GRADIENT BUTTON
+================================ */
+
+.btn-gradient {
+  background-image: linear-gradient(
+    to right,
+    #ba8b02 0%,
+    #503d03 51%,
+    #ba8b02 100%
+  );
+}
+.btn-gradient {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 1s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 7px;
+  display: block;
+}
+
+.btn-gradient:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-gradient {
+  border: none !important;
+  outline: none !important;
+}
+
+/* ================================
+   📱 MEDIA QUERIES
+================================ */
 
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
-  .header-img-container {
-    height: 320px;
-  }
+    .header-img-container {
+        height: 320px;
+    }
 }
 
 /* Mobile: max-width 575px */
 @media (max-width: 575px) {
-  .header-img-container {
-    height: 160px;
-  }
+    .header-img-container {
+        height: 160px;
+    }
 
-  .jumbo-description {
-    display: none;
-  }
+    .jumbo-description {
+        display: none;
+    }
 
-  .search-bar {
-    max-width: 320px;
-  }
+    .search-bar {
+        max-width: 320px;
+    }
 }
