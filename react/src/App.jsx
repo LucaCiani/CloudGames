@@ -5,11 +5,13 @@ import { GlobalProvider } from "./contexts/GlobalContext";
 import VideogamesPage from "./pages/VideogamesPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ProductPage from "./pages/ProductPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <GlobalProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
