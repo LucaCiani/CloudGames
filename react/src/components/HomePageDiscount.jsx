@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 export default function  HomePageDiscount() {
   const { videogames } = useGlobalContext();
 
-  // Filtra solo i videogiochi con ID 1, 3, 5, 7, 9, 11, 13, 15
+  // Filtra solo i videogiochi con ID 2, 4, 6, 8, 10, 12, 14
   const filteredVideogames =
     videogames?.filter((vg) => [2, 4, 6, 8, 10, 12, 14].includes(vg.id)) ||
     [];
