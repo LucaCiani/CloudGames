@@ -109,6 +109,78 @@ body {
   background: transparent !important;
   box-shadow: none;
 }
+    
+
+/* PLATFORM-BADGE COLORS */
+
+.badge {
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    
+}
+
+    
+
+
+
+.playstation {
+    background-color: #003791;
+}
+.xbox {
+    background-color: #107C10;
+}
+.pc {
+    background-color: #666666;
+}
+.nintendo {
+    background-color: #E60012;
+}
+
+
+/* GENRE-BADGE COLORS */
+
+.genre-horror {
+    background-color: #FF33A8;
+}
+
+.genre-action {
+    background-color: #FF5733;
+}
+
+.genre-adventure {
+    background-color: #33C1FF;
+}
+
+.genre-rpg {
+    background-color: #8D33FF;
+}
+
+.genre-strategy {
+    background-color: #4ccb36;
+}
+
+.genre-sports {
+    background-color: #FFC300;
+}
+
+.genre-racing {
+    background-color: #3375FF;
+}
+
+.genre-simulation {
+    background-color: #A833FF;
+}
+
+.genre-puzzle {
+    background-color: #33FFF6;
+}
+
+.genre-fighting {
+    background-color: #FF4444;
+}
+
+
+
 
 /* footer */
 
