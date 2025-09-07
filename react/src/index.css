@@ -1,6 +1,12 @@
+/* ================================
+   🎨 IMPORTS
+================================ */
 @import "bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
 
+/* ================================
+   🌈 ROOT VARIABLES
+================================ */
 :root {
     --bs-body-bg: transparent;
     --bs-body-color: #fff;
@@ -9,8 +15,35 @@
     --bs-color-dark: rgb(39, 39, 37);
 }
 
-/* JUMBOTRON - Solo override necessari */
+/* Royal Aurora */
+/*  #3e2f5b ,
+    #e94560 ,
+    #3f305e  */
 
+/* Emerald Chrome */
+/* #004e92,
+    #000428,
+    #004e93 */
+
+/* Emerald Depth */
+/*  #0f2027,
+    #28623a,
+    #0f2026 */
+
+/* Phantom Purple 
+    #2b2e4a,
+    #e84545,
+    #2b2e4a */
+
+/* Noir Lavender 
+    #0d0d0d,
+    #5f4b8b,
+    #cbbbf6 */
+
+/* ================================
+   🖼️ JUMBOTRON
+   (Solo override necessari)
+================================ */
 .header-img-container {
     width: 100%;
     height: 580px; /* fissa in pixel */
@@ -86,7 +119,10 @@
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
 } */
 
-/* NAVBAR - Solo override necessari */
+/* ================================
+   🧭 NAVBAR
+   (Solo override necessari)
+================================ */
 .navbar-fixed-transparent {
     background: rgba(15, 15, 15, 0.938) !important;
     backdrop-filter: blur(100px);
@@ -98,12 +134,16 @@
     object-fit: contain;
 }
 
-/* BODY */
+/* ================================
+   📄 BODY
+================================ */
 body {
     background: var(--bs-color-dark);
 }
 
-/* CARD */
+/* ================================
+   🃏 CARDS
+================================ */
 .card {
     border: none !important;
     background: transparent !important;
@@ -182,8 +222,9 @@ body {
 
 
 
-/* footer */
-
+/* ================================
+   👣 FOOTER
+================================ */
 ul {
     padding: 0;
 
@@ -251,6 +292,46 @@ ul {
 .git {
     background: linear-gradient(to right, #6e6c6c, #939297);
 }
+
+/* ================================
+   🌟 GRADIENT BUTTON
+================================ */
+
+.btn-gradient {
+  background-image: linear-gradient(
+    to right,
+    #ba8b02 0%,
+    #503d03 51%,
+    #ba8b02 100%
+  );
+}
+.btn-gradient {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 1s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 7px;
+  display: block;
+}
+
+.btn-gradient:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-gradient {
+  border: none !important;
+  outline: none !important;
+}
+
+/* ================================
+   📱 MEDIA QUERIES
+================================ */
 
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {

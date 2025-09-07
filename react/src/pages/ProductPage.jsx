@@ -205,7 +205,7 @@ export default function ProductPage() {
 
           {/* Pulsante di acquisto - disabilitato se non disponibile */}
           <button
-            className="btn btn-primary btn-lg w-100"
+            className="btn-gradient w-100"
             disabled={SingleVideogame.quantity === 0}
           >
             {SingleVideogame.quantity > 0
