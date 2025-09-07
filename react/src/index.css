@@ -124,9 +124,18 @@
    (Solo override necessari)
 ================================ */
 .navbar-fixed-transparent {
-    background: rgba(15, 15, 15, 0.938) !important;
-    backdrop-filter: blur(100px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+
+  background: rgba(15, 15, 15, 0.938) !important;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+  
+  
+
+   
+
 }
 
 .logo_navbar {
@@ -140,10 +149,19 @@
 body {
     background: var(--bs-color-dark);
 }
+ 
+/* MAIN */
+
+
+main {
+    padding-top: 86px;
+}
+
 
 /* ================================
    🃏 CARDS
 ================================ */
+
 .card {
     border: none !important;
     background: transparent !important;
