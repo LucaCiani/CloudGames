@@ -32,24 +32,29 @@ export default function Highlighted() {
       } else {
         setVisibleSlides(3); // Desktop: 3 card
       }
-      setCurrentIndex(0); // Reset dell'indice quando cambia la dimensione
+      setCurrentIndex(0);
     };
 
-    // Esegui al caricamento e ad ogni resize
     handleResize();
     window.addEventListener("resize", handleResize);
-
-    // Cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Funzione per navigare al media precedente nello slider
   const handlePrev = () => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+    setCurrentIndex((prev) =>
+      // Se siamo al primo elemento (0), vai all'ultimo, altrimenti vai al precedente
+      prev === 0 ? Math.max(0, hgVideogames.length - visibleSlides) : prev - 1
+    );
   };
 
+  // Funzione per navigare al media successivo nello slider
   const handleNext = () => {
-    if (currentIndex < hgVideogames.length - visibleSlides)
-      setCurrentIndex(currentIndex + 1);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, hgVideogames.length - visibleSlides);
+      // Se siamo all'ultimo elemento, torna istantaneamente al primo
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
   };
 
   return (
@@ -62,9 +67,8 @@ export default function Highlighted() {
         {/* Freccia sinistra */}
         <button
           onClick={handlePrev}
-          className="btn btn-dark position-absolute top-50 translate-middle-y"
+          className="btn btn-light position-absolute top-50 translate-middle-y"
           style={{ left: "-15px", zIndex: 2 }}
-          disabled={currentIndex === 0}
         >
           &#10094;
         </button>
@@ -132,9 +136,8 @@ export default function Highlighted() {
         {/* Freccia destra */}
         <button
           onClick={handleNext}
-          className="btn btn-dark position-absolute top-50 translate-middle-y"
+          className="btn btn-light position-absolute top-50 translate-middle-y"
           style={{ right: "-15px", zIndex: 2 }}
-          disabled={currentIndex >= hgVideogames.length - visibleSlides}
         >
           &#10095;
         </button>
