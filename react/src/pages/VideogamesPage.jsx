@@ -11,7 +11,7 @@ export default function VideogamesPage() {
     const search = query.get("search")?.toLowerCase() || "";
 
     const filteredGames = search
-        ? videogames.filter((vg) => vg.name.toLowerCase().includes(search))
+        ? videogames?.filter((vg) => vg.name.toLowerCase().includes(search))
         : videogames;
 
     return (
@@ -29,7 +29,7 @@ export default function VideogamesPage() {
                             return (
                                 <div key={videogame.id} className="col">
                                     <Link
-                                        to={`/product/${videogame.id}`}
+                                        to={`/videogames/${videogame.id}`}
                                         className="text-decoration-none"
                                     >
                                         <div className="card border-0 h-100">
@@ -73,7 +73,7 @@ export default function VideogamesPage() {
                             );
                         })}
                 </div>
-                {filteredGames.length === 0 && (
+                {filteredGames?.length === 0 && (
                     <div className="text-center text-white mt-5">
                         Nessun risultato trovato.
                     </div>

@@ -8,21 +8,27 @@ import ProductPage from "./pages/ProductPage";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-  return (
-    <GlobalProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route element={<DefaultLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/videogames" element={<VideogamesPage />} />
-            <Route path="/aboutus" element={<AboutUsPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </GlobalProvider>
-  );
+    return (
+        <GlobalProvider>
+            <BrowserRouter>
+                <ScrollToTop />
+                <Routes>
+                    <Route element={<DefaultLayout />}>
+                        <Route path="/" element={<HomePage />} />
+                        <Route
+                            path="/videogames"
+                            element={<VideogamesPage />}
+                        />
+                        <Route path="/about-us" element={<AboutUsPage />} />
+                        <Route
+                            path="/videogames/:id"
+                            element={<ProductPage />}
+                        />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </GlobalProvider>
+    );
 }
 
 export default App;
