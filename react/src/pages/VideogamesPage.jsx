@@ -1,4 +1,4 @@
-import { useGlobalContext } from "../contexts/GlobalContext";
+import useGlobalContext from "../contexts/useGlobalContext";
 import { Link } from "react-router-dom";
 
 export default function VideogamesPage() {
