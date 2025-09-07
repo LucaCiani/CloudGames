@@ -4,6 +4,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import { GlobalProvider } from "./contexts/GlobalContext";
 import VideogamesPage from "./pages/VideogamesPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/videogames" element={<VideogamesPage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -2,11 +2,11 @@ import "../aboutus.css";
 
 export default function AboutUsPage() {
   const teamMembers = [
-    { name: "Luca", role: "Lead Developer", github: "LucaCiani" },
-    { name: "Umberto", role: "Frontend Developer", github: "UmbertoCarbone" },
-    { name: "Alessandro", role: "Backend Developer", github: "angelo-lepore" },
-    { name: "Giulia", role: "UI/UX Designer", github: "francescoboschelle" },
-    { name: "Davide", role: "DevOps Engineer", github: "simone-scotto" },
+    { name: "Luca", role: "Full-Stack Developer", github: "LucaCiani" },
+    { name: "Angelo", role: "Full-Stack Developer", github: "angelo-lepore" },
+    { name: "Umberto", role: "Full-Stack Developer", github: "UmbertoCarbone" },
+    { name: "Francesco", role: "Full-Stack Developer", github: "francescoboschelle" },
+    { name: "Simone", role: "Full-Stack Developer", github: "simone-scotto" },
   ];
 
   return (

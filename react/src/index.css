@@ -1,11 +1,11 @@
 @import "bootstrap";
-@import 'bootstrap-icons/font/bootstrap-icons';
+@import "bootstrap-icons/font/bootstrap-icons";
 
 /* JUMBOTRON - Solo override necessari */
 
 .header-img-container {
   width: 100%;
-   height: 580px; /* fissa in pixel */
+  height: 580px; /* fissa in pixel */
 }
 
 .jumbotron-img {
@@ -15,7 +15,6 @@
   object-position: center 39%; /* sposta il focus più in basso */
   display: block;
 }
-
 
 /* .jumbotron-text {
   position: absolute;
@@ -42,13 +41,7 @@
 
 /* BODY */
 body {
-  background: linear-gradient(
-    to bottom,
-    #1818184b,
-    #b08d2f,
-    #a67c1d ,
-    #c9b037
-  );
+  background: linear-gradient(to bottom, #1818184b, #b08d2f, #a67c1d, #c9b037);
 }
 
 /* CARD */
@@ -61,28 +54,22 @@ body {
 /* footer */
 
 ul {
-    padding: 0;
+  padding: 0;
 
-    li {
+  li {
     list-style: none;
     padding: 0.5rem 0;
-
-    
-    
+  }
 }
-}
-
 
 .payment-methods {
-    width: 100%;    
-    margin: 0;
-    
-    li {
-        scale: 2;
-    }
+  width: 100%;
+  margin: 0;
+
+  li {
+    scale: 2;
+  }
 }
-
-
 
 .social-container {
   display: flex;
@@ -95,7 +82,7 @@ ul {
   justify-content: center;
   width: 50px;
   height: 50px;
-  
+
   border-radius: 50%;
   transition: background 0.3s ease;
   text-decoration: none;
@@ -108,30 +95,26 @@ ul {
 .social-icon {
   color: white;
   font-size: 22px;
-  
 }
 
-.ig{
-   
-    background: linear-gradient(to right, #a855f7, #ec4899);
-
-  }
-  .fb{
-    background: linear-gradient(to right, #281dc0, #250d7b);
-  }
-  .discord {
-    background: linear-gradient(to right, #410249, #83069f);
-  }
-  .x {
-    background: linear-gradient(to right, #101010, #474748);
-  }
-  .youtube{
-    background: linear-gradient(to right, #aa0000, #dd5858);
-  }
-  .git {
-    background: linear-gradient(to right, #6e6c6c, #939297);
-  }
-
+.ig {
+  background: linear-gradient(to right, #a855f7, #ec4899);
+}
+.fb {
+  background: linear-gradient(to right, #281dc0, #250d7b);
+}
+.discord {
+  background: linear-gradient(to right, #410249, #83069f);
+}
+.x {
+  background: linear-gradient(to right, #101010, #474748);
+}
+.youtube {
+  background: linear-gradient(to right, #aa0000, #dd5858);
+}
+.git {
+  background: linear-gradient(to right, #6e6c6c, #939297);
+}
 
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
@@ -146,4 +129,3 @@ ul {
     height: 160px;
   }
 }
-
