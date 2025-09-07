@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../contexts/GlobalContext";
+import useGlobalContext from "../contexts/useGlobalContext";
 import { useState, useEffect } from "react";
 
-export default function  HomePageDiscount() {
+export default function HomePageDiscount() {
   const { videogames } = useGlobalContext();
 
-  // Filtra solo i videogiochi con ID 2, 4, 6, 8, 10, 12, 14
+  // Filtra solo i videogiochi con un promo_price
   const filteredVideogames =
-    videogames?.filter((vg) => [2, 4, 6, 8, 10, 12, 14].includes(vg.id)) ||
-    [];
+    videogames?.filter((vg) => vg.promo_price !== null) || [];
 
   // Slider state con responsività
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -67,7 +66,9 @@ export default function  HomePageDiscount() {
           <div
             className="d-flex"
             style={{
-              transform: `translateX(-${currentIndex * (100 / visibleSlides)}%)`,
+              transform: `translateX(-${
+                currentIndex * (100 / visibleSlides)
+              }%)`,
               transition: "transform 0.50s ease",
             }}
           >

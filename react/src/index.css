@@ -84,7 +84,7 @@ ul {
   height: 50px;
 
   border-radius: 50%;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
 }
 

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGlobalContext } from "../contexts/GlobalContext";
+import useGlobalContext from "../contexts/useGlobalContext";
 import { useState } from "react";
 
 export default function ProductPage() {

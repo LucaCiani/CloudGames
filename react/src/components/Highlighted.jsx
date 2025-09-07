@@ -1,14 +1,21 @@
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../contexts/GlobalContext";
+import useGlobalContext from "../contexts/useGlobalContext";
 import { useState, useEffect } from "react";
 
 export default function Highlighted() {
   const { videogames } = useGlobalContext();
+  const [hgVideogames, setHgVideogames] = useState([]);
 
-  // Filtra solo i videogiochi con ID 1, 3, 5, 7, 9, 11, 13, 15
-  const filteredVideogames =
-    videogames?.filter((vg) => [1, 3, 5, 7, 9, 11, 13, 15].includes(vg.id)) ||
-    [];
+  useEffect(() => {
+    // Filtra videogiochi in evidenza (a random, max 15)
+    const filteredVideogames =
+      videogames
+        ?.map((vg) => vg)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 15) || [];
+
+    setHgVideogames(filteredVideogames);
+  }, [videogames]);
 
   // Slider state con responsività
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,7 +48,7 @@ export default function Highlighted() {
   };
 
   const handleNext = () => {
-    if (currentIndex < filteredVideogames.length - visibleSlides)
+    if (currentIndex < hgVideogames.length - visibleSlides)
       setCurrentIndex(currentIndex + 1);
   };
 
@@ -67,11 +74,13 @@ export default function Highlighted() {
           <div
             className="d-flex"
             style={{
-              transform: `translateX(-${currentIndex * (100 / visibleSlides)}%)`,
+              transform: `translateX(-${
+                currentIndex * (100 / visibleSlides)
+              }%)`,
               transition: "transform 0.50s ease",
             }}
           >
-            {filteredVideogames.map((videogame) => (
+            {hgVideogames.map((videogame) => (
               <div
                 key={videogame.id}
                 className="p-2"
@@ -114,7 +123,7 @@ export default function Highlighted() {
           onClick={handleNext}
           className="btn btn-dark position-absolute top-50 translate-middle-y"
           style={{ right: "-15px", zIndex: 2 }}
-          disabled={currentIndex >= filteredVideogames.length - visibleSlides}
+          disabled={currentIndex >= hgVideogames.length - visibleSlides}
         >
           &#10095;
         </button>
