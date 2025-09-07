@@ -133,7 +133,7 @@ export default function ProductPage() {
             <span className="badge bg-warning text-dark me-2">
               ⭐ {parseFloat(SingleVideogame.vote).toString()}
             </span>
-            <span className="text-muted">
+            <span className="text-secondary">
               Developer: {SingleVideogame.developer}
             </span>
           </div>
@@ -146,7 +146,7 @@ export default function ProductPage() {
                 <span className="h3 text-success me-2">
                   €{SingleVideogame.promo_price}
                 </span>
-                <span className="text-decoration-line-through text-muted">
+                <span className="text-decoration-line-through text-secondary">
                   €{SingleVideogame.price}
                 </span>
               </>

@@ -45,9 +45,9 @@ export default function HomePageDiscount() {
   };
 
   return (
-    <div className="container my-5 text-center">
+    <div className="container my-5 text-center text-main">
       <h1>Giochi in sconto</h1>
-      <h4 className="text-muted fs-5 mb-4">
+      <h4 className="text-secondary fs-5 mb-4">
         Scopri i titoli in sconto scelti per te!
       </h4>
       <div className="slider-wrapper position-relative">
@@ -96,16 +96,16 @@ export default function HomePageDiscount() {
                       }}
                     />
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                      <span className="fw-bold text-truncate text-dark">
+                      <span className="fw-bold text-truncate">
                         {videogame.name}
                       </span>
-                      <span className="fw-bold text-dark">
+                      <span className="fw-bold">
                         {videogame.promo_price ? (
                           <>
                             <span className="text-success">
                               €{videogame.promo_price}
                             </span>{" "}
-                            <span className="text-muted text-decoration-line-through">
+                            <span className="text-secondary text-decoration-line-through">
                               €{videogame.price}
                             </span>
                           </>

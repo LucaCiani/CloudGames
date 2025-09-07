@@ -1,4 +1,4 @@
-/* import JumbotronText from "../components/JumbotronText"; */
+import Jumbotron from "../components/Jumbotron";
 import Highlighted from "../components/Highlighted";
 import HomePageDiscount from "../components/HomePageDiscount";
 
@@ -9,13 +9,7 @@ import HomePageDiscount from "../components/HomePageDiscount";
 export default function HomePage() {
   return (
     <>
-      <div className="header-img-container">
-        <img
-          src="/jumbo3.jpg"
-          alt="Cloud Games Jumbotron"
-          className="jumbotron-img img-fluid w-100"
-        />
-      </div>
+      <Jumbotron />
       <Highlighted />
       <HomePageDiscount />
     </>

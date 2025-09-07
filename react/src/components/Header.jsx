@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function HeaderComponent() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark sticky-top navbar-fixed-transparent">
       <div className="container-fluid d-flex justify-content-around align-items-center">
-        <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
+        <Link to={"/"}>
+          <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
+        </Link>
         <ul className="navbar-nav d-flex flex-row gap-3">
           <li className="nav-item">
             <NavLink className="nav-link" to="/">
