@@ -12,20 +12,10 @@ import {
 export default function Footer() {
   return (
     <>
-
       <div
         className="row row-cols-1 row-cols-md-4 justify-content-center"
-        style={{ margin: 0 }}
+        style={{ margin: 0, paddingTop: "2rem" }}
       >
-
-
-
-
-      <div className="row row-cols-1 row-cols-md-4 justify-content-center" style={{ margin: 0, paddingTop: "2rem" }} >
-
-
-
-
         <div className="col-md-8 ">
           <div className="row row-cols-1 row-cols-md-2 mb-5 ">
             <div className="col d-flex align-items-center">
@@ -146,12 +136,12 @@ export default function Footer() {
             </div>
           </div>
           <hr />
+          <p>© {new Date().getFullYear()} CloudGames.</p>
           <p>
-            © {new Date().getFullYear()} CloudGames.
+            Tutti i diritti riservati. Tutti i marchi appartengono ai rispettivi
+            proprietari negli Stati Uniti e negli altri paesi. IVA inclusa nel
+            prezzo (ove applicabile)
           </p>
-          <p>Tutti i diritti riservati.
-            Tutti i marchi appartengono ai rispettivi proprietari negli Stati
-            Uniti e negli altri paesi. IVA inclusa nel prezzo (ove applicabile)</p>
         </div>
       </div>
     </>
