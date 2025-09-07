@@ -21,19 +21,19 @@ export default function Footer() {
             <div className="col d-flex align-items-center">
               <ul className="payment-methods d-flex justify-content-between ">
                 <li>
-                  <i class="fa-brands fa-cc-visa"></i>
+                  <i className="fa-brands fa-cc-visa"></i>
                 </li>
                 <li>
-                  <i class="fa-brands fa-paypal"></i>
+                  <i className="fa-brands fa-paypal"></i>
                 </li>
                 <li>
-                  <i class="fa-brands fa-google-pay"></i>
+                  <i className="fa-brands fa-google-pay"></i>
                 </li>
                 <li>
-                  <i class="fa-brands fa-apple-pay"></i>
+                  <i className="fa-brands fa-apple-pay"></i>
                 </li>
                 <li>
-                  <i class="fa-brands fa-bitcoin"></i>
+                  <i className="fa-brands fa-bitcoin"></i>
                 </li>
               </ul>
             </div>
