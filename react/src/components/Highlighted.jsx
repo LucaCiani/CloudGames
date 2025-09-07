@@ -7,20 +7,20 @@ export default function Highlighted() {
   const [hgVideogames, setHgVideogames] = useState([]);
   const [hoveredVideo, setHoveredVideo] = useState(null);
 
-    useEffect(() => {
-        // Filtra videogiochi in evidenza (a random, max 15)
-        const filteredVideogames =
-            videogames
-                ?.map((vg) => vg)
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 15) || [];
+  useEffect(() => {
+    // Filtra videogiochi in evidenza (a random, max 15)
+    const filteredVideogames =
+      videogames
+        ?.map((vg) => vg)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 15) || [];
 
-        setHgVideogames(filteredVideogames);
-    }, [videogames]);
+    setHgVideogames(filteredVideogames);
+  }, [videogames]);
 
-    // Slider state con responsività
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [visibleSlides, setVisibleSlides] = useState(3);
+  // Slider state con responsività
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleSlides, setVisibleSlides] = useState(3);
 
   // Gestisce il numero di slide visibili in base alla larghezza dello schermo
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function Highlighted() {
                 }}
               >
                 <Link
-                  to={`/product/${videogame.id}`}
+                  to={`/videogames/${videogame.id}`}
                   className="text-decoration-none"
                 >
                   <div

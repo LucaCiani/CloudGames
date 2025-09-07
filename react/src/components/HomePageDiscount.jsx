@@ -6,16 +6,16 @@ export default function HomePageDiscount() {
   const { videogames } = useGlobalContext();
   const [hoveredVideo, setHoveredVideo] = useState(null);
 
-    // Filtra solo i videogiochi con un promo_price
-    const filteredVideogames =
-        videogames?.filter((vg) => vg.promo_price !== null) || [];
+  // Filtra solo i videogiochi con un promo_price
+  const filteredVideogames =
+    videogames?.filter((vg) => vg.promo_price !== null) || [];
 
-    // Slider state con responsività
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [visibleSlides, setVisibleSlides] = useState(3);
+  // Slider state con responsività
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleSlides, setVisibleSlides] = useState(3);
 
-    // Gestisce il numero di slide visibili in base alla larghezza dello schermo
-    useEffect(() => {
+  // Gestisce il numero di slide visibili in base alla larghezza dello schermo
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 768) {
@@ -104,7 +104,7 @@ export default function HomePageDiscount() {
                 }}
               >
                 <Link
-                  to={`/product/${videogame.id}`}
+                  to={`/videogames/${videogame.id}`}
                   className="text-decoration-none"
                 >
                   <div

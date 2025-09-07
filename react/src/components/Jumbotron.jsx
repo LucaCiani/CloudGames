@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useGlobalContext from "../contexts/useGlobalContext";
 import { useState, useEffect } from "react";
 
@@ -28,17 +29,13 @@ export default function Jumbotron() {
               <p className="lead jumbo-description">
                 {truncate(videogame.description, 150)}
               </p>
-              <a
-                href={`/product/${videogame.id}`}
-                className="btn btn-primary btn-lg"
-                role="button"
-              >
+              <Link to={`/videogames/${videogame.id}`} className="btn-gradient">
                 Scopri di più
-              </a>
+              </Link>
             </div>
           </div>
           <div className="position-absolute on-display">
-            <span className="badge bg-black">IN PRIMO PIANO</span>
+            <span className="badge bg-main">IN PRIMO PIANO</span>
           </div>
           <img
             src={videogame.media.filter((img) => img.type === "img")[0].url}
