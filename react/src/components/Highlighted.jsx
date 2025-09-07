@@ -108,7 +108,18 @@ export default function Highlighted() {
                         {videogame.name}
                       </span>
                       <span className="fw-bold text-dark">
-                        €{videogame.price}
+                        {videogame.promo_price ? (
+                          <>
+                            <span className="text-success">
+                              €{videogame.promo_price}
+                            </span>{" "}
+                            <span className="text-muted text-decoration-line-through">
+                              €{videogame.price}
+                            </span>
+                          </>
+                        ) : (
+                          <>€{videogame.price}</>
+                        )}
                       </span>
                     </div>
                   </div>
