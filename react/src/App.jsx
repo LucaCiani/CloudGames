@@ -18,7 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/videogames" element={<VideogamesPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
-            <Route path="/videogames/:id" element={<ProductPage />} />
+            <Route path="/videogames/:slug" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
           </Route>
         </Routes>

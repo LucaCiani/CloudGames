@@ -8,10 +8,10 @@ import ProductDetails from "../components/Components_SinglePage/ProductDetails";
 import ProductAddToCartButton from "../components/Components_SinglePage/ProductAddToCartButton";
 
 export default function ProductPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { videogames } = useGlobalContext();
 
-  const SingleVideogame = videogames?.find((game) => game.id === parseInt(id));
+  const SingleVideogame = videogames?.find((game) => game.slug === slug);
 
   if (!SingleVideogame) {
     return (

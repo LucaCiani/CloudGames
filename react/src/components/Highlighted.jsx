@@ -105,7 +105,7 @@ export default function Highlighted() {
                 }}
               >
                 <Link
-                  to={`/videogames/${videogame.id}`}
+                  to={`/videogames/${videogame.slug}`}
                   className="text-decoration-none"
                 >
                   <div

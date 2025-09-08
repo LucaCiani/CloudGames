@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductAddToCartButton({
   quantity,
   onAddToCart,
   product,
 }) {
+  const navigate = useNavigate();
   // Stato locale per gli articoli nel carrello
   const [cartItems, setCartItems] = useState([]);
 
@@ -98,7 +100,7 @@ export default function ProductAddToCartButton({
   const totalPrice = cartItems.reduce((total, item) => {
     const price = item.promo_price || item.price || 0;
     const qty = item.cartQuantity || 1;
-    return  total + price * qty;
+    return total + price * qty;
   }, 0);
 
   return (
@@ -207,10 +209,17 @@ export default function ProductAddToCartButton({
               })}
               {/* Totale e pulsante checkout */}
               <div className=" pt-3 mt-3">
-                <h5>Totale: € {totalPrice.toFixed(2)}</h5>
-                <button className="btn btn-success w-100">
-                  Procedi al checkout
-                </button>
+                <h5 className="text-center">
+                  Totale: € {totalPrice.toFixed(2)}
+                </h5>
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn-gradient"
+                    onClick={() => navigate("/cart")}
+                  >
+                    Procedi al checkout
+                  </button>
+                </div>
               </div>
             </>
           ) : (

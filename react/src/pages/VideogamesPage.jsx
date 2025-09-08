@@ -194,7 +194,7 @@ export default function VideogamesPage() {
                             return (
                                 <div key={videogame.id} className="col">
                                     <Link
-                                        to={`/videogames/${videogame.id}`}
+                                        to={`/videogames/${videogame.slug}`}
                                         className="text-decoration-none"
                                     >
                                         <div className="card border-0 h-100">

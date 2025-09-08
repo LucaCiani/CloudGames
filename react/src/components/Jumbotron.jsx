@@ -29,7 +29,7 @@ export default function Jumbotron() {
               <p className="lead jumbo-description">
                 {truncate(videogame.description, 150)}
               </p>
-              <Link to={`/videogames/${videogame.id}`} className="btn-gradient">
+              <Link to={`/videogames/${videogame.slug}`} className="btn-gradient">
                 Scopri di più
               </Link>
             </div>

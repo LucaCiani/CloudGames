@@ -76,6 +76,22 @@ export default function HeaderComponent() {
               </button>
             </div>
           </form>
+
+          <button
+            className="btn position-relative"
+            type="button"
+            aria-label="Apri carrello"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+          >
+            <i
+              className="fa-solid fa-cart-arrow-down"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              3<span className="visually-hidden">prodotti nel carrello</span>
+            </span>
+          </button>
         </div>
       </div>
     </nav>
