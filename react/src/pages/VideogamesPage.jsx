@@ -11,9 +11,10 @@ export default function VideogamesPage() {
     const query = useQuery();
     const search = query.get("search")?.toLowerCase() || "";
 
-    // Stati per ordinamento e filtro
+    // Stati per ordinamento e filtri separati
     const [sortOrder, setSortOrder] = useState("az");
-    const [filter, setFilter] = useState("all");
+    const [platformFilter, setPlatformFilter] = useState("all");
+    const [discountedOnly, setDiscountedOnly] = useState(false);
 
     // Ottieni tutte le piattaforme disponibili
     const allPlatforms = Array.from(
@@ -28,17 +29,18 @@ export default function VideogamesPage() {
         ? videogames?.filter((vg) => vg.name.toLowerCase().includes(search))
         : videogames;
 
-    // Filtra per piattaforma o scontati
-    if (filter !== "all") {
-        if (filter === "discounted") {
-            filteredGames = filteredGames?.filter(
-                (vg) => vg.promo_price !== null && vg.promo_price !== undefined
-            );
-        } else {
-            filteredGames = filteredGames?.filter((vg) =>
-                (vg.platforms || []).includes(filter)
-            );
-        }
+    // Filtra per piattaforma
+    if (platformFilter !== "all") {
+        filteredGames = filteredGames?.filter((vg) =>
+            (vg.platforms || []).includes(platformFilter)
+        );
+    }
+
+    // Filtra per scontati
+    if (discountedOnly) {
+        filteredGames = filteredGames?.filter(
+            (vg) => vg.promo_price !== null && vg.promo_price !== undefined
+        );
     }
 
     // Ordina i giochi
@@ -139,9 +141,9 @@ export default function VideogamesPage() {
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                         >
-                            {filter === "all" || filter === "discounted"
+                            {platformFilter === "all"
                                 ? "Tutte le piattaforme"
-                                : filter}
+                                : platformFilter}
                         </button>
                         <ul
                             className="dropdown-menu"
@@ -150,12 +152,11 @@ export default function VideogamesPage() {
                             <li>
                                 <button
                                     className={`dropdown-item${
-                                        filter === "all" ||
-                                        filter === "discounted"
+                                        platformFilter === "all"
                                             ? " active"
                                             : ""
                                     }`}
-                                    onClick={() => setFilter("all")}
+                                    onClick={() => setPlatformFilter("all")}
                                 >
                                     Tutte le piattaforme
                                 </button>
@@ -164,9 +165,13 @@ export default function VideogamesPage() {
                                 <li key={platform}>
                                     <button
                                         className={`dropdown-item${
-                                            filter === platform ? " active" : ""
+                                            platformFilter === platform
+                                                ? " active"
+                                                : ""
                                         }`}
-                                        onClick={() => setFilter(platform)}
+                                        onClick={() =>
+                                            setPlatformFilter(platform)
+                                        }
                                     >
                                         {platform}
                                     </button>
@@ -174,16 +179,11 @@ export default function VideogamesPage() {
                             ))}
                         </ul>
                     </div>
-                    {/* Pulsante solo scontati */}
                     <button
                         className={`btn btn-sm btn-outline-success${
-                            filter === "discounted" ? " active" : ""
+                            discountedOnly ? " active" : ""
                         }`}
-                        onClick={() =>
-                            setFilter(
-                                filter === "discounted" ? "all" : "discounted"
-                            )
-                        }
+                        onClick={() => setDiscountedOnly((prev) => !prev)}
                     >
                         Solo scontati
                     </button>
