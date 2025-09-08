@@ -15,13 +15,13 @@ router.get("/", billingAddressesController.index);
 // rotta per ottenere una singola fattura tramite ID
 router.get("/:id", billingAddressesController.show);
 
-/* modify */
-// route per modificare un videogioco esistente in modo parziale
-router.patch("/:id", billingAddressesController.modify);
-
 /* store (create) */
 // rotta per creare un nuovo indirizzo di fatturazione
 router.post("/", billingAddressesController.store);
+
+/* modify */
+// route per modificare un videogioco esistente in modo parziale
+router.patch("/:id", billingAddressesController.modify);
 
 // esportiamo router
 export default router;
