@@ -4,6 +4,12 @@ const router = Router();
 
 // importiamo le funzioni del controller
 import mediaController from "../controllers/mediaController.js";
+import {
+  validateBody,
+  mediaCreateSchema,
+  mediaUpdateSchema,
+  mediaPatchSchema,
+} from "../zod/schemas.js";
 
 /* rotte CRUD */
 
@@ -17,15 +23,15 @@ router.get("/:id", mediaController.show);
 
 /* store (create) */
 // rotta per aggiungere un nuovo media
-router.post("/", mediaController.store);
+router.post("/", validateBody(mediaCreateSchema), mediaController.store);
 
 /* update */
 // rotta per modificare un media esistente in modo integrale
-router.put("/:id", mediaController.update);
+router.put("/:id", validateBody(mediaUpdateSchema), mediaController.update);
 
 /* modify */
 // rotta per modificare un media esistente in modo parziale
-router.patch("/:id", mediaController.modify);
+router.patch("/:id", validateBody(mediaPatchSchema), mediaController.modify);
 
 /* destroy */
 // rotta per eliminare un media esistente

@@ -321,9 +321,32 @@ export const genreCreateSchema = z.object(genreBaseShape);
 
 export const genreUpdateSchema = genreCreateSchema;
 
-export const genrePatchSchema = z
+/*
+Usage examples in a router:
+  router.post('/genres', validateBody(genreCreateSchema), genresController.store)
+  router.put('/genres/:id', validateBody(genreUpdateSchema), genresController.update)
+*/
+
+/*
+ * ===================== Media Schemas =====================
+ * Table: media (see db/schema.md)
+ */
+
+const mediaResourceBaseShape = {
+  videogame_id: z.number().int().positive(),
+  type: z.enum(["img", "video"]),
+  url: z.url("Invalid media URL"), // maps to media_url in DB at controller level
+};
+
+export const mediaCreateSchema = z.object(mediaResourceBaseShape);
+
+export const mediaUpdateSchema = mediaCreateSchema; // PUT expects full body
+
+export const mediaPatchSchema = z
   .object({
-    name: genreBaseShape.name.optional(),
+    videogame_id: mediaResourceBaseShape.videogame_id.optional(),
+    type: mediaResourceBaseShape.type.optional(),
+    url: mediaResourceBaseShape.url.optional(),
   })
   .refine(
     (data) => Object.keys(data).length > 0,
@@ -332,6 +355,7 @@ export const genrePatchSchema = z
 
 /*
 Usage examples in a router:
-  router.post('/genres', validateBody(genreCreateSchema), genresController.store)
-  router.put('/genres/:id', validateBody(genreUpdateSchema), genresController.update)
+  router.post('/media', validateBody(mediaCreateSchema), mediaController.store)
+  router.put('/media/:id', validateBody(mediaUpdateSchema), mediaController.update)
+  router.patch('/media/:id', validateBody(mediaPatchSchema), mediaController.modify)
 */

@@ -19,6 +19,7 @@ import invoicesRoute from "./routers/invoicesRoute.js";
 import discountsRoute from "./routers/discountsRoute.js";
 import billingAddressesRoute from "./routers/billingAddressesRoute.js";
 import genresRoute from "./routers/genresRoute.js";
+import mediaRoute from "./routers/mediaRoute.js";
 
 // Registriamo il body-parser integrato in express
 app.use(json());
@@ -37,6 +38,7 @@ app.use("/invoices", invoicesRoute);
 app.use("/discounts", discountsRoute);
 app.use("/billing-addresses", billingAddressesRoute);
 app.use("/genres", genresRoute);
+app.use("/media", mediaRoute);
 
 // registro le middleware
 app.use(notFound);
