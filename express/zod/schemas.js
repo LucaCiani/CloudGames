@@ -195,13 +195,6 @@ export const invoicePatchSchema = z
   );
 
 /*
-Usage examples in a router:
-  router.post('/invoices', validateBody(invoiceCreateSchema), invoicesController.store)
-  router.put('/invoices/:id', validateBody(invoiceUpdateSchema), invoicesController.update)
-  router.patch('/invoices/:id', validateBody(invoicePatchSchema), invoicesController.modify)
-*/
-
-/*
  * ===================== Billing Address Schemas =====================
  * Table: billing_addresses (see db/schema.md)
  * created_at handled server-side.
@@ -245,13 +238,6 @@ export const billingAddressPatchSchema = z
     (data) => Object.keys(data).length > 0,
     "At least one field must be provided for patch"
   );
-
-/*
-Usage examples in a router:
-  router.post('/billing-addresses', validateBody(billingAddressCreateSchema), billingAddressesController.store)
-  router.put('/billing-addresses/:id', validateBody(billingAddressUpdateSchema), billingAddressesController.update)
-  router.patch('/billing-addresses/:id', validateBody(billingAddressPatchSchema), billingAddressesController.modify)
-*/
 
 /*
  * ===================== Discount Schemas =====================
@@ -302,13 +288,6 @@ export const discountPatchSchema = z
   );
 
 /*
-Usage examples in a router:
-  router.post('/discounts', validateBody(discountCreateSchema), discountsController.store)
-  router.put('/discounts/:id', validateBody(discountUpdateSchema), discountsController.update)
-  router.patch('/discounts/:id', validateBody(discountPatchSchema), discountsController.modify)
-*/
-
-/*
  * ===================== Genre Schemas =====================
  * Table: genres (see db/schema.md)
  */
@@ -322,10 +301,17 @@ export const genreCreateSchema = z.object(genreBaseShape);
 export const genreUpdateSchema = genreCreateSchema;
 
 /*
-Usage examples in a router:
-  router.post('/genres', validateBody(genreCreateSchema), genresController.store)
-  router.put('/genres/:id', validateBody(genreUpdateSchema), genresController.update)
-*/
+ * ===================== Platform Schemas =====================
+ * Table: platforms (see db/schema.md)
+ */
+
+const platformBaseShape = {
+  name: z.string().trim().min(1, "Name required").max(255),
+};
+
+export const platformCreateSchema = z.object(platformBaseShape);
+
+export const platformUpdateSchema = platformCreateSchema;
 
 /*
  * ===================== Media Schemas =====================
@@ -352,10 +338,3 @@ export const mediaPatchSchema = z
     (data) => Object.keys(data).length > 0,
     "At least one field must be provided for patch"
   );
-
-/*
-Usage examples in a router:
-  router.post('/media', validateBody(mediaCreateSchema), mediaController.store)
-  router.put('/media/:id', validateBody(mediaUpdateSchema), mediaController.update)
-  router.patch('/media/:id', validateBody(mediaPatchSchema), mediaController.modify)
-*/

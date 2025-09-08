@@ -10,9 +10,9 @@ function index(req, res) {
   // eseguiamo la query usando la connessione al database
   connection.query(sql, (err, results) => {
     // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
-    if (err) return res.status(500).json({ error: "Internal error" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // se non ci sono errori, restituiamo i risultati della query in formato JSON
-    res.json(results);
+    return res.json(results);
   });
 }
 
@@ -26,7 +26,7 @@ function show(req, res) {
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // se si verifica un errore durante la connessione o l'esecuzione della query
-    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // se non viene trovato alcun risultato (l'ID non esiste nella tabella "platforms"),
     if (results.length === 0)
       return res.status(404).json({ error: "Platform not found" });
@@ -36,46 +36,50 @@ function show(req, res) {
 }
 
 /* store (create) */
+async function store(req, res) {
+  try {
+    // estraiamo i dati (name) dal corpo della richiesta HTTP
+    const { name } = req.body;
+    const [existingPlatforms] = await connection
+      .promise()
+      .query("SELECT * FROM platforms WHERE name = ?", [name]);
+    if (existingPlatforms.length > 0)
+      return res.status(400).json({ error: "Platform name must be unique" });
+
+    // definiamo la query SQL per inserire un nuovo elemento nella tabella "platforms"
+    const sql = "INSERT INTO platforms ( name ) VALUES ( ? ) ;";
+    // esegue la query passando i valori ricevuti come parametri
+    const [results] = await connection.promise().query(sql, [name]);
+    return res.status(201).json({ created_id: results.insertId });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 /* update (edit) */
-
-/* modify (partial edit) */
-function modify(req, res) {
-  // estraiamo l'ID del genere dalla URL
-  const { id } = req.params;
-  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
-  // estraiamo i nuovi valori dal corpo della richiesta
-  const { name } = req.body;
-  // inizializziamo due array:
-  // - 'fields' conterrà le parti dell'SQL da aggiornare
-  // - 'values' conterrà i nuovi valori corrispondenti
-  const fields = [];
-  const values = [];
-  // se è presente il nome e non è vuoto, lo aggiunge agli array
-  if (name && name.length > 0) {
-    fields.push("name = ?");
-    values.push(name);
-  }
-  // Se nessun campo è stato fornito per l'aggiornamento, restituisce errore
-  if (fields.length === 0) {
-    return res.status(400).json({ error: "No fields to update" });
-  }
-  // Costruisce dinamicamente la query SQL usando solo i campi forniti
-  const sql = `UPDATE platforms SET ${fields.join(", ")} WHERE id = ?`;
-  // Aggiunge l'ID alla fine dell'array dei valori (serve per il WHERE)
-  values.push(id);
-  // Esegue la query nel database
-  connection.query(sql, values, (err, results) => {
-    // Gestisce eventuali errori della query
-    if (err)
-      return res.status(500).json({ error: "Failed to modify platform" });
-    // Se nessuna piattaforma è stata modificata (id non trovato)
-    if (results.affectedRows === 0) {
+async function update(req, res) {
+  try {
+    // estraiamo l'ID del genere dalla URL
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+    const [existingPlatforms] = await connection
+      .promise()
+      .query("SELECT * FROM platforms WHERE id = ?", [id]);
+    if (existingPlatforms.length === 0)
       return res.status(404).json({ error: "Platform not found" });
-    }
-    // Se tutto è andato bene, restituisce un messaggio di successo
-    res.status(204).send();
-  });
+    // estraiamo i nuovi valori dal corpo della richiesta
+    const { name } = req.body;
+    // definiamo la query SQL per aggiornare l'elemento nella tabella "platforms" con l'ID specificato
+    const sql = "UPDATE platforms SET name = ? WHERE id = ? ;";
+    // esegue la query passando i nuovi valori e l'ID come parametri
+    await connection.promise().query(sql, [name, id]);
+    // se tutto è andato bene, restituisce un messaggio di successo
+    return res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 /* destroy (delete) */
@@ -88,17 +92,16 @@ function destroy(req, res) {
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // gestisce eventuali errori durante l'esecuzione della query
-    if (err)
-      return res.status(500).json({ error: "Failed to delete platform" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
     if (results.affectedRows === 0) {
       // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
       return res.status(404).json({ error: "Platform not found" });
     }
     // se l'eliminazione è avvenuta con successo, restituisce una conferma
-    return res.json({ message: "Platform deleted successfully" });
+    return res.status(204).send();
   });
 }
 
 // esportiamo tutto
-export default { index, show, store, update, modify, destroy };
+export default { index, show, store, update, destroy };
