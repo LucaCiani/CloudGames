@@ -24,7 +24,7 @@ CREATE TABLE `billing_addresses` (
 CREATE TABLE `discounts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `code` varchar(20) NOT NULL,
-  `discount_percentage` int NOT NULL COMMENT '# in cents',
+  `discount_percentage` int NOT NULL,
   `valid_from` date NOT NULL,
   `expires_at` date NOT NULL,
   PRIMARY KEY (`id`)

@@ -252,3 +252,58 @@ Usage examples in a router:
   router.put('/billing-addresses/:id', validateBody(billingAddressUpdateSchema), billingAddressesController.update)
   router.patch('/billing-addresses/:id', validateBody(billingAddressPatchSchema), billingAddressesController.modify)
 */
+
+/*
+ * ===================== Discount Schemas =====================
+ * Table: discounts (see db/schema.md)
+ */
+
+const discountBaseShape = {
+  code: z
+    .string({ required_error: "code required" })
+    .min(1)
+    .max(20)
+    .regex(/^[A-Z0-9_-]+$/i, "Code allows letters, numbers, _ and - only")
+    .transform((s) => s.toUpperCase()),
+  discount_percentage: z
+    .number({ required_error: "discount_percentage required" })
+    .int()
+    .min(1)
+    .max(100),
+  valid_from: z.iso.datetime(),
+  expires_at: z.iso.datetime(),
+};
+
+export const discountCreateSchema = z
+  .object(discountBaseShape)
+  .refine(
+    (d) => new Date(d.expires_at).getTime() >= new Date(d.valid_from).getTime(),
+    { message: "expires_at must be on/after valid_from", path: ["expires_at"] }
+  );
+
+export const discountUpdateSchema = discountCreateSchema;
+
+export const discountPatchSchema = z
+  .object({
+    code: discountBaseShape.code.optional(),
+    discount_percentage: discountBaseShape.discount_percentage.optional(),
+    valid_from: discountBaseShape.valid_from.optional(),
+    expires_at: discountBaseShape.expires_at.optional(),
+  })
+  .refine(
+    (d) =>
+      !(d.valid_from && d.expires_at) ||
+      new Date(d.expires_at).getTime() >= new Date(d.valid_from).getTime(),
+    { message: "expires_at must be on/after valid_from", path: ["expires_at"] }
+  )
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    "At least one field must be provided for patch"
+  );
+
+/*
+Usage examples in a router:
+  router.post('/discounts', validateBody(discountCreateSchema), discountsController.store)
+  router.put('/discounts/:id', validateBody(discountUpdateSchema), discountsController.update)
+  router.patch('/discounts/:id', validateBody(discountPatchSchema), discountsController.modify)
+*/
