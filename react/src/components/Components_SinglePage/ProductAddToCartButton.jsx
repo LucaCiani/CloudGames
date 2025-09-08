@@ -106,17 +106,7 @@ export default function ProductAddToCartButton({
   return (
     <div>
       {/* Bottone per aggiungere al carrello e aprire l'offcanvas */}
-      <button
-        className="btn-gradient w-100"
-        disabled={quantity === 0}
-        onClick={handleAddToCart}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
-      >
-        {quantity > 0 ? "Aggiungi al carrello" : "Non disponibile"}
-      </button>
+      
 
       {/* Offcanvas Bootstrap per mostrare il carrello */}
       <div
