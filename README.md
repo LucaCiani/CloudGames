@@ -1,4 +1,12 @@
+
+<div align="center">
 # 🎮 CloudGames
+</div>
+
+</div>
+  <img src="react/public/logo_navbar1.png" alt="CloudGames Logo" width="200"/>
+</div>
+
 
 Benvenuto nel progetto **CloudGames**!  
 Un portale dedicato agli appassionati di videogiochi, sviluppato da un team Full-Stack.
@@ -25,12 +33,4 @@ Un portale dedicato agli appassionati di videogiochi, sviluppato da un team Full
 
 ---
 
-## 🤝 Contribuisci
 
-Sentiti libero di aprire issue o pull request per migliorare il progetto!
-
----
-
-<div align="center">
-  <img src="react/public/logo_navbar1.png" alt="CloudGames Logo" width="200"/>
-</div>
