@@ -62,6 +62,7 @@ export default function ProductPage() {
           <ProductAddToCartButton
             quantity={SingleVideogame.quantity}
             onAddToCart={handleAddToCart}
+            product={SingleVideogame}
           />
         </div>
       </div>

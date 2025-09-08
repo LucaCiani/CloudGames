@@ -15,31 +15,6 @@
     --bs-color-dark: rgb(39, 39, 37);
 }
 
-/* Royal Aurora */
-/*  #3e2f5b ,
-    #e94560 ,
-    #3f305e  */
-
-/* Emerald Chrome */
-/* #004e92,
-    #000428,
-    #004e93 */
-
-/* Emerald Depth */
-/*  #0f2027,
-    #28623a,
-    #0f2026 */
-
-/* Phantom Purple 
-    #2b2e4a,
-    #e84545,
-    #2b2e4a */
-
-/* Noir Lavender 
-    #0d0d0d,
-    #5f4b8b,
-    #cbbbf6 */
-
 /* ================================
    🖼️ JUMBOTRON
    (Solo override necessari)
@@ -374,4 +349,13 @@ ul {
 .dropdown-item:hover {
     background: linear-gradient(90deg, #7c6215 0%, #ba8b02 100%);
     color: #fff;
+}
+
+
+.offcanvas.custom-cart {
+  top: 86px; 
+  height: calc(100% - 56px); 
+  background-color: #1f1d1dc9;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+ 
 }
