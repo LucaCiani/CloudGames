@@ -46,9 +46,19 @@ export default function VideogamesPage() {
         filteredGames = [...filteredGames].sort((a, b) => {
             if (sortOrder === "az") {
                 return a.name.localeCompare(b.name);
-            } else {
+            } else if (sortOrder === "za") {
                 return b.name.localeCompare(a.name);
+            } else if (sortOrder === "price-asc") {
+                // Usa promo_price se presente, altrimenti price
+                const priceA = a.promo_price ?? a.price;
+                const priceB = b.promo_price ?? b.price;
+                return priceA - priceB;
+            } else if (sortOrder === "price-desc") {
+                const priceA = a.promo_price ?? a.price;
+                const priceB = b.promo_price ?? b.price;
+                return priceB - priceA;
             }
+            return 0;
         });
     }
     return (
@@ -93,6 +103,30 @@ export default function VideogamesPage() {
                                     onClick={() => setSortOrder("za")}
                                 >
                                     Z-A
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className={`dropdown-item${
+                                        sortOrder === "price-asc"
+                                            ? " active"
+                                            : ""
+                                    }`}
+                                    onClick={() => setSortOrder("price-asc")}
+                                >
+                                    Prezzo crescente
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className={`dropdown-item${
+                                        sortOrder === "price-desc"
+                                            ? " active"
+                                            : ""
+                                    }`}
+                                    onClick={() => setSortOrder("price-desc")}
+                                >
+                                    Prezzo decrescente
                                 </button>
                             </li>
                         </ul>
