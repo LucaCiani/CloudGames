@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="react/public/logo_.png" alt="CloudGames Logo" width="200"/>
+  <img src="react/public/logo_navbar1.png" alt="CloudGames Logo" width="200"/>
 </div>
 
 ---
