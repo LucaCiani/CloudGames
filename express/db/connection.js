@@ -3,6 +3,7 @@ import { createConnection } from "mysql2";
 
 // creo un oggetto contenente le credenziali per connettersi al database MySQL
 const credentials = {
+  port: process.env.db_port,
   host: process.env.db_host,
   user: process.env.db_user,
   password: process.env.db_password,
