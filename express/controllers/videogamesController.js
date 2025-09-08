@@ -144,6 +144,106 @@ function show(req, res) {
   });
 }
 
+/* store (create) */
+function store(req, res) {
+  // estraiamo i dati (slug, name, description, price, ecc) dal corpo della richiesta HTTP
+  const {
+    slug,
+    name,
+    description,
+    price,
+    promo_price,
+    developer,
+    release_date,
+    image_url,
+    quantity,
+    vote,
+  } = req.body;
+  // definiamo la query SQL per inserire un elemento dalla tabella "videogames"
+  const sql =
+    "INSERT INTO videogames (slug, name, description, price, promo_price, developer, release_date, image_url, quantity, vote) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  // esegue la query passando i valori ricevuti come parametri
+  connection.query(
+    sql,
+    [
+      slug,
+      name,
+      description,
+      price,
+      promo_price,
+      developer,
+      release_date,
+      image_url,
+      quantity,
+      vote,
+    ],
+    (err, results) => {
+      // se c'è un errore durante l'inserimento nel database
+      if (err)
+        return res.status(500).json({ error: "Failed to insert videogame" });
+      // se l'inserimento ha successo, restituisce lo status 201 (Created)
+      res.status(201);
+      // e un oggetto JSON contenente l'ID del nuovo post creato
+      res.json({ id: results.insertId });
+    }
+  );
+}
+
+/* update (edit) */
+function update(req, res) {
+  // estraiamo l'ID del post dalla URL
+  const { id } = req.params;
+  // estraiamo i nuovi valori dal corpo della richiesta
+  const {
+    slug,
+    name,
+    description,
+    price,
+    promo_price,
+    developer,
+    release_date,
+    image_url,
+    quantity,
+    vote,
+  } = req.body;
+  // definiamo la query SQL per aggiornare un videogioco esistente
+  const sql = `
+    UPDATE videogames
+    SET slug = ?, name = ?, description = ?, price = ?, promo_price = ?, developer = ?, 
+        release_date = ?, image_url = ?, quantity = ?, vote = ?
+    WHERE id = ?
+  `;
+  // esegue la query, passando i nuovi valori e l'ID
+  connection.query(
+    sql,
+    [
+      slug,
+      name,
+      description,
+      price,
+      promo_price,
+      developer,
+      release_date,
+      image_url,
+      quantity,
+      vote,
+      id,
+    ],
+    (err, results) => {
+      // se si verifica un errore durante la query
+      if (err)
+        return res.status(500).json({ error: "Failed to update videogame" });
+      // se nessuna riga è stata modificata, il videogame con quell'ID non esiste
+      if (results.affectedRows === 0) {
+        // quindi restituisce un errore
+        return res.status(404).json({ error: "Videogame not found" });
+      }
+      // altrimenti conferma l'aggiornamento
+      res.json({ message: "Videogame updated successfully" });
+    }
+  );
+}
+
 /* modify (partial edit) */
 function modify(req, res) {
   // estraiamo l'ID del videogioco dalla URL
@@ -233,5 +333,26 @@ function modify(req, res) {
   });
 }
 
+/* destroy (delete) */
+function destroy(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  // definiamo la query SQL per eliminare l'elemento dalla tabella "videogames" con l'ID specificato
+  const sql = "DELETE FROM videogames WHERE id = ? ;";
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(sql, [id], (err, results) => {
+    // gestisce eventuali errori durante l'esecuzione della query
+    if (err)
+      return res.status(500).json({ error: "Failed to delete videogame" });
+    // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
+    if (results.affectedRows === 0) {
+      // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
+      return res.status(404).json({ error: "Videogame not found" });
+    }
+    // se l'eliminazione è avvenuta con successo, restituisce una conferma
+    return res.json({ message: "Videogame deleted successfully" });
+  });
+}
+
 // esportiamo tutto
-export default { index, show, modify };
+export default { index, show, store, update, modify, destroy };

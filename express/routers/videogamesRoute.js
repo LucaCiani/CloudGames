@@ -15,9 +15,21 @@ router.get("/", videogamesController.index);
 // route per ottenere un videogioco specifico tramite ID
 router.get("/:id", videogamesController.show);
 
+/* store */
+// route per creare un nuovo videogioco
+router.post("/", videogamesController.store);
+
+/* update */
+// route per modificare un videogioco esistente in modo integrale
+router.put("/:id", videogamesController.update);
+
 /* modify */
 // route per modificare un videogioco esistente in modo parziale
 router.patch("/:id", videogamesController.modify);
+
+/* destroy */
+// route per cancellare un videogioco esistente
+router.delete("/:id", videogamesController.destroy);
 
 // esportiamo router
 export default router;
