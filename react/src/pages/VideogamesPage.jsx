@@ -97,21 +97,62 @@ export default function VideogamesPage() {
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <select
-                            className="form-select form-select-sm"
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
+                    <div className="dropdown me-2">
+                        <button
+                            className="btn btn-sm btn-gradient dropdown-toggle"
+                            type="button"
+                            id="filterDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
-                            <option value="all">Tutte le piattaforme</option>
+                            {filter === "all" || filter === "discounted"
+                                ? "Tutte le piattaforme"
+                                : filter}
+                        </button>
+                        <ul
+                            className="dropdown-menu"
+                            aria-labelledby="filterDropdown"
+                        >
+                            <li>
+                                <button
+                                    className={`dropdown-item${
+                                        filter === "all" ||
+                                        filter === "discounted"
+                                            ? " active"
+                                            : ""
+                                    }`}
+                                    onClick={() => setFilter("all")}
+                                >
+                                    Tutte le piattaforme
+                                </button>
+                            </li>
                             {allPlatforms.map((platform) => (
-                                <option key={platform} value={platform}>
-                                    {platform}
-                                </option>
+                                <li key={platform}>
+                                    <button
+                                        className={`dropdown-item${
+                                            filter === platform ? " active" : ""
+                                        }`}
+                                        onClick={() => setFilter(platform)}
+                                    >
+                                        {platform}
+                                    </button>
+                                </li>
                             ))}
-                            <option value="discounted">Solo scontati</option>
-                        </select>
+                        </ul>
                     </div>
+                    {/* Pulsante solo scontati */}
+                    <button
+                        className={`btn btn-sm btn-outline-success${
+                            filter === "discounted" ? " active" : ""
+                        }`}
+                        onClick={() =>
+                            setFilter(
+                                filter === "discounted" ? "all" : "discounted"
+                            )
+                        }
+                    >
+                        Solo scontati
+                    </button>
                 </div>
                 <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-xl-3 g-5">
                     {filteredGames &&
