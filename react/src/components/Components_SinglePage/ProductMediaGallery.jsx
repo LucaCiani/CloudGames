@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductMediaGallery({ media, productName }) {
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -13,6 +13,13 @@ export default function ProductMediaGallery({ media, productName }) {
 
   const currentMedia = media[currentMediaIndex];
 
+  useEffect(() => {
+    const videoIndex = media.findIndex(
+      (singleMedia) => singleMedia.type === "video"
+    );
+    setCurrentMediaIndex(videoIndex !== -1 ? videoIndex : 0);
+  }, [media]);
+
   return (
     <>
       <div className="position-relative">
@@ -21,7 +28,7 @@ export default function ProductMediaGallery({ media, productName }) {
             src={currentMedia.url}
             alt={productName}
             className="img-fluid w-100 rounded shadow"
-            style={{ height: "400px", objectFit: "cover" }}
+            style={{ minHeight: "200px", objectFit: "cover" }}
           />
         ) : (
           <div className="ratio ratio-16x9">
