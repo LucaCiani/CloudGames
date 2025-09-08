@@ -15,5 +15,21 @@ router.get("/", discountsController.index);
 // rotta per ottenere un singolo codice sconto tramite ID
 router.get("/:id", discountsController.show);
 
+/* store (create) */
+// rotta per creare un nuovo codice sconto
+router.post("/", discountsController.store);
+
+/* update */
+// rotta per modificare un codice sconto esistente in modo integrale
+router.put("/:id", discountsController.update);
+
+/* modify */
+// rotta per modificare un codice sconto esistente in modo parziale
+router.patch("/:id", discountsController.modify);
+
+/* destroy */
+// rotta per cancellare un codice sconto esistente
+router.delete("/:id", discountsController.destroy);
+
 // esportiamo router
 export default router;
