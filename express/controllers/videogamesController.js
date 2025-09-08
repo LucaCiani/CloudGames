@@ -142,7 +142,7 @@ function show(req, res) {
       };
     });
 
-    return res.json(formattedResult);
+    return res.json(formattedResult[0]);
   });
 }
 
@@ -416,6 +416,7 @@ function modify(req, res) {
 function destroy(req, res) {
   // estrae l'ID dalla URL e lo converte da stringa a numero
   const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
   // definiamo la query SQL per eliminare l'elemento dalla tabella "videogames" con l'ID specificato
   const sql = "DELETE FROM videogames WHERE id = ? ;";
   // esegue la query sul database, passando l'ID come parametro

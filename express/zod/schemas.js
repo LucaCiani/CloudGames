@@ -118,3 +118,85 @@ export const videogamePatchSchema = z
       path: ["promo_price"],
     }
   );
+
+/*
+ * ===================== Invoice Schemas =====================
+ * Table: invoices (see db/schema.md)
+ * Relationships handled separately (videogames join via invoice_videogame, billing address via billing_addresses.invoice_id)
+ * Client sends an array of videogames (id, quantity) to attach.
+ */
+
+// Reusable invoice primitives
+const currencySchema = z
+  .string()
+  .length(3, "Currency must be 3 letters")
+  .regex(/^[A-Z]{3}$/i, "Currency must be alphabetic 3-letter code")
+  .transform((s) => s.toUpperCase())
+  .default("EUR");
+
+const paymentProviderSchema = z
+  .string()
+  .min(1)
+  .max(50)
+  .regex(/^[a-z0-9-_ ]+$/i, "payment_provider has invalid characters")
+  .optional();
+
+const invoiceVideogameItemSchema = z.object({
+  id: z.number().int().positive(),
+  quantity: z.number().int().positive().max(999),
+});
+
+const invoiceVideogamesArray = z
+  .array(invoiceVideogameItemSchema)
+  .min(1, "At least one videogame required")
+  .refine(
+    (arr) => new Set(arr.map((v) => v.id)).size === arr.length,
+    "Duplicate videogame ids not allowed"
+  );
+
+const statusEnum = z
+  .enum(["pending", "paid", "failed", "cancelled"], {
+    invalid_type_error: "Invalid status value",
+  })
+  .optional();
+
+// Base invoice shape (create/update common) - create requires total_amount + videogames
+const invoiceBaseShape = {
+  total_amount: z
+    .number({ required_error: "total_amount required" })
+    .int()
+    .positive(), // in cents
+  payment_provider: paymentProviderSchema,
+  discount_id: z.number().int().positive().optional(),
+  currency: currencySchema, // default applied
+  videogames: invoiceVideogamesArray, // required (see create)
+};
+
+export const invoiceCreateSchema = z.object(invoiceBaseShape);
+
+export const invoiceUpdateSchema = invoiceCreateSchema.extend({
+  status: statusEnum, // allow client to set if business rules permit
+  completed_at: z.iso.datetime().optional().nullable(),
+});
+
+export const invoicePatchSchema = z
+  .object({
+    total_amount: invoiceBaseShape.total_amount.optional(),
+    payment_provider: paymentProviderSchema,
+    discount_id: z.number().int().positive().optional(),
+    currency: currencySchema.optional(),
+    videogames: invoiceVideogamesArray.optional(),
+    status: statusEnum.optional(),
+    completed_at: z.iso.datetime().optional().nullable(),
+  })
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    "At least one field must be provided for patch"
+  );
+
+/*
+Usage examples in a router:
+  router.post('/invoices', validateBody(invoiceCreateSchema), invoicesController.store)
+  router.put('/invoices/:id', validateBody(invoiceUpdateSchema), invoicesController.update)
+  router.patch('/invoices/:id', validateBody(invoicePatchSchema), invoicesController.modify)
+*/
