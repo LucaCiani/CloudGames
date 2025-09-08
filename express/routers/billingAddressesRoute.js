@@ -19,9 +19,17 @@ router.get("/:id", billingAddressesController.show);
 // rotta per creare un nuovo indirizzo di fatturazione
 router.post("/", billingAddressesController.store);
 
+/* update */
+// rotta per modificare un indirizzo di fatturazione esistente in modo integrale
+router.put("/:id", billingAddressesController.update);
+
 /* modify */
-// route per modificare un videogioco esistente in modo parziale
+// rotta per modificare un indirizzo di fatturazione esistente in modo parziale
 router.patch("/:id", billingAddressesController.modify);
+
+/* destroy */
+// rotta per cancellare un indirizzo di fatturazione esistente
+router.delete("/:id", billingAddressesController.destroy);
 
 // esportiamo router
 export default router;

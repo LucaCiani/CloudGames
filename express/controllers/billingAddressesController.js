@@ -89,6 +89,39 @@ function store(req, res) {
   );
 }
 
+/* update (edit) */
+function update(req, res) {
+  // estraiamo l'ID del post dalla URL
+  const { id } = req.params;
+  // estraiamo i nuovi valori dal corpo della richiesta
+  const { invoice_id, full_name, address_line, city, postal_code, country } =
+    req.body;
+  // definiamo la query SQL per aggiornare un indirizzo di fatturazione esistente
+  const sql = `
+    UPDATE billing_addresses
+    SET invoice_id = ?, full_name = ?, address_line = ?, city = ?, postal_code = ?, country = ? WHERE id = ?
+  `;
+  // esegue la query, passando i nuovi valori e l'ID
+  connection.query(
+    sql,
+    [invoice_id, full_name, address_line, city, postal_code, country, id],
+    (err, results) => {
+      // se si verifica un errore durante la query
+      if (err)
+        return res
+          .status(500)
+          .json({ error: "Failed to update billing address" });
+      // se nessuna riga è stata modificata, l'indirizzo di fatturazione con quell'ID non esiste
+      if (results.affectedRows === 0) {
+        // quindi restituisce un errore
+        return res.status(404).json({ error: "Billing address not found" });
+      }
+      // altrimenti conferma l'aggiornamento
+      res.json({ message: "Billing address updated successfully" });
+    }
+  );
+}
+
 /* modify (partial edit) */
 async function modify(req, res) {
   // estraiamo l'ID del videogioco dalla URL
@@ -168,5 +201,28 @@ async function modify(req, res) {
   });
 }
 
+/* destroy (delete) */
+function destroy(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  // definiamo la query SQL per eliminare l'elemento dalla tabella "billing_addresses"" con l'ID specificato
+  const sql = "DELETE FROM billing_addresses WHERE id = ? ;";
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(sql, [id], (err, results) => {
+    // gestisce eventuali errori durante l'esecuzione della query
+    if (err)
+      return res
+        .status(500)
+        .json({ error: "Failed to delete billing address" });
+    // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
+    if (results.affectedRows === 0) {
+      // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
+      return res.status(404).json({ error: "Billing address not found" });
+    }
+    // se l'eliminazione è avvenuta con successo, restituisce una conferma
+    return res.json({ message: "Billing address deleted successfully" });
+  });
+}
+
 // esportiamo tutto
-export default { index, show, store, modify };
+export default { index, show, store, update, modify, destroy };

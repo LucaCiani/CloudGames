@@ -341,5 +341,114 @@ async function store(req, res) {
   }
 }
 
+/* update (edit) */
+function update(req, res) {
+  // estraiamo l'ID del post dalla URL
+  const { id } = req.params;
+  // estraiamo i nuovi valori dal corpo della richiesta
+  const { discount_id, total_amount, currency, status, payment_provider } =
+    req.body;
+  // definiamo la query SQL per aggiornare una fattura esistente
+  const sql = `
+    UPDATE invoices
+    SET discount_id = ?, total_amount = ?, currency = ?, status = ?, payment_provider = ? WHERE id = ?
+  `;
+  // esegue la query, passando i nuovi valori e l'ID
+  connection.query(
+    sql,
+    [discount_id, total_amount, currency, status, payment_provider, id],
+    (err, results) => {
+      // se si verifica un errore durante la query
+      if (err)
+        return res.status(500).json({ error: "Failed to update invoice" });
+      // se nessuna riga è stata modificata, la fattura con quell'ID non esiste
+      if (results.affectedRows === 0) {
+        // quindi restituisce un errore
+        return res.status(404).json({ error: "Invoice not found" });
+      }
+      // altrimenti conferma l'aggiornamento
+      res.json({ message: "Invoice updated successfully" });
+    }
+  );
+}
+
+/* modify (partial edit) */
+function modify(req, res) {
+  // estraiamo l'ID della fattura dalla URL e lo convertiamo in numero
+  const { id } = req.params;
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+  // estraiamo i nuovi valori dal corpo della richiesta
+  const { discount_id, total_amount, currency, status, payment_provider } =
+    req.body;
+  // inizializziamo due array:
+  // - 'fields' conterrà le parti dell'SQL da aggiornare
+  // - 'values' conterrà i nuovi valori corrispondenti
+  const fields = [];
+  const values = [];
+  // se è presente discount_id, lo aggiunge agli array
+  if (discount_id && discount_id.length > 0) {
+    fields.push("discount_id = ?");
+    values.push(discount_id);
+  }
+  // se è presente total_amount, lo aggiunge agli array
+  if (total_amount && total_amount.length > 0) {
+    fields.push("total_amount = ?");
+    values.push(total_amount);
+  }
+  // se è presente currency e non è vuoto, lo aggiunge agli array
+  if (currency !== undefined) {
+    fields.push("currency = ?");
+    values.push(currency);
+  }
+  // se è presente status e non è vuoto, lo aggiunge agli array
+  if (status !== undefined) {
+    fields.push("status = ?");
+    values.push(status);
+  }
+  // se è presente payment_provider e non è vuoto, lo aggiunge agli array
+  if (payment_provider && payment_provider.length > 0) {
+    fields.push("payment_provider = ?");
+    values.push(payment_provider);
+  }
+  // Se nessun campo è stato fornito per l'aggiornamento, restituisce errore
+  if (fields.length === 0)
+    return res.status(400).json({ error: "No fields to update" });
+  // Costruisce dinamicamente la query SQL usando solo i campi forniti
+  const sql = `UPDATE invoices SET ${fields.join(", ")} WHERE id = ?`;
+  // Aggiunge l'ID alla fine dell'array dei valori (serve per il WHERE)
+  values.push(id);
+  // Esegue la query nel database
+  connection.query(sql, values, (err, results) => {
+    // Gestisce eventuali errori della query
+    if (err) return res.status(500).json({ error: "Failed to modify invoice" });
+    // Se nessuna fattura è stata modificata (id non trovato), restituisce errore 404
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Invoice not found" });
+    }
+    // Se tutto è andato bene, restituisce un messaggio di successo
+    res.status(204).send();
+  });
+}
+
+/* destroy (delete) */
+function destroy(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  // definiamo la query SQL per eliminare l'elemento dalla tabella "invoices"" con l'ID specificato
+  const sql = "DELETE FROM invoices WHERE id = ?;";
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(sql, [id], (err, results) => {
+    // gestisce eventuali errori durante l'esecuzione della query
+    if (err) return res.status(500).json({ error: "Failed to delete invoice" });
+    // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
+    if (results.affectedRows === 0) {
+      // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
+      return res.status(404).json({ error: "Invoice not found" });
+    }
+    // se l'eliminazione è avvenuta con successo, restituisce una conferma
+    return res.json({ message: "Invoice deleted successfully" });
+  });
+}
+
 // esportiamo tutto
-export default { index, show, store };
+export default { index, show, store, update, modify, destroy };
