@@ -4,6 +4,12 @@ const router = Router();
 
 // importiamo le funzioni del controller
 import videogamesController from "../controllers/videogamesController.js";
+import {
+  validateBody,
+  videogameCreateSchema,
+  videogameUpdateSchema,
+  videogamePatchSchema,
+} from "../zod/schemas.js";
 
 /* rotte CRUD */
 
@@ -17,15 +23,27 @@ router.get("/:id", videogamesController.show);
 
 /* store */
 // rotte per creare un nuovo videogioco
-router.post("/", videogamesController.store);
+router.post(
+  "/",
+  validateBody(videogameCreateSchema),
+  videogamesController.store
+);
 
 /* update */
 // rotte per modificare un videogioco esistente in modo integrale
-router.put("/:id", videogamesController.update);
+router.put(
+  "/:id",
+  validateBody(videogameUpdateSchema),
+  videogamesController.update
+);
 
 /* modify */
 // rotte per modificare un videogioco esistente in modo parziale
-router.patch("/:id", videogamesController.modify);
+router.patch(
+  "/:id",
+  validateBody(videogamePatchSchema),
+  videogamesController.modify
+);
 
 /* destroy */
 // rotte per cancellare un videogioco esistente
