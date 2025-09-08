@@ -6,29 +6,25 @@ import VideogamesPage from "./pages/VideogamesPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ProductPage from "./pages/ProductPage";
 import ScrollToTop from "./components/ScrollToTop";
+import CartPage from "./pages/CartPage"
 
 function App() {
-    return (
-        <GlobalProvider>
-            <BrowserRouter>
-                <ScrollToTop />
-                <Routes>
-                    <Route element={<DefaultLayout />}>
-                        <Route path="/" element={<HomePage />} />
-                        <Route
-                            path="/videogames"
-                            element={<VideogamesPage />}
-                        />
-                        <Route path="/about-us" element={<AboutUsPage />} />
-                        <Route
-                            path="/videogames/:id"
-                            element={<ProductPage />}
-                        />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </GlobalProvider>
-    );
+  return (
+    <GlobalProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routes>
+          <Route element={<DefaultLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/videogames" element={<VideogamesPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/videogames/:id" element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </GlobalProvider>
+  );
 }
 
 export default App;

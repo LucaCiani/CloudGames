@@ -66,7 +66,11 @@ export default function ProductAddToCartButton({
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
   };
-
+  // Calcola la quantità totale di tutti i prodotti nel carrello
+  const totalQuantity = cartItems.reduce(
+    (sum, item) => sum + (item.cartQuantity || 1),
+    0
+  );
   // Rimuove un prodotto dal carrello
   const removeFromCart = (productId) => {
     const newCartItems = cartItems.filter((item) => item.id !== productId);
@@ -94,7 +98,7 @@ export default function ProductAddToCartButton({
   const totalPrice = cartItems.reduce((total, item) => {
     const price = item.promo_price || item.price || 0;
     const qty = item.cartQuantity || 1;
-    return total + price * qty;
+    return  total + price * qty;
   }, 0);
 
   return (
@@ -121,7 +125,7 @@ export default function ProductAddToCartButton({
       >
         <div className="offcanvas-header">
           {/* Titolo e pulsante di chiusura */}
-          <h5 id="offcanvasRightLabel">Carrello ({cartItems.length})</h5>
+          <h5 id="offcanvasRightLabel">Carrello ({totalQuantity})</h5>
           <button
             type="button"
             className="btn-close text-reset"
@@ -202,7 +206,7 @@ export default function ProductAddToCartButton({
                 );
               })}
               {/* Totale e pulsante checkout */}
-              <div className="border-top pt-3 mt-3">
+              <div className=" pt-3 mt-3">
                 <h5>Totale: € {totalPrice.toFixed(2)}</h5>
                 <button className="btn btn-success w-100">
                   Procedi al checkout
