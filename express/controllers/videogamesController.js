@@ -38,6 +38,7 @@ function index(req, res) {
     const formattedResult = results.map((result) => {
       return {
         id: parseInt(result.id),
+        slug: result.slug,
         name: result.name,
         description: result.description,
         price: Number(result.price),
@@ -113,6 +114,7 @@ function show(req, res) {
     const formattedResult = results.map((result) => {
       return {
         id: parseInt(result.id),
+        slug: result.slug,
         name: result.name,
         description: result.description,
         price: Number(result.price),
