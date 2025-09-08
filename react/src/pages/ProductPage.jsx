@@ -88,7 +88,7 @@ export default function ProductPage() {
                 scale: 1
               }} >
                 <Link
-                  to={`/videogames/${relatedVg.id}`}
+                  to={`/videogames/${relatedVg.slug}`}
                   className="text-decoration-none"
                 >
                   <div className="card border-0 h-100">
