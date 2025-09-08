@@ -12,7 +12,7 @@ function index(req, res) {
     // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
     if (err) return res.status(500).json({ error: "Internal error" });
     // se non ci sono errori, restituiamo i risultati della query in formato JSON
-    res.json(results);
+    return res.json(results);
   });
 }
 
@@ -26,7 +26,7 @@ function show(req, res) {
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // se si verifica un errore durante la connessione o l'esecuzione della query
-    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // se non viene trovato alcun risultato (l'ID non esiste nella tabella "genres"),
     if (results.length === 0)
       return res.status(404).json({ error: "Genre not found" });
@@ -36,45 +36,56 @@ function show(req, res) {
 }
 
 /* store (create) */
+async function store(req, res) {
+  try {
+    // estraiamo i dati (name) dal corpo della richiesta HTTP
+    const { name } = req.body;
+
+    const [existingGenres] = await connection
+      .promise()
+      .query("SELECT * FROM genres WHERE name = ?", [name]);
+    if (existingGenres.length > 0)
+      return res.status(400).json({ error: "Genre name must be unique" });
+
+    // definiamo la query SQL per inserire un nuovo elemento nella tabella "genres"
+    const sql = "INSERT INTO genres ( name ) VALUES ( ? ) ;";
+    // esegue la query passando i valori ricevuti come parametri
+    const [results] = await connection.promise().query(sql, [name]);
+    return res.status(201).json({ created_id: results.insertId });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 /* update (edit) */
-
-/* modify (partial edit) */
-function modify(req, res) {
-  // estraiamo l'ID del genere dalla URL
-  const { id } = req.params;
-  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
-  // estraiamo i nuovi valori dal corpo della richiesta
-  const { name } = req.body;
-  // inizializziamo due array:
-  // - 'fields' conterrà le parti dell'SQL da aggiornare
-  // - 'values' conterrà i nuovi valori corrispondenti
-  const fields = [];
-  const values = [];
-  // se è presente il nome e non è vuoto, lo aggiunge agli array
-  if (name && name.length > 0) {
-    fields.push("name = ?");
-    values.push(name);
-  }
-  // Se nessun campo è stato fornito per l'aggiornamento, restituisce errore
-  if (fields.length === 0) {
-    return res.status(400).json({ error: "No fields to update" });
-  }
-  // Costruisce dinamicamente la query SQL usando solo i campi forniti
-  const sql = `UPDATE genres SET ${fields.join(", ")} WHERE id = ?`;
-  // Aggiunge l'ID alla fine dell'array dei valori (serve per il WHERE)
-  values.push(id);
-  // Esegue la query nel database
-  connection.query(sql, values, (err, results) => {
-    // Gestisce eventuali errori della query
-    if (err) return res.status(500).json({ error: "Failed to modify genre" });
-    // Se nessun genere è stato modificato (id non trovato), restituisce errore 404
-    if (results.affectedRows === 0) {
+async function update(req, res) {
+  try {
+    // estraiamo l'ID del genere dalla URL e lo convertiamo in numero
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+    const [exists] = await connection
+      .promise()
+      .query("SELECT * FROM genres WHERE id = ?", [id]);
+    if (exists.length === 0)
       return res.status(404).json({ error: "Genre not found" });
-    }
-    // Se tutto è andato bene, restituisce un messaggio di successo
-    res.status(204).send();
-  });
+
+    // estraiamo i nuovi valori dal corpo della richiesta
+    const { name } = req.body;
+    const [existingGenres] = await connection
+      .promise()
+      .query("SELECT * FROM genres WHERE name = ? AND id != ?", [name, id]);
+    if (existingGenres.length > 0)
+      return res.status(400).json({ error: "Genre name must be unique" });
+    // definiamo la query SQL per aggiornare l'elemento con l'ID specificato
+    const sql = "UPDATE genres SET name = ? WHERE id = ? ;";
+    // esegue la query passando i nuovi valori e l'ID come parametri
+    await connection.promise().query(sql, [name, id]);
+    return res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 /* destroy (delete) */
@@ -87,16 +98,16 @@ function destroy(req, res) {
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // gestisce eventuali errori durante l'esecuzione della query
-    if (err) return res.status(500).json({ error: "Failed to delete genre" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
     if (results.affectedRows === 0) {
       // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
       return res.status(404).json({ error: "Genre not found" });
     }
     // se l'eliminazione è avvenuta con successo, restituisce una conferma
-    return res.json({ message: "Genre deleted successfully" });
+    return res.status(204).send();
   });
 }
 
 // esportiamo tutto
-export default { index, show, store, update, modify, destroy };
+export default { index, show, store, update, destroy };

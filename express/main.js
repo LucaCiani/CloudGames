@@ -18,6 +18,7 @@ import videogamesRoute from "./routers/videogamesRoute.js";
 import invoicesRoute from "./routers/invoicesRoute.js";
 import discountsRoute from "./routers/discountsRoute.js";
 import billingAddressesRoute from "./routers/billingAddressesRoute.js";
+import genresRoute from "./routers/genresRoute.js";
 
 // Registriamo il body-parser integrato in express
 app.use(json());
@@ -35,6 +36,7 @@ app.use("/videogames", videogamesRoute);
 app.use("/invoices", invoicesRoute);
 app.use("/discounts", discountsRoute);
 app.use("/billing-addresses", billingAddressesRoute);
+app.use("/genres", genresRoute);
 
 // registro le middleware
 app.use(notFound);

@@ -4,6 +4,11 @@ const router = Router();
 
 // importiamo le funzioni del controller
 import genresController from "../controllers/genresController.js";
+import {
+  validateBody,
+  genreCreateSchema,
+  genreUpdateSchema,
+} from "../zod/schemas.js";
 
 /* rotte CRUD */
 
@@ -17,15 +22,11 @@ router.get("/:id", genresController.show);
 
 /* store (create) */
 // rotta per creare un nuovo genere
-router.post("/", genresController.store);
+router.post("/", validateBody(genreCreateSchema), genresController.store);
 
 /* update */
 // rotta per modificare un genere esistente in modo integrale
-router.put("/:id", genresController.update);
-
-/* modify */
-// rotta per modificare un genere esistente in modo parziale
-router.patch("/:id", genresController.modify);
+router.put("/:id", validateBody(genreUpdateSchema), genresController.update);
 
 /* destroy */
 // rotta per cancellare un genere esistente

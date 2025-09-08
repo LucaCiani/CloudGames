@@ -307,3 +307,31 @@ Usage examples in a router:
   router.put('/discounts/:id', validateBody(discountUpdateSchema), discountsController.update)
   router.patch('/discounts/:id', validateBody(discountPatchSchema), discountsController.modify)
 */
+
+/*
+ * ===================== Genre Schemas =====================
+ * Table: genres (see db/schema.md)
+ */
+
+const genreBaseShape = {
+  name: z.string().trim().min(1, "Name required").max(255),
+};
+
+export const genreCreateSchema = z.object(genreBaseShape);
+
+export const genreUpdateSchema = genreCreateSchema;
+
+export const genrePatchSchema = z
+  .object({
+    name: genreBaseShape.name.optional(),
+  })
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    "At least one field must be provided for patch"
+  );
+
+/*
+Usage examples in a router:
+  router.post('/genres', validateBody(genreCreateSchema), genresController.store)
+  router.put('/genres/:id', validateBody(genreUpdateSchema), genresController.update)
+*/
