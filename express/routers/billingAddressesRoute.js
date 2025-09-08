@@ -4,6 +4,12 @@ const router = Router();
 
 // importiamo le funzioni del controller
 import billingAddressesController from "../controllers/billingAddressesController.js";
+import {
+  validateBody,
+  billingAddressCreateSchema,
+  billingAddressUpdateSchema,
+  billingAddressPatchSchema,
+} from "../zod/schemas.js";
 
 /* rotte CRUD */
 
@@ -17,15 +23,27 @@ router.get("/:id", billingAddressesController.show);
 
 /* store (create) */
 // rotta per creare un nuovo indirizzo di fatturazione
-router.post("/", billingAddressesController.store);
+router.post(
+  "/",
+  validateBody(billingAddressCreateSchema),
+  billingAddressesController.store
+);
 
 /* update */
 // rotta per modificare un indirizzo di fatturazione esistente in modo integrale
-router.put("/:id", billingAddressesController.update);
+router.put(
+  "/:id",
+  validateBody(billingAddressUpdateSchema),
+  billingAddressesController.update
+);
 
 /* modify */
 // rotta per modificare un indirizzo di fatturazione esistente in modo parziale
-router.patch("/:id", billingAddressesController.modify);
+router.patch(
+  "/:id",
+  validateBody(billingAddressPatchSchema),
+  billingAddressesController.modify
+);
 
 /* destroy */
 // rotta per cancellare un indirizzo di fatturazione esistente

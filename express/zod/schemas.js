@@ -200,3 +200,55 @@ Usage examples in a router:
   router.put('/invoices/:id', validateBody(invoiceUpdateSchema), invoicesController.update)
   router.patch('/invoices/:id', validateBody(invoicePatchSchema), invoicesController.modify)
 */
+
+/*
+ * ===================== Billing Address Schemas =====================
+ * Table: billing_addresses (see db/schema.md)
+ * created_at handled server-side.
+ */
+
+const countrySchema = z
+  .string()
+  .min(2)
+  .max(100)
+  .refine(
+    (val) =>
+      /^[A-Z]{2}$/.test(val.toUpperCase()) ||
+      /^[A-Za-z '()-]{3,100}$/.test(val),
+    "Country must be a 2-letter code or a valid country name"
+  )
+  .transform((s) => (s.length === 2 ? s.toUpperCase() : s));
+
+const billingAddressBaseShape = {
+  invoice_id: z.number().int().positive().optional(),
+  full_name: z.string().min(1).max(255),
+  address_line: z.string().min(1).max(255),
+  city: z.string().min(1).max(100),
+  postal_code: z.number().int().nonnegative(),
+  country: countrySchema,
+};
+
+export const billingAddressCreateSchema = z.object(billingAddressBaseShape);
+
+export const billingAddressUpdateSchema = billingAddressCreateSchema;
+
+export const billingAddressPatchSchema = z
+  .object(
+    Object.fromEntries(
+      Object.entries(billingAddressBaseShape).map(([k, schema]) => [
+        k,
+        schema instanceof z.ZodOptional ? schema : schema.optional(),
+      ])
+    )
+  )
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    "At least one field must be provided for patch"
+  );
+
+/*
+Usage examples in a router:
+  router.post('/billing-addresses', validateBody(billingAddressCreateSchema), billingAddressesController.store)
+  router.put('/billing-addresses/:id', validateBody(billingAddressUpdateSchema), billingAddressesController.update)
+  router.patch('/billing-addresses/:id', validateBody(billingAddressPatchSchema), billingAddressesController.modify)
+*/
