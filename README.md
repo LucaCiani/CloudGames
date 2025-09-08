@@ -4,8 +4,7 @@
 
 ---
 
-<div align="center">
-## 🎮 CloudGames
+<div align="center"> 🎮 CloudGames
 </div>
 
 ---
