@@ -9,6 +9,7 @@ function index(req, res) {
   const sql = `
   SELECT
     v.id,
+    v.slug,
     v.name,
     v.description,
     v.price,
@@ -36,16 +37,16 @@ function index(req, res) {
 
     const formattedResult = results.map((result) => {
       return {
-        id: result.id,
+        id: parseInt(result.id),
         name: result.name,
         description: result.description,
-        price: result.price,
-        promo_price: result.promo_price,
+        price: Number(result.price),
+        promo_price: Number(result.promo_price),
         developer: result.developer,
         release_date: result.release_date,
         image_url: result.image_url,
-        quantity: result.quantity,
-        vote: result.vote,
+        quantity: parseInt(result.quantity),
+        vote: Number(result.vote),
         platforms: result.platforms ? result.platforms.split(",") : null,
         genres: result.genres ? result.genres.split(",") : null,
         media: result.media_urls
@@ -79,6 +80,7 @@ function show(req, res) {
   const sql = `
   SELECT
     v.id,
+    v.slug,
     v.name,
     v.description,
     v.price,
@@ -110,16 +112,16 @@ function show(req, res) {
 
     const formattedResult = results.map((result) => {
       return {
-        id: result.id,
+        id: parseInt(result.id),
         name: result.name,
         description: result.description,
-        price: result.price,
-        promo_price: result.promo_price,
+        price: Number(result.price),
+        promo_price: Number(result.promo_price),
         developer: result.developer,
         release_date: result.release_date,
         image_url: result.image_url,
-        quantity: result.quantity,
-        vote: result.vote,
+        quantity: parseInt(result.quantity),
+        vote: Number(result.vote),
         platforms: result.platforms ? result.platforms.split(",") : null,
         genres: result.genres ? result.genres.split(",") : null,
         media: result.media_urls
@@ -140,8 +142,185 @@ function show(req, res) {
       };
     });
 
-    return res.json(formattedResult);
+    return res.json(formattedResult[0]);
   });
+}
+
+/* store (create) */
+async function store(req, res) {
+  try {
+    // estraiamo i dati (slug, name, description, price, ecc) dal corpo della richiesta HTTP
+    const {
+      slug,
+      name,
+      description,
+      price,
+      promo_price,
+      developer,
+      release_date,
+      image_url,
+      quantity,
+      vote,
+      platform_ids,
+      genre_ids,
+      media,
+    } = req.body;
+
+    const releaseDateSql = new Date(release_date)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
+    // Validate slug uniqueness
+    const [existing] = await connection
+      .promise()
+      .query("SELECT id FROM videogames WHERE slug = ?", [slug]);
+    if (existing.length > 0) {
+      return res.status(400).json({ error: "Slug must be unique" });
+    }
+
+    if (platform_ids) {
+      const [results] = await connection
+        .promise()
+        .query("SELECT id FROM platforms WHERE id IN (?)", [platform_ids]);
+      if (results.length !== platform_ids.length) {
+        return res
+          .status(400)
+          .json({ error: "One or more platform_ids are invalid" });
+      }
+    }
+
+    if (genre_ids) {
+      const [results] = await connection
+        .promise()
+        .query("SELECT id FROM genres WHERE id IN (?)", [genre_ids]);
+      if (results.length !== genre_ids.length) {
+        return res
+          .status(400)
+          .json({ error: "One or more genre_ids are invalid" });
+      }
+    }
+
+    // esegue la query passando i valori ricevuti come parametri
+    await connection
+      .promise()
+      .query(
+        "INSERT INTO videogames (slug, name, description, price, promo_price, developer, release_date, image_url, quantity, vote) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+        [
+          slug,
+          name,
+          description,
+          price,
+          promo_price,
+          developer,
+          releaseDateSql,
+          image_url,
+          quantity,
+          vote,
+        ]
+      )
+      .then(async ([results]) => {
+        const createdId = results.insertId;
+
+        if (platform_ids) {
+          for (const platform_id of platform_ids) {
+            await connection
+              .promise()
+              .query(
+                "INSERT INTO platform_videogame (platform_id, videogame_id) VALUES (?, ?);",
+                [platform_id, createdId]
+              );
+          }
+        }
+
+        if (genre_ids) {
+          for (const genre_id of genre_ids) {
+            await connection
+              .promise()
+              .query(
+                "INSERT INTO videogame_genre (genre_id, videogame_id) VALUES (?, ?);",
+                [genre_id, createdId]
+              );
+          }
+        }
+
+        if (media) {
+          for (const item of media) {
+            await connection
+              .promise()
+              .query(
+                "INSERT INTO media (videogame_id, type, media_url) VALUES (?, ?, ?);",
+                [createdId, item.type, item.url]
+              );
+          }
+        }
+
+        return res.status(201).json({ created_id: createdId });
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+/* update (edit) */
+async function update(req, res) {
+  // estraiamo l'ID del post dalla URL
+  const { id } = req.params;
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+  // estraiamo i nuovi valori dal corpo della richiesta
+  const {
+    slug,
+    name,
+    description,
+    price,
+    promo_price,
+    developer,
+    release_date,
+    image_url,
+    quantity,
+    vote,
+  } = req.body;
+
+  const releaseDateSql = new Date(release_date)
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+
+  // esegue la query, passando i nuovi valori e l'ID
+  connection.query(
+    `
+    UPDATE videogames
+    SET slug = ?, name = ?, description = ?, price = ?, promo_price = ?, developer = ?, 
+        release_date = ?, image_url = ?, quantity = ?, vote = ?
+    WHERE id = ?
+  `,
+    [
+      slug,
+      name,
+      description,
+      price,
+      promo_price,
+      developer,
+      releaseDateSql,
+      image_url,
+      quantity,
+      vote,
+      id,
+    ],
+    (err, results) => {
+      // se si verifica un errore durante la query
+      if (err)
+        return res.status(500).json({ error: "Failed to update videogame" });
+      // se nessuna riga è stata modificata, il videogame con quell'ID non esiste
+      if (results.affectedRows === 0) {
+        // quindi restituisce un errore
+        return res.status(404).json({ error: "Videogame not found" });
+      }
+      // altrimenti conferma l'aggiornamento
+      res.status(204).send();
+    }
+  );
 }
 
 /* modify (partial edit) */
@@ -233,5 +412,29 @@ function modify(req, res) {
   });
 }
 
+/* destroy (delete) */
+function destroy(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+  // definiamo la query SQL per eliminare l'elemento dalla tabella "videogames" con l'ID specificato
+  const sql = "DELETE FROM videogames WHERE id = ? ;";
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(sql, [id], (err, results) => {
+    // gestisce eventuali errori durante l'esecuzione della query
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to delete videogame" });
+    }
+    // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
+    if (results.affectedRows === 0) {
+      // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
+      return res.status(404).json({ error: "Videogame not found" });
+    }
+    // se l'eliminazione è avvenuta con successo, restituisce una conferma
+    return res.status(204).send();
+  });
+}
+
 // esportiamo tutto
-export default { index, show, modify };
+export default { index, show, store, update, modify, destroy };

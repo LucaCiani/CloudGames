@@ -95,7 +95,7 @@ function index(req, res) {
 }
 
 /* show (read) */
-async function show(req, res) {
+function show(req, res) {
   // estrae l'ID dalla URL e lo converte da stringa a numero
   const id = parseInt(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
@@ -188,7 +188,7 @@ async function show(req, res) {
       };
     });
 
-    return res.json(formattedResult);
+    return res.json(formattedResult[0]);
   });
 }
 
@@ -201,104 +201,53 @@ async function store(req, res) {
       payment_provider,
       discount_id,
       currency,
-      billing_address,
       videogames,
     } = req.body;
 
-    if (
-      !total_amount ||
-      !videogames ||
-      !Array.isArray(videogames) ||
-      videogames.length === 0
-    ) {
-      console.log("Invalid body");
-      return res.status(400).json({ error: "Invalid request" });
-    }
-
-    console.log("Valid body");
-
     // verifica che il discount esista
     if (discount_id) {
-      if (isNaN(discount_id))
-        return res.status(400).json({ error: `Invalid discount id` });
-
       const [results] = await connection
         .promise()
         .query("SELECT * FROM discounts WHERE id = ?", [discount_id]);
 
       if (results.length === 0)
         return res.status(400).json({ error: `Invalid discount id` });
-
-      console.log("Discount exists");
-    }
-
-    // verifica che il billing address esista
-    if (billing_address) {
-      const { full_name, address_line, city, postal_code, country } =
-        billing_address;
-      if (
-        !postal_code ||
-        isNaN(postal_code) ||
-        !full_name ||
-        !address_line ||
-        !city ||
-        !country
-      )
-        return res.status(400).json({ error: `Invalid billing address id` });
-
-      console.log("Billing address valid");
     }
 
     // verifica i dati per videogames
     for (const videogame of videogames) {
       const { id, quantity } = videogame;
 
-      if (
-        !id ||
-        isNaN(id) ||
-        !quantity ||
-        isNaN(quantity) ||
-        id <= 0 ||
-        quantity <= 0
-      )
-        return res.status(400).json({ error: "Invalid request" });
-
       const [results] = await connection
         .promise()
         .query("SELECT * FROM videogames WHERE id = ?", [id]);
 
       if (results.length === 0)
-        return res.status(400).json({ error: "Invalid request" });
+        return res.status(400).json({ error: "Invalid videogame id" });
 
       if (quantity > results[0].quantity)
-        return res.status(400).json({ error: "Invalid request" });
+        return res.status(400).json({ error: "Invalid videogame quantity" });
     }
-
-    console.log("Videogames verified");
-
-    // definiamo la query SQL per inserire una nuova fattura
-    const sql = `
-      INSERT INTO invoices 
-      (total_amount, payment_provider, discount_id, currency, created_at, status)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
 
     // MySQL DATETIME without timezone, e.g. "2025-09-05 12:34:56"
     const created_at = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     // esegue la query passando i valori ricevuti come parametri
-    const [results] = await connection
-      .promise()
-      .query(sql, [
+    const [results] = await connection.promise().query(
+      `
+      INSERT INTO invoices 
+      (total_amount, payment_provider, discount_id, currency, created_at, status)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `,
+      [
         total_amount,
         payment_provider || null,
         discount_id || null,
         currency || "EUR",
         created_at,
         "pending",
-      ]);
-
-    console.log("Invoice inserted");
+      ]
+    );
 
     for (const videogame of videogames) {
       await connection
@@ -307,39 +256,234 @@ async function store(req, res) {
           "INSERT INTO invoice_videogame (invoice_id, videogame_id, quantity) VALUES (?, ?, ?)",
           [results.insertId, videogame.id, videogame.quantity]
         );
-
-      console.log("Videogame associations inserted");
-    }
-
-    if (billing_address) {
-      const { full_name, address_line, city, postal_code, country } =
-        billing_address;
-
-      await connection
-        .promise()
-        .query(
-          "INSERT INTO billing_addresses (invoice_id, full_name, address_line, city, postal_code, country, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-          [
-            results.insertId,
-            full_name,
-            address_line,
-            city,
-            postal_code,
-            country,
-            created_at,
-          ]
-        );
-
-      console.log("Billing address inserted");
     }
 
     // se l'inserimento ha successo, restituisce l'id
-    res.json({ created_id: results.insertId });
-  } catch (err) {
-    console.log(err);
+    return res.staut(201).json({ created_id: results.insertId });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
 
+/* update (edit) */
+async function update(req, res) {
+  try {
+    // estraiamo l'ID del post dalla URL
+    const { id } = req.params;
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+
+    const [existingInvoice] = await connection
+      .promise()
+      .query("SELECT * FROM invoices WHERE id = ?", [id]);
+    if (existingInvoice.length === 0)
+      return res.status(404).json({ error: "Invoice not found" });
+    // estraiamo i nuovi valori dal corpo della richiesta
+    const {
+      total_amount,
+      payment_provider,
+      discount_id,
+      currency,
+      status,
+      completed_at,
+      videogames,
+    } = req.body;
+    // definiamo la query SQL per aggiornare una fattura esistente
+
+    const completedAtSqlCompatible = new Date(completed_at)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
+    for (const videogame of videogames) {
+      const { id, quantity } = videogame;
+
+      const [results] = await connection
+        .promise()
+        .query("SELECT * FROM videogames WHERE id = ?", [id]);
+
+      if (results.length === 0)
+        return res.status(400).json({ error: "Invalid videogame id" });
+
+      if (quantity > results[0].quantity)
+        return res.status(400).json({ error: "Invalid videogame quantity" });
+    }
+
+    if (discount_id) {
+      const [results] = await connection
+        .promise()
+        .query("SELECT * FROM discounts WHERE id = ?", [discount_id]);
+      if (results.length === 0)
+        return res.status(400).json({ error: `Invalid discount id` });
+    }
+
+    // esegue la query, passando i nuovi valori e l'ID
+    await connection.promise().query(
+      `
+      UPDATE invoices
+      SET discount_id = ?, total_amount = ?, currency = ?, status = ?, completed_at = ?, payment_provider = ? WHERE id = ?
+    `,
+      [
+        discount_id,
+        total_amount,
+        currency,
+        status,
+        completedAtSqlCompatible,
+        payment_provider,
+        id,
+      ]
+    );
+
+    await connection
+      .promise()
+      .query("DELETE FROM invoice_videogame WHERE invoice_id = ?", [id]);
+    for (const videogame of videogames) {
+      await connection
+        .promise()
+        .query(
+          "INSERT INTO invoice_videogame (invoice_id, videogame_id, quantity) VALUES (?, ?, ?)",
+          [id, videogame.id, videogame.quantity]
+        );
+    }
+    // se tutto è andato bene, restituisce un messaggio di successo
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+/* modify (partial edit) */
+async function modify(req, res) {
+  try {
+    // estraiamo l'ID della fattura dalla URL e lo convertiamo in numero
+    const { id } = req.params;
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+
+    const [existingInvoice] = await connection
+      .promise()
+      .query("SELECT * FROM invoices WHERE id = ?", [id]);
+    if (existingInvoice.length === 0)
+      return res.status(404).json({ error: "Invoice not found" });
+    // estraiamo i nuovi valori dal corpo della richiesta
+    const {
+      total_amount,
+      payment_provider,
+      discount_id,
+      currency,
+      status,
+      completed_at,
+      videogames,
+    } = req.body;
+    // definiamo la query SQL per aggiornare una fattura esistente
+
+    const completedAtSqlCompatible = completed_at
+      ? new Date(completed_at).toISOString().slice(0, 19).replace("T", " ")
+      : null;
+
+    if (videogames) {
+      for (const videogame of videogames) {
+        const { id, quantity } = videogame;
+        const [results] = await connection
+          .promise()
+          .query("SELECT * FROM videogames WHERE id = ?", [id]);
+        if (results.length === 0)
+          return res.status(400).json({ error: "Invalid videogame id" });
+        if (quantity > results[0].quantity)
+          return res.status(400).json({ error: "Invalid videogame quantity" });
+      }
+    }
+
+    // inizializziamo due array:
+    // - 'fields' conterrà le parti dell'SQL da aggiornare
+    // - 'values' conterrà i nuovi valori corrispondenti
+    const fields = [];
+    const values = [];
+    // se è presente discount_id, lo aggiunge agli array
+    if (discount_id !== undefined) {
+      fields.push("discount_id = ?");
+      values.push(discount_id);
+    }
+    // se è presente completed_at, lo aggiunge agli array
+    if (completedAtSqlCompatible) {
+      fields.push("completed_at = ?");
+      values.push(completedAtSqlCompatible);
+    }
+    // se è presente total_amount, lo aggiunge agli array
+    if (total_amount !== undefined) {
+      fields.push("total_amount = ?");
+      values.push(total_amount);
+    }
+    // se è presente currency e non è vuoto, lo aggiunge agli array
+    if (currency !== undefined) {
+      fields.push("currency = ?");
+      values.push(currency);
+    }
+    // se è presente status e non è vuoto, lo aggiunge agli array
+    if (status !== undefined) {
+      fields.push("status = ?");
+      values.push(status);
+    }
+    // se è presente payment_provider e non è vuoto, lo aggiunge agli array
+    if (payment_provider !== undefined) {
+      fields.push("payment_provider = ?");
+      values.push(payment_provider);
+    }
+    // Se nessun campo è stato fornito per l'aggiornamento, restituisce errore
+    if (fields.length === 0)
+      return res.status(400).json({ error: "No fields to update" });
+    // Costruisce dinamicamente la query SQL usando solo i campi forniti
+    // Aggiunge l'ID alla fine dell'array dei valori (serve per il WHERE)
+    values.push(id);
+    // Esegue la query nel database
+    await connection
+      .promise()
+      .query(`UPDATE invoices SET ${fields.join(", ")} WHERE id = ?`, values);
+
+    if (videogames) {
+      await connection
+        .promise()
+        .query("DELETE FROM invoice_videogame WHERE invoice_id = ?", [id]);
+      for (const videogame of videogames) {
+        await connection
+          .promise()
+          .query(
+            "INSERT INTO invoice_videogame (invoice_id, videogame_id, quantity) VALUES (?, ?, ?)",
+            [id, videogame.id, videogame.quantity]
+          );
+      }
+    }
+    // se tutto è andato bene, restituisce un messaggio di successo
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+/* destroy (delete) */
+function destroy(req, res) {
+  // estrae l'ID dalla URL e lo converte da stringa a numero
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+
+  // esegue la query sul database, passando l'ID come parametro
+  connection.query(
+    "DELETE FROM invoices WHERE id = ?;",
+    [id],
+    (err, results) => {
+      // gestisce eventuali errori durante l'esecuzione della query
+      if (err) return res.status(500).json({ error: "Internal server error" });
+      // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
+      if (results.affectedRows === 0) {
+        // se nessuna riga è stata eliminata, l'ID non esiste nel database e ci restituisce questo errore
+        return res.status(404).json({ error: "Invoice not found" });
+      }
+      // se l'eliminazione è avvenuta con successo, restituisce una conferma
+      return res.status(204).send();
+    }
+  );
+}
+
 // esportiamo tutto
-export default { index, show, store };
+export default { index, show, store, update, modify, destroy };
