@@ -1,26 +1,10 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
-
-  // Carica il carrello dal localStorage all’avvio
-  useEffect(() => {
-    const savedCart = localStorage.getItem("videogames");
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        const validItems = parsedCart.filter(
-          (item) => item !== null && item !== undefined
-        );
-        setCartItems(validItems);
-      } catch (error) {
-        console.error("Errore nel parsing del localStorage:", error);
-        setCartItems([]);
-      }
-    }
-  }, []);
+  const { cartItems, setCartItems } = useContext(GlobalContext);
 
   // Rimuove un prodotto dal carrello
   const removeFromCart = (productId) => {
@@ -42,7 +26,7 @@ export default function CartPage() {
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
   };
 
-  // Totale del carrello
+  // Calcola il totale del carrello
   const totalPrice = cartItems.reduce((total, item) => {
     const price = item.promo_price || item.price || 0;
     const qty = item.cartQuantity || 1;
@@ -101,6 +85,7 @@ export default function CartPage() {
                     <span className="h5 text-white">€{price}</span>
                   )}
                 </div>
+
                 <div className="d-flex align-items-center gap-2">
                   {/* Tasti quantità */}
                   <button
