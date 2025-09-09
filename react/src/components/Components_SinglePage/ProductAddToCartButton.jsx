@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ProductAddToCartButton({
   quantity,
@@ -7,6 +7,11 @@ export default function ProductAddToCartButton({
   product,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Mostra il bottone solo se la route inizia con /videogame/
+  const isSingleGamePage = location.pathname.startsWith("/videogames/");
+
   // Stato locale per gli articoli nel carrello
   const [cartItems, setCartItems] = useState([]);
 
@@ -106,17 +111,19 @@ export default function ProductAddToCartButton({
   return (
     <div>
       {/* Bottone per aggiungere al carrello e aprire l'offcanvas */}
-      <button
-        className="btn-gradient w-100"
-        disabled={quantity === 0}
-        onClick={handleAddToCart}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
-      >
-        {quantity > 0 ? "Aggiungi al carrello" : "Non disponibile"}
-      </button>
+      {isSingleGamePage && (
+        <button
+          className="btn-gradient w-100"
+          disabled={quantity === 0}
+          onClick={handleAddToCart}
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasRight"
+          aria-controls="offcanvasRight"
+        >
+          {quantity > 0 ? "Aggiungi al carrello" : "Non disponibile"}
+        </button>
+      )}
       {/* Offcanvas Bootstrap per mostrare il carrello */}
       <div
         className="offcanvas offcanvas-end custom-cart"
