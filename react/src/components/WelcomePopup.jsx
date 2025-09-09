@@ -63,12 +63,8 @@ export default function WelcomePopup() {
       // Short delay then close & acknowledge
       setTimeout(() => acknowledgeAndClose(), 2000);
     } catch (err) {
-      if (err.status === 400) {
-        setError("Indirizzo email non valido");
-      } else {
-        console.error(err);
-        setError(err.message || "Errore durante l'iscrizione");
-      }
+      console.error(err);
+      setError(err.message || "Errore durante l'iscrizione");
     } finally {
       setSubmitting(false);
     }
