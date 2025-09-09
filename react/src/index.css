@@ -83,6 +83,11 @@
   cursor: pointer;
 }
 
+.modal-body input::placeholder {
+  color: #868686;
+  opacity: 1;
+}
+
 /* .jumbotron-text {
   position: absolute;
   top: 50%;
