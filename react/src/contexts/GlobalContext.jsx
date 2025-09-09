@@ -10,6 +10,8 @@ function GlobalProvider({ children }) {
     message: null,
   });
 
+  const [cartItems, setCartItems] = useState([]);
+
   useEffect(() => {
     fetch(videogamesApiUrl)
       .then((res) => res.json())
@@ -23,6 +25,8 @@ function GlobalProvider({ children }) {
         setVideogames,
         alert,
         setAlert,
+        cartItems,
+        setCartItems,
       }}
     >
       {children}
