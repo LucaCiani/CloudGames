@@ -67,6 +67,9 @@ export default function CartPage() {
       {cartItems.map((item, index) => {
         if (!item) return null;
 
+        const price = item.price || 0;
+        const promo_price = item.promo_price || null;
+
         return (
           <div key={item.id || index} className="mb-3 border-bottom pb-2">
             <div className="d-flex align-items-center">
@@ -82,9 +85,22 @@ export default function CartPage() {
               />
               <div className="flex-grow-1">
                 <h5 className="mb-1 text-white">{item.name}</h5>
-                <p className="mb-1 text-success fw-bold">
-                  € {item.promo_price || item.price || "0.00"}
-                </p>
+
+                {/* Prezzo aggiornato */}
+                <div className="mb-3">
+                  {promo_price ? (
+                    <>
+                      <span className="h5 text-success me-2">
+                        €{promo_price}
+                      </span>
+                      <span className="text-decoration-line-through text-secondary">
+                        €{price}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="h5 text-white">€{price}</span>
+                  )}
+                </div>
                 <div className="d-flex align-items-center gap-2">
                   {/* Tasti quantità */}
                   <button
@@ -109,11 +125,9 @@ export default function CartPage() {
                   </button>
                   {/* Cestino */}
                   <button
-                    className="btn btn-sm btn-danger ms-auto"
+                    className="bi bi-trash btn btn-sm btn-danger ms-auto"
                     onClick={() => removeFromCart(item.id)}
-                  >
-                    🗑️
-                  </button>
+                  ></button>
                 </div>
               </div>
             </div>
