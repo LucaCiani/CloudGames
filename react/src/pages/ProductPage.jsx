@@ -80,59 +80,68 @@ export default function ProductPage() {
         <h3 className="text-center mb-5">
           Prodotti correlati
         </h3>
-        <div className="row row-cols-sm-1 row-cols-md-3 row-cols-xl-4 px-5 mb-4 container-fluid">
+        <div className="row row-cols-sm-1 row-cols-md-3 row-cols-xl-4 px-5 mb-4 container-fluid justify-content-center">
 
-          {relatedVideogames.slice(0, 4).map((relatedVg) => {
-            return (
-              <div key={relatedVg.id} className="col" style={{
-                scale: 1
-              }} >
-                <Link
-                  to={`/videogames/${relatedVg.slug}`}
-                  className="text-decoration-none"
-                >
-                  <div className="card border-0 h-100">
-                    <img
-                      src={relatedVg.image_url}
-                      alt={relatedVg.name}
-                      className="card-img-top rounded"
-                      style={{
-                        height: "220px",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                      <span className="fw-bold text-truncate text-white">
-                        {relatedVg.name}
-                      </span>
-                      <span>
-                        {relatedVg.promo_price ? (
-                          <>
-                            <span className="text-success fw-bold">
-                              €
-                              {
-                                relatedVg.promo_price
-                              }
-                            </span>{" "}
-                            <span className="text-decoration-line-through text-secondary">
-                              €
-                              {
-                                relatedVg.price
-                              }
-                            </span>
-                          </>
-                        ) : (
-                          <>€{relatedVg.price}</>
-                        )}
-                      </span>
+
+          {relatedVideogames.length === 0 ? (
+            <div className="col-12 text-center text-secondary">
+              Nessun gioco correlato disponibile.
+            </div>
+          ) : (
+
+            relatedVideogames.slice(0, 4).map((relatedVg) => {
+              return (
+                <div key={relatedVg.id} className="col" style={{
+                  scale: 1
+                }}>
+                  <Link
+                    to={`/videogames/${relatedVg.slug}`}
+                    className="text-decoration-none"
+                  >
+                    <div className="card border-0 h-100">
+                      <img
+                        src={relatedVg.image_url}
+                        alt={relatedVg.name}
+                        className="card-img-top rounded"
+                        style={{
+                          height: "220px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="d-flex justify-content-between align-items-center mt-2 px-1">
+                        <span className="fw-bold text-truncate text-white">
+                          {relatedVg.name}
+                        </span>
+                        <span>
+                          {relatedVg.promo_price ? (
+                            <>
+                              <span className="text-success fw-bold">
+                                €
+                                {
+                                  relatedVg.promo_price
+                                }
+                              </span>{" "}
+                              <span className="text-decoration-line-through text-secondary">
+                                €
+                                {
+                                  relatedVg.price
+                                }
+                              </span>
+                            </>
+                          ) : (
+                            <>€{relatedVg.price}</>
+                          )}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            )
-          })}
+                  </Link>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
+
     </>
   );
 }
