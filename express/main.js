@@ -22,7 +22,7 @@ import genresRoute from "./routers/genresRoute.js";
 import mediaRoute from "./routers/mediaRoute.js";
 import platformsRoute from "./routers/platformsRoute.js";
 import emailsRoute from "./routers/emailsRoute.js";
-
+import chatRoute from "./routers/chatRoute.js"
 // Registriamo il body-parser integrato in express
 app.use(json());
 
@@ -43,6 +43,8 @@ app.use("/genres", genresRoute);
 app.use("/media", mediaRoute);
 app.use("/platforms", platformsRoute);
 app.use("/emails", emailsRoute);
+// chatbot
+app.use("/chat", chatRoute);
 
 // registro le middleware
 app.use(notFound);
