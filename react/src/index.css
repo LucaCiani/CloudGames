@@ -23,7 +23,6 @@
   width: 100%;
   height: 580px; /* fissa in pixel */
   position: relative;
-
   h1,
   p {
     text-shadow: 2px 2px 4px rgb(0, 0, 0);
@@ -44,6 +43,9 @@
   display: block;
 }
 
+/* ================================
+   🔍 SEARCH BAR
+================================ */
 .search-bar {
   display: inline-flex;
   align-items: center;
@@ -88,17 +90,6 @@
   opacity: 1;
 }
 
-/* .jumbotron-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  color: #fff;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgb(0, 0, 0);
-} */
-
 /* ================================
    🧭 NAVBAR
    (Solo override necessari)
@@ -124,8 +115,9 @@ body {
   background: var(--bs-color-dark);
 }
 
-/* MAIN */
-
+/* ================================
+   🏠 MAIN
+================================ */
 main {
   padding-top: 86px;
 }
@@ -133,15 +125,15 @@ main {
 /* ================================
    🃏 CARDS
 ================================ */
-
 .card {
   border: none !important;
   background: transparent !important;
   box-shadow: none;
 }
 
-/* PLATFORM-BADGE COLORS */
-
+/* ================================
+   🎮 PLATFORM-BADGE COLORS
+================================ */
 .badge {
   border-radius: 12px;
   padding: 0.5rem 1rem;
@@ -160,44 +152,36 @@ main {
   background-color: #e60012;
 }
 
-/* GENRE-BADGE COLORS */
-
+/* ================================
+   🏷️ GENRE-BADGE COLORS
+================================ */
 .genre-horror {
   background-color: #ff33a8;
 }
-
 .genre-action {
   background-color: #ff5733;
 }
-
 .genre-adventure {
   background-color: #33c1ff;
 }
-
 .genre-rpg {
   background-color: #8d33ff;
 }
-
 .genre-strategy {
   background-color: #4ccb36;
 }
-
 .genre-sports {
   background-color: #ffc300;
 }
-
 .genre-racing {
   background-color: #3375ff;
 }
-
 .genre-simulation {
   background-color: #a833ff;
 }
-
 .genre-puzzle {
   background-color: #33fff6;
 }
-
 .genre-fighting {
   background-color: #ff4444;
 }
@@ -207,7 +191,6 @@ main {
 ================================ */
 ul {
   padding: 0;
-
   li {
     list-style: none;
     padding: 0.5rem 0;
@@ -222,7 +205,6 @@ ul {
 .payment-methods {
   width: 100%;
   margin: 0;
-
   li {
     scale: 2;
   }
@@ -239,7 +221,6 @@ ul {
   justify-content: center;
   width: 30px;
   height: 30px;
-
   border-radius: 50%;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -276,7 +257,6 @@ ul {
 /* ================================
    🌟 GRADIENT BUTTON
 ================================ */
-
 .btn-gradient {
   background-image: linear-gradient(
     to right,
@@ -284,7 +264,6 @@ ul {
     #ba8b02 51%,
     #7c6215 100%
   );
-
   margin: 10px;
   padding: 15px 45px;
   text-align: center;
@@ -334,7 +313,9 @@ ul {
   }
 }
 
-/* Dropdown menu personalizzato */
+/* ================================
+   🔽 DROPDOWN MENU PERSONALIZZATO
+================================ */
 .dropdown-menu {
   background: rgba(15, 15, 15, 0.97);
   border: 1px solid #ba8b02;
@@ -356,6 +337,9 @@ ul {
   color: #fff;
 }
 
+/* ================================
+   🛒 OFFCANVAS CART
+================================ */
 .offcanvas.custom-cart {
   top: 86px;
   height: calc(100% - 56px);
@@ -369,4 +353,37 @@ ul {
   color: #ba8b02;
   border: none;
   cursor: pointer;
+}
+
+/* ================================
+   🟨 FILTRI E BOTTONI FILTRI
+================================ */
+.filter-btn {
+  min-width: 150px; /* larghezza minima uguale per tutti */
+  max-width: 200px; /* opzionale: larghezza massima */
+  width: 170px; /* larghezza fissa */
+  text-align: center;
+}
+
+/* ================================
+   📋 HOVER SU CARD LISTA
+================================ */
+.list-card-hover {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+}
+.list-card-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ================================
+   🃏 HOVER SU CARD GRIGLIA
+================================ */
+.card-hover {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+  will-change: transform;
+}
+.card-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
