@@ -42,7 +42,7 @@ function index(req, res) {
         name: result.name,
         description: result.description,
         price: Number(result.price),
-        promo_price: Number(result.promo_price),
+        promo_price: result.promo_price ? Number(result.promo_price) : null,
         developer: result.developer,
         release_date: result.release_date,
         image_url: result.image_url,
@@ -68,7 +68,7 @@ function index(req, res) {
       };
     });
 
-    res.json(formattedResult);
+    return res.json(formattedResult);
   });
 }
 
@@ -118,7 +118,7 @@ function show(req, res) {
         name: result.name,
         description: result.description,
         price: Number(result.price),
-        promo_price: Number(result.promo_price),
+        promo_price: result.promo_price ? Number(result.promo_price) : null,
         developer: result.developer,
         release_date: result.release_date,
         image_url: result.image_url,
@@ -261,7 +261,7 @@ async function store(req, res) {
       });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -312,15 +312,14 @@ async function update(req, res) {
     ],
     (err, results) => {
       // se si verifica un errore durante la query
-      if (err)
-        return res.status(500).json({ error: "Failed to update videogame" });
+      if (err) return res.status(500).json({ error: "Internal server error" });
       // se nessuna riga è stata modificata, il videogame con quell'ID non esiste
       if (results.affectedRows === 0) {
         // quindi restituisce un errore
         return res.status(404).json({ error: "Videogame not found" });
       }
       // altrimenti conferma l'aggiornamento
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
 }
@@ -353,27 +352,27 @@ function modify(req, res) {
     values.push(name);
   }
   // se è presente la descrizione e non è vuota, la aggiunge agli array
-  if (description && description.length > 0) {
+  if (description) {
     fields.push("description = ?");
     values.push(description);
   }
   // se è presente il prezzo, lo aggiunge agli array
-  if (price !== undefined) {
+  if (price) {
     fields.push("price = ?");
     values.push(price);
   }
   // se è presente il prezzo promozionale, lo aggiunge agli array
-  if (promo_price !== undefined) {
+  if (promo_price) {
     fields.push("promo_price = ?");
     values.push(promo_price);
   }
   // se è presente lo sviluppatore e non è vuoto, lo aggiunge agli array
-  if (developer && developer.length > 0) {
+  if (developer) {
     fields.push("developer = ?");
     values.push(developer);
   }
   // se è presente la data di rilascio e non è vuota, la aggiunge agli array
-  if (release_date && release_date.length > 0) {
+  if (release_date) {
     fields.push("release_date = ?");
     values.push(release_date);
   }
@@ -383,12 +382,12 @@ function modify(req, res) {
     values.push(image_url);
   }
   // se è presente la quantità, la aggiunge agli array
-  if (quantity !== undefined) {
+  if (quantity) {
     fields.push("quantity = ?");
     values.push(quantity);
   }
   // se è presente il voto, lo aggiunge agli array
-  if (vote !== undefined) {
+  if (vote) {
     fields.push("vote = ?");
     values.push(vote);
   }
@@ -403,14 +402,13 @@ function modify(req, res) {
   // Esegue la query nel database
   connection.query(sql, values, (err, results) => {
     // Gestisce eventuali errori della query
-    if (err)
-      return res.status(500).json({ error: "Failed to modify videogame" });
+    if (err) return res.status(500).json({ error: "Internal server error" });
     // Se nessun videogioco è stato modificato (id non trovato), restituisce errore 404
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "Videogame not found" });
     }
     // Se tutto è andato bene, restituisce un messaggio di successo
-    res.status(204).send();
+    return res.status(204).send();
   });
 }
 
@@ -426,7 +424,7 @@ function destroy(req, res) {
     // gestisce eventuali errori durante l'esecuzione della query
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: "Failed to delete videogame" });
+      return res.status(500).json({ error: "Internal server error" });
     }
     // verifichiamo se è stato effettivamente eliminato un elemento dalla tabella
     if (results.affectedRows === 0) {
