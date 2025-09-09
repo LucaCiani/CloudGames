@@ -51,7 +51,7 @@
   background: transparent; /* truly transparent */
   border: 1px solid var(--bs-link-color);
   border-right: none;
-  color: var(--bs-link-color);
+  color: #ba8b02;
   border-radius: 50px;
   height: 40px;
   width: 100%;
@@ -62,7 +62,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: var(--bs-body-color);
+  color: #ba8b02;
   padding: 8px 12px;
   flex: 1 1 auto;
   font-size: 1rem;
@@ -77,15 +77,15 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--bs-link-color);
-  color: var(--bs-color-dark);
+  background: #ba8b02;
+  color: #131212;
   border: none;
   cursor: pointer;
 }
 
 .modal-body input::placeholder {
-  color: #868686; /* Colore del placeholder */
-  opacity: 1; /* Assicurati che l'opacità sia 1 per una migliore visibilità */
+  color: #868686;
+  opacity: 1;
 }
 
 /* .jumbotron-text {
@@ -361,4 +361,12 @@ ul {
   height: calc(100% - 56px);
   background-color: #1f1d1dc9;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-icon-40 {
+    background:  rgba(15, 15, 15, 0.938);
+  font-size: 1.3rem;
+  color: #ba8b02;
+  border: none;
+  cursor: pointer;
 }

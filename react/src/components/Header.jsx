@@ -15,7 +15,7 @@ export default function HeaderComponent() {
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark sticky-top navbar-fixed-transparent">
-      <div className="container">
+      <div className="container d-flex justify-content-around align-items-center gap-4 ">
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
         </Link>
@@ -63,8 +63,8 @@ export default function HeaderComponent() {
               </NavLink>
             </li>
           </ul>
-          <form className="d-flex my-2 my-lg-0" onSubmit={handleSubmit}>
-            <div className="search-bar d-flex align-items-center gap-2">
+          <form className=" my-2 my-lg-0" onSubmit={handleSubmit}>
+            <div className="search-bar gap-2">
               <input
                 type="text"
                 placeholder="Search"
@@ -78,19 +78,14 @@ export default function HeaderComponent() {
           </form>
 
           <button
-            className="btn position-relative"
+            className=" cart-icon-40 position-relative d-flex align-items-center justify-content-center p-0 ms-3"
             type="button"
             aria-label="Apri carrello"
             data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasRight"
+            style={{ width: "40px", height: "40px" }}
           >
-            <i
-              className="fa-solid fa-cart-arrow-down"
-              style={{ fontSize: "1.5rem" }}
-            ></i>
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              3<span className="visually-hidden">prodotti nel carrello</span>
-            </span>
+            <i className="fa-solid fa-cart-arrow-down "></i>
           </button>
         </div>
       </div>
