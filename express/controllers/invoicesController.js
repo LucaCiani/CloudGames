@@ -5,92 +5,89 @@ import connection from "../db/connection.js";
 
 /* index (read all) */
 function index(req, res) {
-  // definiamo una query SQL che seleziona tutta la tabella "invoices"
-  const sql = `SELECT 
-    i.id,
-    i.total_amount,
-    i.currency,
-    i.status,
-    i.payment_provider,
-    i.created_at,
-    i.completed_at,
-    d.code AS discount_code,
-    d.discount_percentage,
-    d.expires_at AS discount_expiry,
-    GROUP_CONCAT(DISTINCT ba.id SEPARATOR '|') AS billing_address_id,
-    GROUP_CONCAT(DISTINCT ba.full_name SEPARATOR '|') AS billing_address_full_name,
-    GROUP_CONCAT(DISTINCT ba.address_line SEPARATOR '|') AS billing_address_address_line,
-    GROUP_CONCAT(DISTINCT ba.city SEPARATOR '|') AS billing_address_city,
-    GROUP_CONCAT(DISTINCT ba.postal_code SEPARATOR '|') AS billing_address_postal_code,
-    GROUP_CONCAT(DISTINCT ba.country SEPARATOR '|') AS billing_address_country,
-    GROUP_CONCAT(DISTINCT ba.created_at SEPARATOR '|') AS billing_address_created_at,
-    GROUP_CONCAT(DISTINCT v.id SEPARATOR '|') AS videogame_ids,
-    GROUP_CONCAT(DISTINCT v.description SEPARATOR '|') AS videogame_descriptions,
-    GROUP_CONCAT(DISTINCT v.name SEPARATOR '|') AS videogame_names,
-    GROUP_CONCAT(DISTINCT v.image_url SEPARATOR '|') AS videogame_image_urls,
-    GROUP_CONCAT(DISTINCT v.price SEPARATOR '|') AS videogame_prices,
-    GROUP_CONCAT(DISTINCT v.promo_price SEPARATOR '|') AS videogame_promo_prices,
-    GROUP_CONCAT(DISTINCT v.developer SEPARATOR '|') AS videogame_developers,
-    GROUP_CONCAT(DISTINCT v.release_date SEPARATOR '|') AS videogame_release_dates,
-    GROUP_CONCAT(DISTINCT v.vote SEPARATOR '|') AS videogame_votes,
-    GROUP_CONCAT(DISTINCT iv.quantity SEPARATOR '|') AS order_quantities
-  FROM invoices AS i
-  LEFT JOIN discounts AS d ON i.discount_id = d.id
-  LEFT JOIN billing_addresses AS ba ON ba.invoice_id = i.id
-  LEFT JOIN invoice_videogame AS iv ON iv.invoice_id = i.id
-  LEFT JOIN videogames AS v ON iv.videogame_id = v.id
-  GROUP BY i.id;`;
-  // eseguiamo la query usando la connessione al database
+  // Query con subselect JSON per evitare mismatch negli aggregati
+  const sql = `
+    SELECT 
+      i.id,
+      i.total_amount,
+      i.currency,
+      i.status,
+      i.payment_provider,
+      i.created_at,
+      i.completed_at,
+      d.code AS discount_code,
+      d.discount_percentage,
+      d.expires_at AS discount_expiry,
+      (
+        SELECT JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                   'id', v.id,
+                   'name', v.name,
+                   'description', v.description,
+                   'price', v.price,
+                   'promo_price', v.promo_price,
+                   'developer', v.developer,
+                   'release_date', DATE_FORMAT(v.release_date, '%Y-%m-%dT%H:%i:%s.000Z'),
+                   'vote', v.vote,
+                   'order_quantity', iv2.quantity
+                 ) ORDER BY v.id
+               )
+        FROM invoice_videogame AS iv2
+        JOIN videogames AS v ON v.id = iv2.videogame_id
+        WHERE iv2.invoice_id = i.id
+      ) AS items,
+      (
+        SELECT JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                   'id', ba2.id,
+                   'full_name', ba2.full_name,
+                   'address_line', ba2.address_line,
+                   'city', ba2.city,
+                   'postal_code', ba2.postal_code,
+                   'country', ba2.country,
+                   'created_at', ba2.created_at
+                 ) ORDER BY ba2.id
+               )
+        FROM billing_addresses AS ba2
+        WHERE ba2.invoice_id = i.id
+      ) AS billing_addresses
+    FROM invoices AS i
+    LEFT JOIN discounts AS d ON i.discount_id = d.id
+    ORDER BY i.id`;
+
   connection.query(sql, (err, results) => {
-    // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
     if (err) return res.status(500).json({ error: "Internal server error" });
-    // se non ci sono errori, restituiamo i risultati della query in formato JSON
-    const formattedResult = results.map((invoice) => {
+
+    const formatted = results.map((row) => {
+      const items = row.items ? JSON.parse(row.items) : null;
+      const billingAddresses = row.billing_addresses
+        ? JSON.parse(row.billing_addresses)
+        : null;
+
       return {
-        id: invoice.id,
-        total_amount: invoice.total_amount,
-        currency: invoice.currency,
-        status: invoice.status,
-        payment_provider: invoice.payment_provider,
-        created_at: invoice.created_at,
-        completed_at: invoice.completed_at,
-        videogames: invoice.videogame_ids
-          ? invoice.videogame_ids.split("|").map((videogame_id, i) => {
-              return {
-                id: videogame_id,
-                name: invoice.videogame_names.split("|")[i],
-                description: invoice.videogame_descriptions.split("|")[i],
-                price: invoice.videogame_prices.split("|")[i],
-                promo_price: invoice.videogame_promo_prices.split("|")[i],
-                developer: invoice.videogame_developers.split("|")[i],
-                release_date: invoice.videogame_release_dates.split("|")[i],
-                vote: invoice.videogame_votes.split("|")[i],
-                order_quantity: invoice.order_quantities.split("|")[i],
-              };
-            })
-          : null,
-        discount: invoice.discount_code
+        id: row.id,
+        total_amount: row.total_amount,
+        currency: row.currency,
+        status: row.status,
+        payment_provider: row.payment_provider,
+        created_at: row.created_at,
+        completed_at: row.completed_at,
+        videogames: items,
+        discount: row.discount_code
           ? {
-              code: invoice.discount_code,
-              discount_percentage: invoice.discount_percentage,
-              expires_at: invoice.discount_expiry,
+              code: row.discount_code,
+              discount_percentage: row.discount_percentage,
+              expires_at: row.discount_expiry,
             }
           : null,
-        billing_address: invoice.billing_address_id
-          ? {
-              id: invoice.billing_address_id,
-              full_name: invoice.billing_address_full_name,
-              address_line: invoice.billing_address_address_line,
-              city: invoice.billing_address_city,
-              postal_code: invoice.billing_address_postal_code,
-              country: invoice.billing_address_country,
-              created_at: invoice.billing_address_created_at,
-            }
-          : null,
+        billing_address:
+          billingAddresses && billingAddresses.length > 0
+            ? billingAddresses[0]
+            : null,
       };
     });
 
-    return res.json(formattedResult);
+    return res.json(formatted);
   });
 }
 
@@ -100,95 +97,89 @@ function show(req, res) {
   const id = parseInt(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
   // definiamo la query SQL per selezionare una fattura tramite ID
-  const sql = `SELECT 
-    i.id,
-    i.total_amount,
-    i.currency,
-    i.status,
-    i.payment_provider,
-    i.created_at,
-    i.completed_at,
-    d.code AS discount_code,
-    d.discount_percentage,
-    d.expires_at AS discount_expiry,
-    GROUP_CONCAT(DISTINCT ba.id SEPARATOR '|') AS billing_address_id,
-    GROUP_CONCAT(DISTINCT ba.full_name SEPARATOR '|') AS billing_address_full_name,
-    GROUP_CONCAT(DISTINCT ba.address_line SEPARATOR '|') AS billing_address_address_line,
-    GROUP_CONCAT(DISTINCT ba.city SEPARATOR '|') AS billing_address_city,
-    GROUP_CONCAT(DISTINCT ba.postal_code SEPARATOR '|') AS billing_address_postal_code,
-    GROUP_CONCAT(DISTINCT ba.country SEPARATOR '|') AS billing_address_country,
-    GROUP_CONCAT(DISTINCT ba.created_at SEPARATOR '|') AS billing_address_created_at,
-    GROUP_CONCAT(DISTINCT v.id SEPARATOR '|') AS videogame_ids,
-    GROUP_CONCAT(DISTINCT v.description SEPARATOR '|') AS videogame_descriptions,
-    GROUP_CONCAT(DISTINCT v.name SEPARATOR '|') AS videogame_names,
-    GROUP_CONCAT(DISTINCT v.image_url SEPARATOR '|') AS videogame_image_urls,
-    GROUP_CONCAT(DISTINCT v.price SEPARATOR '|') AS videogame_prices,
-    GROUP_CONCAT(DISTINCT v.promo_price SEPARATOR '|') AS videogame_promo_prices,
-    GROUP_CONCAT(DISTINCT v.developer SEPARATOR '|') AS videogame_developers,
-    GROUP_CONCAT(DISTINCT v.release_date SEPARATOR '|') AS videogame_release_dates,
-    GROUP_CONCAT(DISTINCT v.vote SEPARATOR '|') AS videogame_votes,
-    GROUP_CONCAT(DISTINCT iv.quantity SEPARATOR '|') AS order_quantities
-  FROM invoices AS i
-  LEFT JOIN discounts AS d ON i.discount_id = d.id
-  LEFT JOIN billing_addresses AS ba ON ba.invoice_id = i.id
-  LEFT JOIN invoice_videogame AS iv ON iv.invoice_id = i.id
-  LEFT JOIN videogames AS v ON iv.videogame_id = v.id
-  WHERE i.id = ?
-  GROUP BY i.id;`;
-  // esegue la query sul database, passando l'ID come parametro
+  const sql = `
+    SELECT 
+      i.id,
+      i.total_amount,
+      i.currency,
+      i.status,
+      i.payment_provider,
+      i.created_at,
+      i.completed_at,
+      d.code AS discount_code,
+      d.discount_percentage,
+      d.expires_at AS discount_expiry,
+      (
+        SELECT JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                   'id', v.id,
+                   'name', v.name,
+                   'description', v.description,
+                   'price', v.price,
+                   'promo_price', v.promo_price,
+                   'developer', v.developer,
+                   'release_date', DATE_FORMAT(v.release_date, '%Y-%m-%dT%H:%i:%s.000Z'),
+                   'vote', v.vote,
+                   'order_quantity', iv2.quantity
+                 ) ORDER BY v.id
+               )
+        FROM invoice_videogame AS iv2
+        JOIN videogames AS v ON v.id = iv2.videogame_id
+        WHERE iv2.invoice_id = i.id
+      ) AS items,
+      (
+        SELECT JSON_ARRAYAGG(
+                 JSON_OBJECT(
+                   'id', ba2.id,
+                   'full_name', ba2.full_name,
+                   'address_line', ba2.address_line,
+                   'city', ba2.city,
+                   'postal_code', ba2.postal_code,
+                   'country', ba2.country,
+                   'created_at', ba2.created_at
+                 ) ORDER BY ba2.id
+               )
+        FROM billing_addresses AS ba2
+        WHERE ba2.invoice_id = i.id
+      ) AS billing_addresses
+    FROM invoices AS i
+    LEFT JOIN discounts AS d ON i.discount_id = d.id
+    WHERE i.id = ?`;
+
   connection.query(sql, [id], (err, results) => {
-    // se si verifica un errore durante la connessione o l'esecuzione della query
     if (err) return res.status(500).json({ error: "Internal server error" });
-    // se non viene trovato alcun risultato (l'ID non esiste nella tabella "invoices"),
     if (results.length === 0)
       return res.status(404).json({ error: "Invoice not found" });
-    // se l'elemento è stato trovato, lo restituisce come risposta JSON
-    const formattedResult = results.map((invoice) => {
-      return {
-        id: invoice.id,
-        total_amount: invoice.total_amount,
-        currency: invoice.currency,
-        status: invoice.status,
-        payment_provider: invoice.payment_provider,
-        created_at: invoice.created_at,
-        completed_at: invoice.completed_at,
-        videogames: invoice.videogame_ids
-          ? invoice.videogame_ids.split("|").map((videogame_id, i) => {
-              return {
-                id: videogame_id,
-                name: invoice.videogame_names.split("|")[i],
-                description: invoice.videogame_descriptions.split("|")[i],
-                price: invoice.videogame_prices.split("|")[i],
-                promo_price: invoice.videogame_promo_prices.split("|")[i],
-                developer: invoice.videogame_developers.split("|")[i],
-                release_date: invoice.videogame_release_dates.split("|")[i],
-                vote: invoice.videogame_votes.split("|")[i],
-                order_quantity: invoice.order_quantities.split("|")[i],
-              };
-            })
-          : null,
-        discount: invoice.discount_code
-          ? {
-              code: invoice.discount_code,
-              discount_percentage: invoice.discount_percentage,
-              expires_at: invoice.discount_expiry,
-            }
-          : null,
-        billing_address: invoice.billing_address_id
-          ? {
-              id: invoice.billing_address_id,
-              full_name: invoice.billing_address_full_name,
-              address_line: invoice.billing_address_address_line,
-              city: invoice.billing_address_city,
-              postal_code: invoice.billing_address_postal_code,
-              country: invoice.billing_address_country,
-              created_at: invoice.billing_address_created_at,
-            }
-          : null,
-      };
-    });
 
-    return res.json(formattedResult[0]);
+    const row = results[0];
+    const items = row.items ? JSON.parse(row.items) : null;
+    const billingAddresses = row.billing_addresses
+      ? JSON.parse(row.billing_addresses)
+      : null;
+
+    const formatted = {
+      id: row.id,
+      total_amount: row.total_amount,
+      currency: row.currency,
+      status: row.status,
+      payment_provider: row.payment_provider,
+      created_at: row.created_at,
+      completed_at: row.completed_at,
+      videogames: items,
+      discount: row.discount_code
+        ? {
+            code: row.discount_code,
+            discount_percentage: row.discount_percentage,
+            expires_at: row.discount_expiry,
+          }
+        : null,
+      billing_address:
+        billingAddresses && billingAddresses.length > 0
+          ? billingAddresses[0]
+          : null,
+    };
+
+    return res.json(formatted);
   });
 }
 
@@ -259,7 +250,7 @@ async function store(req, res) {
     }
 
     // se l'inserimento ha successo, restituisce l'id
-    return res.staut(201).json({ created_id: results.insertId });
+    return res.status(201).json({ created_id: results.insertId });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });

@@ -6,7 +6,8 @@ import VideogamesPage from "./pages/VideogamesPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ProductPage from "./pages/ProductPage";
 import ScrollToTop from "./components/ScrollToTop";
-import CartPage from "./pages/CartPage"
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/videogames/:slug" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

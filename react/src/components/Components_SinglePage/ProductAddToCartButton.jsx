@@ -117,7 +117,6 @@ export default function ProductAddToCartButton({
       >
         {quantity > 0 ? "Aggiungi al carrello" : "Non disponibile"}
       </button>
-
       {/* Offcanvas Bootstrap per mostrare il carrello */}
       <div
         className="offcanvas offcanvas-end custom-cart"
@@ -164,9 +163,21 @@ export default function ProductAddToCartButton({
                         <h6 className="mb-1">
                           {item.name || item.title || "Nome non disponibile"}
                         </h6>
-                        <p className="mb-1 text-success fw-bold">
-                          € {item.promo_price || item.price || "0.00"}
-                        </p>
+
+                        <div className="mb-3">
+                          {item.promo_price ? (
+                            <>
+                              <span className="h6 text-success me-2">
+                                €{item.promo_price}
+                              </span>
+                              <span className="text-decoration-line-through text-secondary">
+                                €{item.price}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="h6 text-white">€{item.price}</span>
+                          )}
+                        </div>
                         {/* Gestione quantità e rimozione */}
                         <div className="d-flex align-items-center">
                           <button
@@ -196,11 +207,9 @@ export default function ProductAddToCartButton({
                             +
                           </button>
                           <button
-                            className="btn btn-sm btn-danger ms-auto"
+                            className="bi bi-trash btn btn-sm btn-danger ms-auto"
                             onClick={() => removeFromCart(item.id)}
-                          >
-                            🗑️
-                          </button>
+                          ></button>
                         </div>
                       </div>
                     </div>
