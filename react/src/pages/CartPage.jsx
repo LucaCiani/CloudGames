@@ -6,6 +6,9 @@ export default function CartPage() {
   const navigate = useNavigate();
   const { cartItems, setCartItems } = useContext(GlobalContext);
 
+  const body = document.body;
+  body.style.overflow = "auto";
+
   // Rimuove un prodotto dal carrello
   const removeFromCart = (productId) => {
     const newCartItems = cartItems.filter((item) => item.id !== productId);

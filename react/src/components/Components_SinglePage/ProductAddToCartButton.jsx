@@ -29,7 +29,7 @@ export default function ProductAddToCartButton({
         setCartItems([]);
       }
     }
-  }, []);
+  }, [setCartItems]);
 
   const handleAddToCart = () => {
     if (quantity === 0 || !product) return;
