@@ -1,9 +1,19 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function HeaderComponent() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  // Prendi cartItems dal GlobalContext
+  const { cartItems = [] } = useContext(GlobalContext);
+
+  // Calcola la quantità totale degli articoli
+  const totalQuantity = cartItems.reduce(
+    (sum, item) => sum + (item.cartQuantity || 1),
+    0
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +29,7 @@ export default function HeaderComponent() {
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
         </Link>
+
         <button
           className="navbar-toggler d-lg-none"
           type="button"
@@ -30,6 +41,7 @@ export default function HeaderComponent() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="collapsibleNavId">
           <ul className="navbar-nav m-auto mt-2 mt-lg-0">
             <li className="nav-item">
@@ -63,7 +75,8 @@ export default function HeaderComponent() {
               </NavLink>
             </li>
           </ul>
-          <form className=" my-2 my-lg-0" onSubmit={handleSubmit}>
+
+          <form className="my-2 my-lg-0" onSubmit={handleSubmit}>
             <div className="search-bar gap-2">
               <input
                 type="text"
@@ -78,14 +91,23 @@ export default function HeaderComponent() {
           </form>
 
           <button
-            className=" cart-icon-40 position-relative d-flex align-items-center justify-content-center p-0 ms-3"
+            className="cart-icon-40 position-relative d-flex align-items-center justify-content-center p-0 ms-3"
             type="button"
             aria-label="Apri carrello"
             data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasRight"
             style={{ width: "40px", height: "40px" }}
           >
-            <i className="fa-solid fa-cart-arrow-down "></i>
+            <i className="fa-solid fa-cart-arrow-down"></i>
+
+            {totalQuantity > 0 && (
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style={{ fontSize: "1rem", padding: "0.25em 0.4em" }}
+              >
+                {totalQuantity}
+              </span>
+            )}
           </button>
         </div>
       </div>

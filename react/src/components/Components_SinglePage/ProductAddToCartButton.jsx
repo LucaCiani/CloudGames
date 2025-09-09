@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function ProductAddToCartButton({
   quantity,
@@ -9,91 +10,70 @@ export default function ProductAddToCartButton({
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Mostra il bottone solo se la route inizia con /videogame/
   const isSingleGamePage = location.pathname.startsWith("/videogames/");
 
-  // Stato locale per gli articoli nel carrello
-  const [cartItems, setCartItems] = useState([]);
+  // Stato globale
+  const { cartItems, setCartItems } = useContext(GlobalContext);
 
-  // All'avvio, carica il carrello dal localStorage (persistenza locale)
+  // Manteniamo comunque il caricamento dal localStorage all'avvio, se vuoi persistere
   useEffect(() => {
     const savedCart = localStorage.getItem("videogames");
     if (savedCart) {
       try {
-        // Parsing del carrello e filtro di eventuali elementi null/undefined
-        const parsedCart = JSON.parse(savedCart);
-        const validItems = parsedCart.filter(
+        const parsedCart = JSON.parse(savedCart).filter(
           (item) => item !== null && item !== undefined
         );
-        setCartItems(validItems);
+        setCartItems(parsedCart);
       } catch (error) {
-        // Gestione errori di parsing
         console.error("Errore nel parsing del localStorage:", error);
         setCartItems([]);
       }
     }
   }, []);
 
-  // Funzione chiamata al click su "Aggiungi al carrello"
   const handleAddToCart = () => {
-    if (quantity === 0) return; // Non aggiungere se non disponibile
-    if (!product) return; // Non aggiungere se manca il prodotto
+    if (quantity === 0 || !product) return;
 
-    // Controlla se il prodotto è già presente nel carrello
     const existingItemIndex = cartItems.findIndex(
       (item) => item.id === product.id
     );
-
     let newCartItems;
 
     if (existingItemIndex > -1) {
-      // Se già presente, aumenta la quantità
       newCartItems = [...cartItems];
       newCartItems[existingItemIndex] = {
         ...newCartItems[existingItemIndex],
         cartQuantity: (newCartItems[existingItemIndex].cartQuantity || 1) + 1,
       };
     } else {
-      // Se non presente, aggiungilo con quantità 1
-      const productWithQuantity = {
-        ...product,
-        cartQuantity: 1,
-      };
-      newCartItems = [...cartItems, productWithQuantity];
+      newCartItems = [...cartItems, { ...product, cartQuantity: 1 }];
     }
 
-    // Aggiorna stato e localStorage
-    setCartItems(newCartItems);
+    setCartItems(newCartItems); // 👈 Aggiornamento globale
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
 
-    // Callback opzionale
     if (onAddToCart) onAddToCart();
 
-    // Debug
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
   };
-  // Calcola la quantità totale di tutti i prodotti nel carrello
+
   const totalQuantity = cartItems.reduce(
     (sum, item) => sum + (item.cartQuantity || 1),
     0
   );
-  // Rimuove un prodotto dal carrello
+
   const removeFromCart = (productId) => {
     const newCartItems = cartItems.filter((item) => item.id !== productId);
     setCartItems(newCartItems);
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
   };
 
-  // Modifica la quantità di un prodotto nel carrello
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity <= 0) {
-      // Se la quantità è zero o meno, rimuovi il prodotto
       removeFromCart(productId);
       return;
     }
-
-    // Aggiorna la quantità del prodotto selezionato
     const newCartItems = cartItems.map((item) =>
       item.id === productId ? { ...item, cartQuantity: newQuantity } : item
     );
@@ -101,7 +81,6 @@ export default function ProductAddToCartButton({
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
   };
 
-  // Calcola il totale del carrello (considerando eventuale prezzo promozionale)
   const totalPrice = cartItems.reduce((total, item) => {
     const price = item.promo_price || item.price || 0;
     const qty = item.cartQuantity || 1;
@@ -110,7 +89,6 @@ export default function ProductAddToCartButton({
 
   return (
     <div>
-      {/* Bottone per aggiungere al carrello e aprire l'offcanvas */}
       {isSingleGamePage && (
         <button
           className="btn-gradient w-100"
@@ -124,7 +102,7 @@ export default function ProductAddToCartButton({
           {quantity > 0 ? "Aggiungi al carrello" : "Non disponibile"}
         </button>
       )}
-      {/* Offcanvas Bootstrap per mostrare il carrello */}
+
       <div
         className="offcanvas offcanvas-end custom-cart"
         tabIndex="-1"
@@ -132,8 +110,8 @@ export default function ProductAddToCartButton({
         aria-labelledby="offcanvasRightLabel"
       >
         <div className="offcanvas-header">
-          {/* Titolo e pulsante di chiusura */}
-          <h5 id="offcanvasRightLabel">Carrello ({totalQuantity})</h5>
+          <h5 id="offcanvasRightLabel">Carrello ({totalQuantity})</h5>{" "}
+          {/* badge aggiornato */}
           <button
             type="button"
             className="btn-close text-reset"
@@ -142,7 +120,6 @@ export default function ProductAddToCartButton({
           ></button>
         </div>
         <div className="offcanvas-body">
-          {/* Se il carrello ha prodotti, li mostra */}
           {cartItems.length > 0 ? (
             <>
               {cartItems.map((item, index) => {
@@ -154,7 +131,6 @@ export default function ProductAddToCartButton({
                     className="mb-3 border-bottom pb-2"
                   >
                     <div className="d-flex">
-                      {/* Immagine prodotto */}
                       <img
                         src={item.image_url || item.image || "/placeholder.jpg"}
                         alt={item.name || item.title || "Prodotto"}
@@ -166,11 +142,9 @@ export default function ProductAddToCartButton({
                         className="me-3"
                       />
                       <div className="flex-grow-1">
-                        {/* Nome e prezzo */}
                         <h6 className="mb-1">
                           {item.name || item.title || "Nome non disponibile"}
                         </h6>
-
                         <div className="mb-3">
                           {item.promo_price ? (
                             <>
@@ -185,7 +159,6 @@ export default function ProductAddToCartButton({
                             <span className="h6 text-white">€{item.price}</span>
                           )}
                         </div>
-                        {/* Gestione quantità e rimozione */}
                         <div className="d-flex align-items-center">
                           <button
                             className="btn btn-sm btn-outline-secondary me-2"
@@ -223,7 +196,6 @@ export default function ProductAddToCartButton({
                   </div>
                 );
               })}
-              {/* Totale e pulsante checkout */}
               <div className=" pt-3 mt-3">
                 <h5 className="text-center">
                   Totale: € {totalPrice.toFixed(2)}
@@ -239,7 +211,6 @@ export default function ProductAddToCartButton({
               </div>
             </>
           ) : (
-            // Messaggio se il carrello è vuoto
             <p>Il carrello è vuoto.</p>
           )}
         </div>
