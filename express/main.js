@@ -21,6 +21,7 @@ import billingAddressesRoute from "./routers/billingAddressesRoute.js";
 import genresRoute from "./routers/genresRoute.js";
 import mediaRoute from "./routers/mediaRoute.js";
 import platformsRoute from "./routers/platformsRoute.js";
+import emailsRoute from "./routers/emailsRoute.js";
 
 // Registriamo il body-parser integrato in express
 app.use(json());
@@ -41,6 +42,7 @@ app.use("/billing-addresses", billingAddressesRoute);
 app.use("/genres", genresRoute);
 app.use("/media", mediaRoute);
 app.use("/platforms", platformsRoute);
+app.use("/emails", emailsRoute);
 
 // registro le middleware
 app.use(notFound);

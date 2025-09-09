@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 const GlobalContext = createContext();
 
 function GlobalProvider({ children }) {
-  const videogamesApiUrl = import.meta.env.VITE_BACKEND_VIDEOGAMES_URL;
+  const videogamesApiUrl = `${import.meta.env.VITE_API_BASE}/videogames`;
   const [videogames, setVideogames] = useState(null);
   const [alert, setAlert] = useState({
     type: "info",

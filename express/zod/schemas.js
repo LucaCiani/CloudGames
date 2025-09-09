@@ -195,6 +195,14 @@ export const invoicePatchSchema = z
   );
 
 /*
+ * ===================== Newsletter / Email Schemas =====================
+ */
+
+export const newsletterSubscribeSchema = z.object({
+  email: z.email(),
+});
+
+/*
  * ===================== Billing Address Schemas =====================
  * Table: billing_addresses (see db/schema.md)
  * created_at handled server-side.

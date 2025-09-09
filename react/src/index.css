@@ -8,11 +8,11 @@
    🌈 ROOT VARIABLES
 ================================ */
 :root {
-    --bs-body-bg: transparent;
-    --bs-body-color: #fff;
-    --bs-link-color: #f0ad4e;
-    --bs-link-hover-color: #ec971f;
-    --bs-color-dark: rgb(39, 39, 37);
+  --bs-body-bg: transparent;
+  --bs-body-color: #fff;
+  --bs-link-color: #f0ad4e;
+  --bs-link-hover-color: #ec971f;
+  --bs-color-dark: rgb(39, 39, 37);
 }
 
 /* ================================
@@ -20,67 +20,72 @@
    (Solo override necessari)
 ================================ */
 .header-img-container {
-    width: 100%;
-    height: 580px; /* fissa in pixel */
-    position: relative;
+  width: 100%;
+  height: 580px; /* fissa in pixel */
+  position: relative;
 
-    h1,
-    p {
-        text-shadow: 2px 2px 4px rgb(0, 0, 0);
-    }
+  h1,
+  p {
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+  }
 }
 
 .on-display {
-    display: block;
-    top: 10px;
-    left: 10px;
+  display: block;
+  top: 10px;
+  left: 10px;
 }
 
 .jumbotron-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 39%; /* sposta il focus più in basso */
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 39%; /* sposta il focus più in basso */
+  display: block;
 }
 
 .search-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent; /* truly transparent */
-    border: 1px solid var(--bs-link-color);
-    border-right: none;
-    color: var(--bs-link-color);
-    border-radius: 50px;
-    height: 40px;
-    width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent; /* truly transparent */
+  border: 1px solid var(--bs-link-color);
+  border-right: none;
+  color: var(--bs-link-color);
+  border-radius: 50px;
+  height: 40px;
+  width: 100%;
 }
 
 .search-bar input[type="search"],
 .search-bar input[type="text"] {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--bs-body-color);
-    padding: 8px 12px;
-    flex: 1 1 auto;
-    font-size: 1rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--bs-body-color);
+  padding: 8px 12px;
+  flex: 1 1 auto;
+  font-size: 1rem;
 }
 
 .search-bar input::placeholder {
-    opacity: 0.6;
-    color: var(--bs-link-color);
+  opacity: 0.6;
+  color: var(--bs-link-color);
 }
 
 .search-bar .search-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--bs-link-color);
-    color: var(--bs-color-dark);
-    border: none;
-    cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bs-link-color);
+  color: var(--bs-color-dark);
+  border: none;
+  cursor: pointer;
+}
+
+.modal-body input::placeholder {
+  color: #868686; /* Colore del placeholder */
+  opacity: 1; /* Assicurati che l'opacità sia 1 per una migliore visibilità */
 }
 
 /* .jumbotron-text {
@@ -99,30 +104,30 @@
    (Solo override necessari)
 ================================ */
 .navbar-fixed-transparent {
-    background: rgba(15, 15, 15, 0.938) !important;
-    backdrop-filter: blur(100px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
-    position: fixed;
-    top: 0;
-    width: 100%;
+  background: rgba(15, 15, 15, 0.938) !important;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.228);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .logo_navbar {
-    height: 60px;
-    object-fit: contain;
+  height: 60px;
+  object-fit: contain;
 }
 
 /* ================================
    📄 BODY
 ================================ */
 body {
-    background: var(--bs-color-dark);
+  background: var(--bs-color-dark);
 }
 
 /* MAIN */
 
 main {
-    padding-top: 86px;
+  padding-top: 86px;
 }
 
 /* ================================
@@ -130,142 +135,142 @@ main {
 ================================ */
 
 .card {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none;
 }
 
 /* PLATFORM-BADGE COLORS */
 
 .badge {
-    border-radius: 12px;
-    padding: 0.5rem 1rem;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
 }
 
 .playstation {
-    background-color: #003791;
+  background-color: #003791;
 }
 .xbox {
-    background-color: #107c10;
+  background-color: #107c10;
 }
 .pc {
-    background-color: #666666;
+  background-color: #666666;
 }
 .nintendo {
-    background-color: #e60012;
+  background-color: #e60012;
 }
 
 /* GENRE-BADGE COLORS */
 
 .genre-horror {
-    background-color: #ff33a8;
+  background-color: #ff33a8;
 }
 
 .genre-action {
-    background-color: #ff5733;
+  background-color: #ff5733;
 }
 
 .genre-adventure {
-    background-color: #33c1ff;
+  background-color: #33c1ff;
 }
 
 .genre-rpg {
-    background-color: #8d33ff;
+  background-color: #8d33ff;
 }
 
 .genre-strategy {
-    background-color: #4ccb36;
+  background-color: #4ccb36;
 }
 
 .genre-sports {
-    background-color: #ffc300;
+  background-color: #ffc300;
 }
 
 .genre-racing {
-    background-color: #3375ff;
+  background-color: #3375ff;
 }
 
 .genre-simulation {
-    background-color: #a833ff;
+  background-color: #a833ff;
 }
 
 .genre-puzzle {
-    background-color: #33fff6;
+  background-color: #33fff6;
 }
 
 .genre-fighting {
-    background-color: #ff4444;
+  background-color: #ff4444;
 }
 
 /* ================================
    👣 FOOTER
 ================================ */
 ul {
-    padding: 0;
+  padding: 0;
 
-    li {
-        list-style: none;
-        padding: 0.5rem 0;
-    }
+  li {
+    list-style: none;
+    padding: 0.5rem 0;
+  }
 }
 
 .text-main {
-    color: var(--bs-link-color);
-    text-decoration: none;
+  color: var(--bs-link-color);
+  text-decoration: none;
 }
 
 .payment-methods {
-    width: 100%;
-    margin: 0;
+  width: 100%;
+  margin: 0;
 
-    li {
-        scale: 2;
-    }
+  li {
+    scale: 2;
+  }
 }
 
 .social-container {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
 }
 
 .social-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    text-decoration: none;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .social-button:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .social-icon {
-    color: white;
-    font-size: 15px;
+  color: white;
+  font-size: 15px;
 }
 
 .ig {
-    background: linear-gradient(to right, #a855f7, #ec4899);
+  background: linear-gradient(to right, #a855f7, #ec4899);
 }
 .fb {
-    background: linear-gradient(to right, #281dc0, #250d7b);
+  background: linear-gradient(to right, #281dc0, #250d7b);
 }
 .discord {
-    background: linear-gradient(to right, #410249, #83069f);
+  background: linear-gradient(to right, #410249, #83069f);
 }
 .x {
-    background: linear-gradient(to right, #101010, #474748);
+  background: linear-gradient(to right, #101010, #474748);
 }
 .youtube {
-    background: linear-gradient(to right, #aa0000, #dd5858);
+  background: linear-gradient(to right, #aa0000, #dd5858);
 }
 .git {
-    background: linear-gradient(to right, #6e6c6c, #939297);
+  background: linear-gradient(to right, #6e6c6c, #939297);
 }
 
 /* ================================
@@ -273,34 +278,34 @@ ul {
 ================================ */
 
 .btn-gradient {
-    background-image: linear-gradient(
-        to right,
-        #7c6215 0%,
-        #ba8b02 51%,
-        #7c6215 100%
-    );
+  background-image: linear-gradient(
+    to right,
+    #7c6215 0%,
+    #ba8b02 51%,
+    #7c6215 100%
+  );
 
-    margin: 10px;
-    padding: 15px 45px;
-    text-align: center;
-    text-transform: uppercase;
-    transition: 1s;
-    background-size: 200% auto;
-    color: white;
-    box-shadow: 0 0 10px #000000;
-    border-radius: 7px;
-    display: block;
-    text-decoration: none;
-    border: none !important;
-    outline: none !important;
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 1s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 7px;
+  display: block;
+  text-decoration: none;
+  border: none !important;
+  outline: none !important;
 }
 
 .btn-gradient:hover {
-    background-position: right center; /* change the direction of the change here */
+  background-position: right center; /* change the direction of the change here */
 }
 
 .bg-main {
-    background-color: #ba8b02;
+  background-color: #ba8b02;
 }
 
 /* ================================
@@ -309,53 +314,51 @@ ul {
 
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
-    .header-img-container {
-        height: 320px;
-    }
+  .header-img-container {
+    height: 320px;
+  }
 }
 
 /* Mobile: max-width 575px */
 @media (max-width: 575px) {
-    .header-img-container {
-        height: 160px;
-    }
+  .header-img-container {
+    height: 160px;
+  }
 
-    .jumbo-description {
-        display: none;
-    }
+  .jumbo-description {
+    display: none;
+  }
 
-    .search-bar {
-        max-width: 320px;
-    }
+  .search-bar {
+    max-width: 320px;
+  }
 }
 
 /* Dropdown menu personalizzato */
 .dropdown-menu {
-    background: rgba(15, 15, 15, 0.97);
-    border: 1px solid #ba8b02;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    padding: 0.5rem 0;
+  background: rgba(15, 15, 15, 0.97);
+  border: 1px solid #ba8b02;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 0;
 }
 
 .dropdown-item {
-    color: #fff;
-    background: transparent;
-    transition: background 0.2s, color 0.2s;
+  color: #fff;
+  background: transparent;
+  transition: background 0.2s, color 0.2s;
 }
 
 .dropdown-item.active,
 .dropdown-item:active,
 .dropdown-item:hover {
-    background: linear-gradient(90deg, #7c6215 0%, #ba8b02 100%);
-    color: #fff;
+  background: linear-gradient(90deg, #7c6215 0%, #ba8b02 100%);
+  color: #fff;
 }
 
-
 .offcanvas.custom-cart {
-  top: 86px; 
-  height: calc(100% - 56px); 
+  top: 86px;
+  height: calc(100% - 56px);
   background-color: #1f1d1dc9;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
- 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
