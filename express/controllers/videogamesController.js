@@ -19,52 +19,52 @@ function index(req, res) {
     v.image_url,
     v.quantity,
     v.vote,
-    GROUP_CONCAT(DISTINCT p.name) AS platforms,
-    GROUP_CONCAT(DISTINCT g.name) AS genres,
-    GROUP_CONCAT(DISTINCT m.media_url) AS media_urls
+    (
+      SELECT JSON_ARRAYAGG(p.name ORDER BY p.id)
+      FROM platform_videogame pv
+      JOIN platforms p ON p.id = pv.platform_id
+      WHERE pv.videogame_id = v.id
+    ) AS platforms,
+    (
+      SELECT JSON_ARRAYAGG(g.name ORDER BY g.id)
+      FROM videogame_genre vg
+      JOIN genres g ON g.id = vg.genre_id
+      WHERE vg.videogame_id = v.id
+    ) AS genres,
+    (
+      SELECT JSON_ARRAYAGG(
+               JSON_OBJECT(
+                 'type', m.type,
+                 'url', m.media_url
+               ) ORDER BY m.id
+             )
+      FROM media m
+      WHERE m.videogame_id = v.id
+    ) AS media
   FROM videogames AS v
-  LEFT JOIN platform_videogame AS pv ON v.id = pv.videogame_id
-  LEFT JOIN platforms AS p ON pv.platform_id = p.id
-  LEFT JOIN videogame_genre AS vg ON v.id = vg.videogame_id
-  LEFT JOIN genres AS g ON vg.genre_id = g.id
-  LEFT JOIN media AS m ON v.id = m.videogame_id
-  GROUP BY v.id;`;
+  ORDER BY v.id`;
   // eseguiamo la query usando la connessione al database
   connection.query(sql, (err, results) => {
     // se c'è un errore durante l'esecuzione della query, restituiamo un errore 500 al client
     if (err) return res.status(500).json({ error: "Internal server error" });
     // se non ci sono errori, restituiamo i risultati della query in formato JSON
 
-    const formattedResult = results.map((result) => {
+    const formattedResult = results.map((row) => {
       return {
-        id: parseInt(result.id),
-        slug: result.slug,
-        name: result.name,
-        description: result.description,
-        price: Number(result.price),
-        promo_price: result.promo_price ? Number(result.promo_price) : null,
-        developer: result.developer,
-        release_date: result.release_date,
-        image_url: result.image_url,
-        quantity: parseInt(result.quantity),
-        vote: Number(result.vote),
-        platforms: result.platforms ? result.platforms.split(",") : null,
-        genres: result.genres ? result.genres.split(",") : null,
-        media: result.media_urls
-          ? result.media_urls.split(",").map((media_url) => {
-              if (media_url.includes("https://www.youtube.com/embed/")) {
-                return {
-                  type: "video",
-                  url: media_url,
-                };
-              } else {
-                return {
-                  type: "img",
-                  url: media_url,
-                };
-              }
-            })
-          : null,
+        id: parseInt(row.id),
+        slug: row.slug,
+        name: row.name,
+        description: row.description,
+        price: Number(row.price),
+        promo_price: row.promo_price != null ? Number(row.promo_price) : null,
+        developer: row.developer,
+        release_date: row.release_date,
+        image_url: row.image_url,
+        quantity: parseInt(row.quantity),
+        vote: Number(row.vote),
+        platforms: row.platforms ? JSON.parse(row.platforms) : null,
+        genres: row.genres ? JSON.parse(row.genres) : null,
+        media: row.media ? JSON.parse(row.media) : null,
       };
     });
 
@@ -91,17 +91,30 @@ function show(req, res) {
     v.image_url,
     v.quantity,
     v.vote,
-    GROUP_CONCAT(DISTINCT p.name) AS platforms,
-    GROUP_CONCAT(DISTINCT g.name) AS genres,
-    GROUP_CONCAT(DISTINCT m.media_url) AS media_urls
+    (
+      SELECT JSON_ARRAYAGG(p.name ORDER BY p.id)
+      FROM platform_videogame pv
+      JOIN platforms p ON p.id = pv.platform_id
+      WHERE pv.videogame_id = v.id
+    ) AS platforms,
+    (
+      SELECT JSON_ARRAYAGG(g.name ORDER BY g.id)
+      FROM videogame_genre vg
+      JOIN genres g ON g.id = vg.genre_id
+      WHERE vg.videogame_id = v.id
+    ) AS genres,
+    (
+      SELECT JSON_ARRAYAGG(
+               JSON_OBJECT(
+                 'type', m.type,
+                 'url', m.media_url
+               ) ORDER BY m.id
+             )
+      FROM media m
+      WHERE m.videogame_id = v.id
+    ) AS media
   FROM videogames AS v
-  LEFT JOIN platform_videogame AS pv ON v.id = pv.videogame_id
-  LEFT JOIN platforms AS p ON pv.platform_id = p.id
-  LEFT JOIN videogame_genre AS vg ON v.id = vg.videogame_id
-  LEFT JOIN genres AS g ON vg.genre_id = g.id
-  LEFT JOIN media AS m ON v.id = m.videogame_id
-  WHERE v.id = ?
-  GROUP BY v.id;`;
+  WHERE v.id = ?`;
   // esegue la query sul database, passando l'ID come parametro
   connection.query(sql, [id], (err, results) => {
     // se si verifica un errore durante la connessione o l'esecuzione della query
@@ -111,40 +124,25 @@ function show(req, res) {
       return res.status(404).json({ error: "Videogames not found" });
     // se l'elemento è stato trovato, lo restituisce come risposta JSON
 
-    const formattedResult = results.map((result) => {
-      return {
-        id: parseInt(result.id),
-        slug: result.slug,
-        name: result.name,
-        description: result.description,
-        price: Number(result.price),
-        promo_price: result.promo_price ? Number(result.promo_price) : null,
-        developer: result.developer,
-        release_date: result.release_date,
-        image_url: result.image_url,
-        quantity: parseInt(result.quantity),
-        vote: Number(result.vote),
-        platforms: result.platforms ? result.platforms.split(",") : null,
-        genres: result.genres ? result.genres.split(",") : null,
-        media: result.media_urls
-          ? result.media_urls.split(",").map((media_url) => {
-              if (media_url.includes("https://www.youtube.com/embed/")) {
-                return {
-                  type: "video",
-                  url: media_url,
-                };
-              } else {
-                return {
-                  type: "img",
-                  url: media_url,
-                };
-              }
-            })
-          : null,
-      };
-    });
+    const row = results[0];
+    const formatted = {
+      id: parseInt(row.id),
+      slug: row.slug,
+      name: row.name,
+      description: row.description,
+      price: Number(row.price),
+      promo_price: row.promo_price != null ? Number(row.promo_price) : null,
+      developer: row.developer,
+      release_date: row.release_date,
+      image_url: row.image_url,
+      quantity: parseInt(row.quantity),
+      vote: Number(row.vote),
+      platforms: row.platforms ? JSON.parse(row.platforms) : null,
+      genres: row.genres ? JSON.parse(row.genres) : null,
+      media: row.media ? JSON.parse(row.media) : null,
+    };
 
-    return res.json(formattedResult[0]);
+    return res.json(formatted);
   });
 }
 
