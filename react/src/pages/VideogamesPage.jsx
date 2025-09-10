@@ -28,6 +28,10 @@ export default function VideogamesPage() {
   // Stato per la ricerca testuale
   const search = query.get("search")?.toLowerCase() || "";
 
+  // Stato per la paginazione
+  const [currentPage, setCurrentPage] = useState(1); // Pagina corrente
+  const resultsPerPage = 21; // Risultati per pagina
+
   // Aggiorna la query string nell'URL quando cambiano i filtri/ordinamento
   useEffect(() => {
     const params = new URLSearchParams();
@@ -92,6 +96,23 @@ export default function VideogamesPage() {
       return 0;
     });
   }
+
+  // Calcola gli indici per la paginazione
+  const startIndex = (currentPage - 1) * resultsPerPage;
+  const endIndex = currentPage * resultsPerPage;
+
+  // Filtra i giochi per la pagina corrente
+  const paginatedGames = filteredGames?.slice(startIndex, endIndex);
+
+  // Calcola il numero totale di pagine
+  const totalPages = Math.ceil((filteredGames?.length || 0) / resultsPerPage);
+
+  // Funzioni per cambiare la pagina
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <>
@@ -160,6 +181,7 @@ export default function VideogamesPage() {
               </li>
             </ul>
           </div>
+
           {/* Dropdown piattaforme */}
           <div className="dropdown me-2">
             <button
@@ -198,6 +220,7 @@ export default function VideogamesPage() {
               ))}
             </ul>
           </div>
+
           {/* Bottone per mostrare solo giochi scontati */}
           <button
             className={`btn-gradient discounted-only ${
@@ -225,8 +248,8 @@ export default function VideogamesPage() {
         {/* VISTA GRIGLIA: mostra le card dei videogiochi */}
         {viewMode === "grid" && (
           <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-xl-3 g-5">
-            {filteredGames &&
-              filteredGames.map((videogame) => {
+            {paginatedGames &&
+              paginatedGames.map((videogame) => {
                 return (
                   <div key={videogame.id} className="col">
                     <Link
@@ -273,8 +296,8 @@ export default function VideogamesPage() {
         {/* VISTA LISTA: mostra i videogiochi in formato lista */}
         {viewMode === "list" && (
           <div className="list-group">
-            {filteredGames &&
-              filteredGames.map((videogame) => {
+            {paginatedGames &&
+              paginatedGames.map((videogame) => {
                 return (
                   <Link
                     key={videogame.id}
@@ -359,8 +382,46 @@ export default function VideogamesPage() {
             Nessun risultato trovato.
           </div>
         )}
+
+        {/* Controlli della paginazione */}
+        <div className="d-flex justify-content-center gap-2 mt-4">
+          {/* Bottone Precedente */}
+          <button
+            className="btn btn-outline-warning btn-sm"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+
+          {/* Pagine numeriche */}
+          {Array.from({ length: totalPages }).map((_, index) => {
+            const page = index + 1;
+            return (
+              <button
+                key={page}
+                className={`btn btn-sm ${
+                  page === currentPage
+                    ? "btn-warning text-white" // Sfondo dorato per la pagina attiva
+                    : "btn-outline-warning" // Contorno dorato per le altre
+                }`}
+                onClick={() => goToPage(page)}
+              >
+                {page}
+              </button>
+            );
+          })}
+
+          {/* Bottone Successivo */}
+          <button
+            className="btn btn-outline-warning btn-sm"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
+        </div>
       </div>
-      {/* Bottone per aggiungere al carrello (presumibilmente visibile solo in alcune pagine) */}
       <ProductAddToCartButton />
     </>
   );
