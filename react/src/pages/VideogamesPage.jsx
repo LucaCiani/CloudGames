@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useGlobalContext from "../contexts/useGlobalContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProductAddToCartButton from "../components/Components_SinglePage/ProductAddToCartButton";
-
+import ChatBot from "../components/ChatBot";
 // Hook custom per leggere i parametri della query string
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -433,6 +433,7 @@ export default function VideogamesPage() {
         </div>
       </div>
       <ProductAddToCartButton />
+      <ChatBot />
     </>
   );
 }

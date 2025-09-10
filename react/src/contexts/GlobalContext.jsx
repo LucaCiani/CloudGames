@@ -12,6 +12,9 @@ function GlobalProvider({ children }) {
 
   const [cartItems, setCartItems] = useState([]);
 
+  // Aggiungiamo lo stato per il chatbot
+  const [chatMessages, setChatMessages] = useState([]);
+
   useEffect(() => {
     fetch(videogamesApiUrl)
       .then((res) => res.json())
@@ -27,6 +30,9 @@ function GlobalProvider({ children }) {
         setAlert,
         cartItems,
         setCartItems,
+        // Aggiungiamo chatMessages al context
+        chatMessages,
+        setChatMessages,
       }}
     >
       {children}
