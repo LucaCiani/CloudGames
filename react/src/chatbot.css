@@ -1,3 +1,6 @@
+/* ================================
+   Contenitore principale del chatbot (posizione fissa in basso a destra)
+================================ */
 .chatbot-container {
   position: fixed;
   bottom: 50px;
@@ -5,6 +8,9 @@
   z-index: 100;
 }
 
+/* ================================
+   Bottone per aprire/chiudere la chat (icona tonda)
+================================ */
 .chatbot-toggle-btn {
   border: 2px solid #ec971f;
   border-radius: 50%;
@@ -15,6 +21,9 @@
   background: rgb(39, 39, 37);
 }
 
+/* ================================
+   Finestra della chat (card principale)
+================================ */
 .chatbot-window {
   position: absolute;
   bottom: 85px;
@@ -29,9 +38,12 @@
   flex-direction: column;
 }
 
+/* ================================
+   Header della chat (titolo)
+================================ */
 .chatbot-header {
   background-color: #ec971f;
-  color: #fff;
+  color: #1d1c1cd5;
   padding: 12px;
   border-radius: 6px 6px 0 0;
   font-weight: bold;
@@ -39,13 +51,36 @@
   letter-spacing: 0.5px;
 }
 
+/* ================================
+   Area messaggi (scrollabile)
+   Modifica qui per cambiare la scrollbar o il padding dei messaggi
+================================ */
 .chatbot-messages {
   flex: 1;
   padding: 12px;
   overflow-y: auto;
   background-color: transparent;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ec971f rgb(39, 39, 37); /* Firefox */
 }
 
+/* Chrome, Edge, Safari: personalizzazione scrollbar */
+.chatbot-messages::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+  background: rgb(39, 39, 37);
+}
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background: #ec971f;
+  border-radius: 8px;
+}
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: #f0ad4e;
+}
+
+/* ================================
+   Messaggio singolo (base)
+================================ */
 .chatbot-message {
   margin-bottom: 10px;
   padding: 8px 12px;
@@ -55,23 +90,36 @@
   font-size: 1rem;
 }
 
+/* ================================
+   Messaggio utente (allineato a destra, colore arancio)
+================================ */
 .chatbot-message.user {
   background-color: #ec971f;
   color: #222222d3;
   align-self: flex-end;
 }
 
+/* ================================
+   Messaggio bot (allineato a sinistra, colore giallo)
+================================ */
 .chatbot-message.bot {
   background-color: #f0ad4e;
   color: #222222d3;
   align-self: flex-start;
 }
 
+/* ================================
+   Messaggio di caricamento ("Bot sta scrivendo...")
+================================ */
 .chatbot-loading {
   color: #f0ad4e;
   font-style: italic;
 }
 
+/* ================================
+   Area input (campo testo + bottone invio)
+   Modifica qui per cambiare stile input o bottone
+================================ */
 .chatbot-input-area {
   padding: 10px;
   border-top: 1.5px solid #ec971f;
@@ -81,6 +129,7 @@
   border-radius: 0 0 12px 12px;
 }
 
+/* Campo input testo */
 .chatbot-input {
   flex: 1;
   padding: 8px;
@@ -90,12 +139,12 @@
   background: rgb(39, 39, 37);
   color: #fff;
 }
-
 .chatbot-input::placeholder {
   color: #f0ad4e;
   opacity: 0.8;
 }
 
+/* Bottone invio */
 .chatbot-send-btn {
   background-color: #ec971f;
   color: #fff;
@@ -106,7 +155,6 @@
   font-size: 15px;
   transition: background 0.2s;
 }
-
 .chatbot-send-btn:hover {
   background: #f0ad4e;
   color: #222;
