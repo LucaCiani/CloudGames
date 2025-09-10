@@ -2,9 +2,7 @@ import Jumbotron from "../components/Jumbotron";
 import Highlighted from "../components/Highlighted";
 import HomePageDiscount from "../components/HomePageDiscount";
 import ProductAddToCartButton from "../components/Components_SinglePage/ProductAddToCartButton";
-/* const handleAnimationComplete = () => {
-  console.log("Animation completed!");
-}; */
+import ChatBot from "../components/ChatBot";
 
 export default function HomePage() {
   return (
@@ -12,8 +10,8 @@ export default function HomePage() {
       <Jumbotron />
       <Highlighted />
       <HomePageDiscount />
-      <ProductAddToCartButton
-      />
+      <ProductAddToCartButton />
+      <ChatBot />
     </>
   );
 }

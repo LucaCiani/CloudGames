@@ -1,12 +1,33 @@
 import "../aboutus.css";
 
 export default function AboutUsPage() {
+  // Aggiungi un id univoco (iid) a ciascun membro del team
   const teamMembers = [
-    { name: "Luca", role: "Full-Stack Developer", github: "LucaCiani" },
-    { name: "Angelo", role: "Full-Stack Developer", github: "angelo-lepore" },
-    { name: "Umberto", role: "Full-Stack Developer", github: "UmbertoCarbone" },
-    { name: "Francesco", role: "Full-Stack Developer", github: "francescoboschelle" },
-    { name: "Simone", role: "Full-Stack Developer", github: "simone-scotto" },
+    { id: 1, name: "Luca", role: "Full-Stack Developer", github: "LucaCiani" },
+    {
+      id: 2,
+      name: "Angelo",
+      role: "Full-Stack Developer",
+      github: "angelo-lepore",
+    },
+    {
+      id: 3,
+      name: "Umberto",
+      role: "Full-Stack Developer",
+      github: "UmbertoCarbone",
+    },
+    {
+      id: 4,
+      name: "Francesco",
+      role: "Full-Stack Developer",
+      github: "francescoboschelle",
+    },
+    {
+      id: 5,
+      name: "Simone",
+      role: "Full-Stack Developer",
+      github: "simone-scotto",
+    },
   ];
 
   return (
@@ -54,7 +75,7 @@ export default function AboutUsPage() {
           <h3 className="github-title">Il nostro team su GitHub</h3>
           <div className="github-container">
             {teamMembers.map((member) => (
-              <div className="github-member">
+              <div className="github-member" key={member.id}>
                 <a
                   href={`https://github.com/${member.github}`}
                   target="_blank"
