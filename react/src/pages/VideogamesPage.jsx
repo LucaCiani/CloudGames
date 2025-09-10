@@ -321,7 +321,7 @@ export default function VideogamesPage() {
                         {/* Sezione dei Generi */}
                         <div className="mb-2">
                           <div
-                            className="d-flex gap-2 flex-wrap" // Usa flexbox con wrapping per evitare che vadano a capo
+                            className="d-flex gap-2 flex-wrap"
                             style={{ overflow: "hidden", whiteSpace: "nowrap" }}
                           >
                             {videogame.genres && videogame.genres.length > 0
@@ -402,8 +402,8 @@ export default function VideogamesPage() {
                 key={page}
                 className={`btn btn-sm ${
                   page === currentPage
-                    ? "btn-warning text-white" // Sfondo dorato per la pagina attiva
-                    : "btn-outline-warning" // Contorno dorato per le altre
+                    ? "btn-warning text-white"
+                    : "btn-outline-warning"
                 }`}
                 onClick={() => goToPage(page)}
               >
