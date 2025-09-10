@@ -30,7 +30,7 @@ export default function VideogamesPage() {
 
   // Stato per la paginazione
   const [currentPage, setCurrentPage] = useState(1); // Pagina corrente
-  const resultsPerPage = 21; // Risultati per pagina
+  const resultsPerPage = 15; // Risultati per pagina
 
   // Aggiorna la query string nell'URL quando cambiano i filtri/ordinamento
   useEffect(() => {
@@ -397,6 +397,16 @@ export default function VideogamesPage() {
           {/* Pagine numeriche */}
           {Array.from({ length: totalPages }).map((_, index) => {
             const page = index + 1;
+
+            // Calcoliamo il range di pagine da visualizzare
+            const start = Math.max(currentPage - 2, 1); // 2 pagine prima della corrente
+            const end = Math.min(currentPage + 2, totalPages); // 2 pagine dopo la corrente
+
+            // Verifica se la pagina è dentro il range da visualizzare
+            if (page < start || page > end) {
+              return null; // Non renderizzare la pagina se non è nel range
+            }
+
             return (
               <button
                 key={page}
