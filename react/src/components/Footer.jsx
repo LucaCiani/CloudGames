@@ -178,7 +178,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-6 mx-auto d-flex justify-content-end">
+        <div className="col-6 mx-auto d-flex justify-content-center">
           <img
             src="/trustpilot.png"
             alt="trustpilot"
