@@ -200,7 +200,9 @@ export default function VideogamesPage() {
           </div>
           {/* Bottone per mostrare solo giochi scontati */}
           <button
-            className={`btn-gradient${discountedOnly ? " active" : ""}`}
+            className={`btn-gradient discounted-only ${
+              discountedOnly ? "active" : ""
+            }`}
             onClick={() => setDiscountedOnly((prev) => !prev)}
           >
             Solo scontati

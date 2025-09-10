@@ -287,6 +287,14 @@ ul {
   background-color: #ba8b02;
 }
 
+.discounted-only.active {
+  color: white;
+}
+
+.discounted-only {
+  color: black;
+}
+
 /* ================================
    📱 MEDIA QUERIES
 ================================ */
