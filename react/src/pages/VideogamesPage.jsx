@@ -200,9 +200,7 @@ export default function VideogamesPage() {
           </div>
           {/* Bottone per mostrare solo giochi scontati */}
           <button
-            className={`btn-gradient${
-              discountedOnly ? " active" : ""
-            }`}
+            className={`btn-gradient${discountedOnly ? " active" : ""}`}
             onClick={() => setDiscountedOnly((prev) => !prev)}
           >
             Solo scontati
@@ -261,7 +259,6 @@ export default function VideogamesPage() {
                               <>€{videogame.price}</>
                             )}
                           </span>
-                          
                         </div>
                       </div>
                     </Link>
@@ -295,12 +292,41 @@ export default function VideogamesPage() {
                       />
                       <div className="flex-grow-1">
                         <h6 className="mb-1 text-white">{videogame.name}</h6>
-                        <p className="mb-1 small">
-                          {videogame.description?.substring(0, 200)}...
-                        </p>
-                        <small className="">
-                          Sviluppatore: {videogame.developer || "N/A"}
-                        </small>
+
+                        {/* Sezione dei Generi */}
+                        <div className="mb-2">
+                          <div
+                            className="d-flex gap-2 flex-wrap" // Usa flexbox con wrapping per evitare che vadano a capo
+                            style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+                          >
+                            {videogame.genres && videogame.genres.length > 0
+                              ? videogame.genres.map((genre, index) => (
+                                  <span
+                                    key={index}
+                                    className={`badge genre-${genre.toLowerCase()}`}
+                                    style={{
+                                      display: "inline-block",
+                                      whiteSpace: "nowrap",
+                                      fontSize: "0.65rem",
+                                      padding: "0.3rem 0.6rem",
+                                    }}
+                                  >
+                                    {genre}
+                                  </span>
+                                ))
+                              : "N/A"}
+                          </div>
+                        </div>
+
+                        {/* Sezione del Voto */}
+                        <div className="mb-2">
+                          <span className="me-2">
+                            ⭐{" "}
+                            {videogame.vote
+                              ? parseFloat(videogame.vote).toFixed(1)
+                              : "N/A"}
+                          </span>
+                        </div>
                       </div>
                       <div className="text-end">
                         {videogame.promo_price ? (
