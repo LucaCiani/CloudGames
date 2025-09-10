@@ -15,8 +15,8 @@ export default function Footer() {
     <div className="container">
       <hr />
 
-      <div className="row d-flex justify-content-between my-5">
-        <div className="col-4 d-flex justify-content-center">
+      <div className="row row-cols-1 row-cols-md-3 d-flex justify-content-between my-5">
+        <div className="col">
           <ul>
             <li>
               <h3>About</h3>
@@ -48,7 +48,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-4 d-flex justify-content-center">
+        <div className="col">
           <ul>
             <li>
               <h3>Informazioni</h3>
@@ -80,7 +80,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-4 d-flex justify-content-center">
+        <div className="col">
           <ul>
             <li>
               <h3>Follow Us</h3>
