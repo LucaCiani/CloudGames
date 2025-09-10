@@ -8,6 +8,13 @@ export default function CartPage() {
 
   const body = document.body;
   body.style.overflow = "auto";
+  body.style.paddingRight = "0px";
+
+  const header = document.querySelector(".navbar");
+  if (header) {
+    header.style.marginRight = "0px";
+    header.style.paddingRight = "0px";
+  }
 
   // Rimuove un prodotto dal carrello
   const removeFromCart = (productId) => {
@@ -125,16 +132,20 @@ export default function CartPage() {
 
       <div className="mt-4 text-center">
         <h4>Totale: € {totalPrice.toFixed(2)}</h4>
-        <div className="d-flex justify-content-center gap-2 mt-3">
-          <button
-            className="btn-gradient"
-            onClick={() => navigate("/checkout")}
-          >
-            Procedi al checkout
-          </button>
-          <Link to="/" className="btn-gradient">
-            Torna allo shop
-          </Link>
+        <div className="row mt-3">
+          <div className="col-md-6 col-12">
+            <button
+              className="btn-gradient w-100"
+              onClick={() => navigate("/checkout")}
+            >
+              Procedi al checkout
+            </button>
+          </div>
+          <div className="col-md-6 col-12">
+            <Link to="/" className="btn-gradient w-100">
+              Torna allo shop
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function HeaderComponent() {
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark sticky-top navbar-fixed-transparent">
-      <div className="container d-flex justify-content-around align-items-center gap-4 ">
+      <div className="container d-flex justify-content-between align-items-center gap-4 ">
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
         </Link>
@@ -76,7 +76,7 @@ export default function HeaderComponent() {
             </li>
           </ul>
 
-          <form className="my-2 my-lg-0" onSubmit={handleSubmit}>
+          <form className="my-4 my-lg-0" onSubmit={handleSubmit}>
             <div className="search-bar gap-2">
               <input
                 type="text"
@@ -91,7 +91,7 @@ export default function HeaderComponent() {
           </form>
 
           <button
-            className="cart-icon-40 position-relative d-flex align-items-center justify-content-center p-0 ms-3"
+            className="cart-icon-40 position-relative d-flex align-items-center justify-content-center p-0 ms-3 mb-3 mb-md-0"
             type="button"
             aria-label="Apri carrello"
             data-bs-toggle="offcanvas"

@@ -17,7 +17,7 @@ export default function Footer() {
 
       <div className="row row-cols-1 row-cols-md-3 d-flex justify-content-between my-5">
         <div className="col">
-          <ul>
+          <ul className="footer-text">
             <li>
               <h3>About</h3>
             </li>
@@ -49,7 +49,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="col">
-          <ul>
+          <ul className="footer-text">
             <li>
               <h3>Informazioni</h3>
             </li>
@@ -81,13 +81,13 @@ export default function Footer() {
           </ul>
         </div>
         <div className="col">
-          <ul>
+          <ul className="footer-text">
             <li>
               <h3>Follow Us</h3>
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button ig">
                     <FontAwesomeIcon
                       icon={faInstagram}
@@ -100,7 +100,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button fb">
                     <FontAwesomeIcon
                       icon={faFacebook}
@@ -113,7 +113,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button discord">
                     <FontAwesomeIcon icon={faDiscord} className="social-icon" />
                   </div>
@@ -123,7 +123,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button x">
                     <FontAwesomeIcon
                       icon={faXTwitter}
@@ -136,7 +136,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button youtube">
                     <FontAwesomeIcon icon={faYoutube} className="social-icon" />
                   </div>
@@ -146,7 +146,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center footer-icons gap-3">
                   <div className="social-button git">
                     <FontAwesomeIcon icon={faGithub} className="social-icon" />
                   </div>

@@ -153,10 +153,10 @@ export default function Highlighted() {
                       <span className="fw-bold text-truncate">
                         {videogame.name}
                       </span>
-                      <span className="fw-bold">
+                      <span>
                         {videogame.promo_price ? (
                           <>
-                            <span className="text-success">
+                            <span className="text-success fw-bold">
                               €{videogame.promo_price}
                             </span>{" "}
                             <span className="text-decoration-line-through text-secondary">
@@ -179,7 +179,7 @@ export default function Highlighted() {
         <button
           onClick={handleNext}
           className="btn btn-light position-absolute top-50 translate-middle-y"
-          style={{ right: "-20px", zIndex: 2 }}
+          style={{ right: "-10px", zIndex: 2 }}
         >
           &#10095;
         </button>

@@ -264,11 +264,11 @@ ul {
     #ba8b02 51%,
     #7c6215 100%
   );
-  margin: 10px;
+  margin: 10px 0;
   padding: 15px 45px;
   text-align: center;
   text-transform: uppercase;
-  transition: 1s;
+  transition: all 1s, background-image 0s, background-color 0s, outline 0s;
   background-size: 200% auto;
   color: white;
   box-shadow: 0 0 10px #000000;
@@ -287,12 +287,10 @@ ul {
   background-color: #ba8b02;
 }
 
-.discounted-only.active {
-  color: white;
-}
-
 .discounted-only {
-  color: black;
+  background-image: none;
+  background-color: transparent !important;
+  outline: #ba8b02 1px solid !important;
 }
 
 /* ================================
@@ -303,6 +301,17 @@ ul {
 @media (max-width: 991px) {
   .header-img-container {
     height: 320px;
+  }
+}
+
+/* Small Tablet: max-width 767px */
+@media (max-width: 767px) {
+  .footer-text {
+    text-align: center;
+
+    .footer-icons {
+      justify-content: center;
+    }
   }
 }
 
@@ -318,6 +327,10 @@ ul {
 
   .search-bar {
     max-width: 320px;
+  }
+
+  .on-display {
+    display: none;
   }
 }
 

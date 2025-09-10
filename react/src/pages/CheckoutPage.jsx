@@ -140,7 +140,7 @@ export default function CheckoutPage() {
             type="submit"
             className="btn-gradient btn mx-auto my-5 col-6 col-lg-4"
           >
-            Submit
+            Completa l'ordine
           </button>
         </div>
       </form>

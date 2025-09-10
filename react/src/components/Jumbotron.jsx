@@ -13,7 +13,6 @@ export default function Jumbotron() {
     }
   }, [videogames]);
 
-  // Helper: truncate text to `max` chars and append ellipsis if trimmed
   const truncate = (text, max = 150) => {
     if (text.length <= max) return text;
     return text.slice(0, max).trimEnd() + "...";
@@ -29,7 +28,10 @@ export default function Jumbotron() {
               <p className="lead jumbo-description">
                 {truncate(videogame.description, 150)}
               </p>
-              <Link to={`/videogames/${videogame.slug}`} className="btn-gradient">
+              <Link
+                to={`/videogames/${videogame.slug}`}
+                className="btn-gradient"
+              >
                 Scopri di più
               </Link>
             </div>

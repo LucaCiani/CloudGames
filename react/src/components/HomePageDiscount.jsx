@@ -149,13 +149,11 @@ export default function HomePageDiscount() {
                     )}
 
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                      <span className="fw-bold text-truncate">
-                        {videogame.name}
-                      </span>
-                      <span className="fw-bold">
+                      <span className="text-truncate">{videogame.name}</span>
+                      <span>
                         {videogame.promo_price ? (
                           <>
-                            <span className="text-success">
+                            <span className="text-success fw-bold">
                               €{videogame.promo_price}
                             </span>{" "}
                             <span className="text-secondary text-decoration-line-through">
@@ -178,7 +176,7 @@ export default function HomePageDiscount() {
         <button
           onClick={handleNext}
           className="btn btn-light position-absolute top-50 translate-middle-y"
-          style={{ right: "-15px", zIndex: 2 }}
+          style={{ right: "-10px", zIndex: 2 }}
         >
           &#10095;
         </button>
