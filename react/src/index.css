@@ -268,7 +268,8 @@ ul {
   padding: 15px 45px;
   text-align: center;
   text-transform: uppercase;
-  transition: all 1s, background-image 0s, background-color 0s, outline 0s;
+  transition: all 1s, background-image 0s, background-color 0s, outline 0s,
+    font-weight 0s;
   background-size: 200% auto;
   color: white;
   box-shadow: 0 0 10px #000000;
@@ -287,7 +288,8 @@ ul {
   background-color: #ba8b02;
 }
 
-.discounted-only {
+.empty-btn-gradient {
+  color: white;
   border-radius: 7px;
   text-transform: uppercase;
   margin: 10px 0;

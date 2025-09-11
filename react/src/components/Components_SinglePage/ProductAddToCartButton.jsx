@@ -202,7 +202,7 @@ export default function ProductAddToCartButton({
                 </h5>
                 <div className="d-flex justify-content-center">
                   <button
-                    className="btn-gradient"
+                    className="btn-gradient fw-bold"
                     onClick={() => navigate("/cart")}
                   >
                     Procedi al checkout

@@ -135,7 +135,7 @@ export default function CartPage() {
         <div className="row mt-3">
           <div className="col-md-6 col-12">
             <button
-              className="btn-gradient w-100"
+              className="btn-gradient w-100 fw-bold"
               onClick={() => navigate("/checkout")}
             >
               Procedi al checkout
