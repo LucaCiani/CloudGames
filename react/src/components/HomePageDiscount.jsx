@@ -68,9 +68,9 @@ export default function HomePageDiscount() {
   };
 
   return (
-    <div className="container my-5 text-center text-main">
-      <h1>Giochi in sconto</h1>
-      <h4 className="text-secondary fs-5 mb-4">
+    <div className="container my-5 text-center">
+      <h1 className="my-3 text-main">Giochi in sconto</h1>
+      <h4 className="my-4 text-main">
         Scopri i titoli in sconto scelti per te!
       </h4>
       <div className="slider-wrapper position-relative">
