@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(dir \"C:\\Users\\Francesco\\Desktop\\boolean\\esercizi\\CloudGames\\express\\public\")"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}

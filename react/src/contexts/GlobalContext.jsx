@@ -12,6 +12,33 @@ function GlobalProvider({ children }) {
 
   const [cartItems, setCartItems] = useState([]);
 
+  const handleAddToCart = (quantity, product, onAddToCart) => {
+    if (quantity === 0 || !product) return;
+
+    const existingItemIndex = cartItems.findIndex(
+      (item) => item.id === product.id
+    );
+    let newCartItems;
+
+    if (existingItemIndex > -1) {
+      newCartItems = [...cartItems];
+      newCartItems[existingItemIndex] = {
+        ...newCartItems[existingItemIndex],
+        cartQuantity: (newCartItems[existingItemIndex].cartQuantity || 1) + 1,
+      };
+    } else {
+      newCartItems = [...cartItems, { ...product, cartQuantity: 1 }];
+    }
+
+    setCartItems(newCartItems); // 👈 Aggiornamento globale
+    localStorage.setItem("videogames", JSON.stringify(newCartItems));
+
+    if (onAddToCart) onAddToCart();
+
+    console.log("Prodotto aggiunto:", product);
+    console.log("Carrello aggiornato:", newCartItems);
+  };
+
   // Carichiamo il carrello dal localStorage all'inizio
   useEffect(() => {
     const storedCart = localStorage.getItem("videogames");
@@ -41,6 +68,7 @@ function GlobalProvider({ children }) {
         // Aggiungiamo chatMessages al context
         chatMessages,
         setChatMessages,
+        handleAddToCart,
       }}
     >
       {children}

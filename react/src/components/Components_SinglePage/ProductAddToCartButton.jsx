@@ -13,9 +13,10 @@ export default function ProductAddToCartButton({
   const isSingleGamePage = location.pathname.startsWith("/videogames/");
 
   // Stato globale
-  const { cartItems, setCartItems } = useContext(GlobalContext);
+  const { cartItems, setCartItems, handleAddToCart } =
+    useContext(GlobalContext);
 
-  const handleAddToCart = () => {
+  /* const handleAddToCart = () => {
     if (quantity === 0 || !product) return;
 
     const existingItemIndex = cartItems.findIndex(
@@ -40,7 +41,7 @@ export default function ProductAddToCartButton({
 
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
-  };
+  }; */
 
   const totalQuantity = cartItems.reduce(
     (sum, item) => sum + (item.cartQuantity || 1),
@@ -77,7 +78,7 @@ export default function ProductAddToCartButton({
         <button
           className="btn-gradient w-100"
           disabled={quantity === 0}
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart(1, product, onAddToCart)}
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"
