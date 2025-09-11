@@ -27,9 +27,9 @@
   - [x] Inserimento dei dati di fatturazione e spedizione del cliente ✅
   - [x] Riepilogo dell’ordine con il totale ✅
 
-- [x] 6. Invio email ✅
+- [ ] 6. Invio email
 
-  - [x] Invio di email di conferma ordine sia al cliente che al venditore ✅
+  - [ ] Invio di email di conferma ordine sia al cliente che al venditore
 
 ---
 
@@ -60,9 +60,9 @@
 
 - [ ] 6. Paginazione dei risultati (coefficiente: 2)
 
-  - [x] implementare un sistema di paginazione per i risultati di ricerca
+  - [x] implementare un sistema di paginazione per i risultati di ricerca ✅
   - [ ] possibilità di selezionare il numero di prodotti da visualizzare per pagina
-  - [x] mantenere i filtri applicati durante il passaggio tra le pagine
+  - [x] mantenere i filtri applicati durante il passaggio tra le pagine ✅
 
 - [x] 7. Prodotti correlati nella pagina dettaglio (coefficiente: 2) ✅
 
