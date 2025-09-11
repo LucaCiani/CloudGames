@@ -1,3 +1,15 @@
+:root {
+  --bs-body-bg: transparent;
+  --bs-body-color: #fff;
+  --bs-link-color: #f0ad4e;
+  --bs-link-hover-color: #ec971f;
+  --bs-color-dark: rgb(39, 39, 37);
+  --bs-color-grad1: #d4a30e;
+  --bs-color-grad1: #dac884;
+  --bs-color-grad2: #bca666;
+  --bs-color-grad3: #634e2e;
+}
+
 /* ================================
    Contenitore principale del chatbot (posizione fissa in basso a destra)
 ================================ */
@@ -12,7 +24,7 @@
    Bottone per aprire/chiudere la chat (icona tonda)
 ================================ */
 .chatbot-toggle-btn {
-  border: 2px solid #ec971f;
+  border: 2px solid var(--bs-color-grad1);
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -31,7 +43,7 @@
   width: 350px;
   height: 400px;
   background-color: rgb(39, 39, 37);
-  border: 2px solid #ec971f;
+  border: 2px solid var(--bs-color-grad1);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(39, 39, 37, 0.18);
   display: flex;
@@ -42,7 +54,7 @@
    Header della chat (titolo)
 ================================ */
 .chatbot-header {
-  background-color: #ec971f;
+  background-color: var(--bs-color-grad1);
   color: #1d1c1cd5;
   padding: 12px;
   border-radius: 6px 6px 0 0;
@@ -61,7 +73,7 @@
   overflow-y: auto;
   background-color: transparent;
   scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #ec971f rgb(39, 39, 37); /* Firefox */
+  scrollbar-color: var(--bs-color-grad1) rgb(39, 39, 37); /* Firefox */
 }
 
 /* Chrome, Edge, Safari: personalizzazione scrollbar */
@@ -71,11 +83,11 @@
   background: rgb(39, 39, 37);
 }
 .chatbot-messages::-webkit-scrollbar-thumb {
-  background: #ec971f;
+  background: var(--bs-color-grad1);
   border-radius: 8px;
 }
 .chatbot-messages::-webkit-scrollbar-thumb:hover {
-  background: #f0ad4e;
+  background: var(--bs-color-grad1);
 }
 
 /* ================================
@@ -94,7 +106,7 @@
    Messaggio utente (allineato a destra, colore arancio)
 ================================ */
 .chatbot-message.user {
-  background-color: #ec971f;
+  background-color: var(--bs-color-grad1);
   color: #222222d3;
   align-self: flex-end;
 }
@@ -103,7 +115,7 @@
    Messaggio bot (allineato a sinistra, colore giallo)
 ================================ */
 .chatbot-message.bot {
-  background-color: #f0ad4e;
+  background-color: var(--bs-color-grad1);
   color: #222222d3;
   align-self: flex-start;
 }
@@ -112,7 +124,7 @@
    Messaggio di caricamento ("Bot sta scrivendo...")
 ================================ */
 .chatbot-loading {
-  color: #f0ad4e;
+  color: var(--bs-color-grad1);
   font-style: italic;
 }
 
@@ -122,7 +134,7 @@
 ================================ */
 .chatbot-input-area {
   padding: 10px;
-  border-top: 1.5px solid #ec971f;
+  border-top: 1.5px solid var(--bs-color-grad1);
   display: flex;
   gap: 5px;
   background: rgb(39, 39, 37);
@@ -133,20 +145,20 @@
 .chatbot-input {
   flex: 1;
   padding: 8px;
-  border: 1.5px solid #f0ad4e;
+  border: 1.5px solid var(--bs-color-grad1);
   border-radius: 6px;
   font-size: 15px;
   background: rgb(39, 39, 37);
   color: #fff;
 }
 .chatbot-input::placeholder {
-  color: #f0ad4e;
+  color: var(--bs-color-grad1);
   opacity: 0.8;
 }
 
 /* Bottone invio */
 .chatbot-send-btn {
-  background-color: #ec971f;
+  background-color: var(--bs-color-grad1);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -156,6 +168,6 @@
   transition: background 0.2s;
 }
 .chatbot-send-btn:hover {
-  background: #f0ad4e;
+  background: var(--bs-color-grad1);
   color: #222;
 }
