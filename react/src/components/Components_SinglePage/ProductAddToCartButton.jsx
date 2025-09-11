@@ -2,11 +2,7 @@ import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
-export default function ProductAddToCartButton({
-  quantity,
-  onAddToCart,
-  product,
-}) {
+export default function ProductAddToCartButton({ quantity, product }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,8 +32,6 @@ export default function ProductAddToCartButton({
 
     setCartItems(newCartItems); // 👈 Aggiornamento globale
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
-
-    if (onAddToCart) onAddToCart();
 
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
@@ -78,7 +72,7 @@ export default function ProductAddToCartButton({
         <button
           className="btn-gradient w-100"
           disabled={quantity === 0}
-          onClick={() => handleAddToCart(1, product, onAddToCart)}
+          onClick={() => handleAddToCart(1, product)}
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"

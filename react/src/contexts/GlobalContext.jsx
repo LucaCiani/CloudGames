@@ -12,7 +12,7 @@ function GlobalProvider({ children }) {
 
   const [cartItems, setCartItems] = useState([]);
 
-  const handleAddToCart = (quantity, product, onAddToCart) => {
+  const handleAddToCart = (quantity, product) => {
     if (quantity === 0 || !product) return;
 
     const existingItemIndex = cartItems.findIndex(
@@ -32,8 +32,6 @@ function GlobalProvider({ children }) {
 
     setCartItems(newCartItems); // 👈 Aggiornamento globale
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
-
-    if (onAddToCart) onAddToCart();
 
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
