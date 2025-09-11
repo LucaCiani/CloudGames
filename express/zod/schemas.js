@@ -202,6 +202,12 @@ export const newsletterSubscribeSchema = z.object({
   email: z.email(),
 });
 
+export const ordersEmailSchema = z.object({
+  email: z.email("Invalid email address"),
+  invoice_id: z.number().int().positive(),
+  billing_address_id: z.number().int().positive(),
+});
+
 /*
  * ===================== Billing Address Schemas =====================
  * Table: billing_addresses (see db/schema.md)

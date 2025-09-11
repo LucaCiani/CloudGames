@@ -10,9 +10,10 @@ export default function CheckoutPage() {
     country: "",
     email: "",
   });
-
-  const [showDetails, setShowDetails] = useState(false);
   const { cartItems } = useContext(GlobalContext);
+  const [discount, setDiscount] = useState(null);
+
+  const statusText = document.querySelector(".text-status-code");
 
   const handleFormData = (e) => {
     e.preventDefault();
@@ -61,7 +62,6 @@ export default function CheckoutPage() {
 
       if (res.ok) {
         console.log("dati inviati");
-        setShowDetails(true);
       } else {
         console.error("errore durante l'invio dei dati");
       }
@@ -80,11 +80,53 @@ export default function CheckoutPage() {
     cartItems &&
     cartItems.length > 0;
 
+  const handleDiscountCode = async (e) => {
+    if (e.key === "Enter") {
+      const codeInput = e.target.value.trim();
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE}/discounts/codes/${codeInput}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      ).then((res) => res.json());
+
+      const now = new Date();
+      const validFrom = new Date(response.valid_from);
+      const expiresAt = new Date(response.expires_at);
+
+      if (!response || response.error) {
+        statusText.textContent = "Codice sconto non valido";
+        statusText.style.color = "red";
+        return;
+      }
+
+      if (now < validFrom) {
+        statusText.textContent = "Codice sconto non ancora valido";
+        statusText.style.color = "orange";
+        return;
+      }
+
+      if (now > expiresAt) {
+        statusText.textContent = "Codice sconto scaduto";
+        statusText.style.color = "red";
+        return;
+      }
+
+      statusText.textContent = `Codice sconto valido: -${response.discount_percentage}%`;
+      statusText.style.color = "green";
+
+      e.target.value = "";
+      setDiscount(response.discount_percentage);
+    }
+  };
+
   return (
     <>
       <form className="container mt-5" onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-12 col-lg-8 px-5">
+          <div className="col-12 col-xl-8 px-5">
             <h2 className="text-center mb-5">
               Inserisci i dati per la fatturazzione
             </h2>
@@ -181,7 +223,7 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-          <div className="col-4 border-secondary border-start px-5 d-none d-lg-block">
+          <div className="col-12 col-xl-4 border-secondary border-start px-5 border-xl-0 mt-5 mt-xl-0">
             <h2 className="text-center mb-5">Riepilogo</h2>
             <div className="d-flex flex-column gap-3">
               {cartItems && cartItems.length > 0 ? (
@@ -201,9 +243,7 @@ export default function CheckoutPage() {
                       className="rounded"
                     />
                     <div className="flex-grow-1 text-start">
-                      <h6 className="mb-1 text-white">
-                        {item.name || item.title || "Nome non disponibile"}
-                      </h6>
+                      <h6 className="mb-1 text-white">{item.name}</h6>
                       <span className="text-secondary">
                         Quantità: {item.cartQuantity || 1}
                       </span>
@@ -227,21 +267,44 @@ export default function CheckoutPage() {
               ) : (
                 <p className="text-center">Il carrello è vuoto</p>
               )}
-              <div className="d-flex justify-content-between mt-4">
-                <span className="fw-bold">Totale:</span>
-                <span className="fw-bold">
-                  €
-                  {cartItems
-                    ? cartItems
-                        .reduce((total, item) => {
-                          const price = item.promo_price || item.price || 0;
-                          const qty = item.cartQuantity || 1;
-                          return total + price * qty;
-                        }, 0)
-                        .toFixed(2)
-                    : "0.00"}
-                </span>
-              </div>
+              {cartItems && cartItems.length > 0 && (
+                <>
+                  <div className="mt-4">
+                    <h5 className="fw-bold">Codice Sconto</h5>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="codice_sconto"
+                      placeholder="Inserisci il codice"
+                      onKeyDown={handleDiscountCode}
+                      maxLength={20}
+                      minLength={1}
+                    />
+                    <p className=" mt-1 mb-0 text-status-code">
+                      Premi Invio per applicare
+                    </p>
+                  </div>
+                  <div className="d-flex justify-content-between mt-4">
+                    <span className="fw-bold">Totale:</span>
+                    <span className="fw-bold">
+                      €
+                      {cartItems
+                        ? cartItems
+                            .reduce((total, item) => {
+                              const price = item.promo_price || item.price || 0;
+                              const qty = item.cartQuantity || 1;
+                              return (
+                                total +
+                                price * qty -
+                                (total * (discount || 0)) / 100
+                              );
+                            }, 0)
+                            .toFixed(2)
+                        : "0.00"}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -257,38 +320,6 @@ export default function CheckoutPage() {
           </button>
         </div>
       </form>
-
-      {showDetails && (
-        <div className="card container ">
-          <div className="row row-cols-1 justify-content-center">
-            <div className="col col-md-6 col-lg-5">
-              <h5 className="card-title text-center">Riepilogo Dati</h5>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item py-4 ">
-                  <b>Nome completo</b>: {formData.full_name}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Indirizzo</b>: {formData.address_line}
-                </li>
-                <li>
-                  <li className="list-group-item py-4 ">
-                    <b>E-mail</b>: {formData.email}
-                  </li>
-                </li>
-                <li className="list-group-item py-4">
-                  <b>Città</b>: {formData.city}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Codice Postale</b>: {formData.postal_code}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Paese</b>: {formData.country}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

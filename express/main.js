@@ -22,12 +22,15 @@ import genresRoute from "./routers/genresRoute.js";
 import mediaRoute from "./routers/mediaRoute.js";
 import platformsRoute from "./routers/platformsRoute.js";
 import emailsRoute from "./routers/emailsRoute.js";
-import chatRoute from "./routers/chatRoute.js"
+import chatRoute from "./routers/chatRoute.js";
 // Registriamo il body-parser integrato in express
 app.use(json());
 
 // Abilitiamo CORS per permettere richieste da client esterni
 app.use(cors());
+
+// Definiamo gli asset statici
+app.use(express.static("public"));
 
 // definiamo la prima rotta
 app.get("/", (req, res) => {

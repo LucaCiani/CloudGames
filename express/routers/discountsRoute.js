@@ -21,6 +21,10 @@ router.get("/", discountsController.index);
 // rotta per ottenere un singolo codice sconto tramite ID
 router.get("/:id", discountsController.show);
 
+/* show by code (read one by code) */
+// rotta per ottenere un singolo codice sconto tramite il codice sconto
+router.get("/codes/:code", discountsController.showByCode);
+
 /* store (create) */
 // rotta per creare un nuovo codice sconto
 router.post("/", validateBody(discountCreateSchema), discountsController.store);

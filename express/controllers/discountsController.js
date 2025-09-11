@@ -35,6 +35,28 @@ function show(req, res) {
   });
 }
 
+/* show (read) by code */
+async function showByCode(req, res) {
+  try {
+    const { code } = req.params;
+
+    if (!code || code.trim() === "" || code.length > 20)
+      return res.status(400).json({ error: "Code is required" });
+    // definiamo la query SQL per selezionare un singolo codice sconto tramite code
+    const sql = "SELECT * FROM discounts WHERE code = ? ;";
+    // esegue la query sul database, passando il code come parametro
+    const [results] = await connection.promise().query(sql, [code]);
+    // se non viene trovato alcun risultato (il code non esiste nella tabella "discounts"),
+    if (results.length === 0)
+      return res.status(404).json({ error: "Discount not found" });
+    // se l'elemento è stato trovato, lo restituisce come risposta JSON
+    return res.json(results[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 /* store (create) */
 async function store(req, res) {
   try {
@@ -229,4 +251,4 @@ function destroy(req, res) {
 }
 
 // esportiamo tutto
-export default { index, show, store, update, modify, destroy };
+export default { index, show, showByCode, store, update, modify, destroy };

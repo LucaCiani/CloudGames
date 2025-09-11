@@ -12,6 +12,14 @@ function GlobalProvider({ children }) {
 
   const [cartItems, setCartItems] = useState([]);
 
+  // Carichiamo il carrello dal localStorage all'inizio
+  useEffect(() => {
+    const storedCart = localStorage.getItem("videogames");
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, []);
+
   // Aggiungiamo lo stato per il chatbot
   const [chatMessages, setChatMessages] = useState([]);
 

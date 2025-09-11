@@ -312,6 +312,13 @@ ul {
    📱 MEDIA QUERIES
 ================================ */
 
+/* Large Desktop: max-width 1200px */
+@media (max-width: 1200px) {
+  .border-xl-0 {
+    border: none !important;
+  }
+}
+
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
   .header-img-container {

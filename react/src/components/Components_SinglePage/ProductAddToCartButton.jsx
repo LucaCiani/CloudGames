@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
@@ -14,22 +14,6 @@ export default function ProductAddToCartButton({
 
   // Stato globale
   const { cartItems, setCartItems } = useContext(GlobalContext);
-
-  // Manteniamo comunque il caricamento dal localStorage all'avvio, se vuoi persistere
-  useEffect(() => {
-    const savedCart = localStorage.getItem("videogames");
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart).filter(
-          (item) => item !== null && item !== undefined
-        );
-        setCartItems(parsedCart);
-      } catch (error) {
-        console.error("Errore nel parsing del localStorage:", error);
-        setCartItems([]);
-      }
-    }
-  }, [setCartItems]);
 
   const handleAddToCart = () => {
     if (quantity === 0 || !product) return;
