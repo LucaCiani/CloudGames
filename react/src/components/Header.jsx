@@ -94,7 +94,7 @@ export default function HeaderComponent() {
           </ul>
 
           <form className="my-4 my-lg-0" onSubmit={handleSubmit}>
-            <div className="search-bar gap-2">
+            <div className="search-bar">
               <input
                 type="text"
                 placeholder="Search"

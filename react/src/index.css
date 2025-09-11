@@ -13,6 +13,10 @@
   --bs-link-color: #f0ad4e;
   --bs-link-hover-color: #ec971f;
   --bs-color-dark: rgb(39, 39, 37);
+  --bs-color-grad1: #d4a30e;
+  --bs-color-grad1: #dac884;
+  --bs-color-grad2: #bca666;
+  --bs-color-grad3: #634e2e;
 }
 
 /* ================================
@@ -50,10 +54,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: transparent; /* truly transparent */
-  border: 1px solid var(--bs-link-color);
-  border-right: none;
-  color: #ba8b02;
+  background: transparent; /* da cancellare probably */
+  border: 3px solid var(--bs-color-grad1);
+
   border-radius: 50px;
   height: 40px;
   width: 100%;
@@ -64,7 +67,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #ba8b02;
+  color: var(--bs-color-grad1);
   padding: 8px 12px;
   flex: 1 1 auto;
   font-size: 1rem;
@@ -72,15 +75,12 @@
 
 .search-bar input::placeholder {
   opacity: 0.6;
-  color: var(--bs-link-color);
+  color: var(--bs-color-grad1);
 }
 
 .search-bar .search-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #ba8b02;
-  color: #131212;
+  background: none;
+  color: var(--bs-color-grad2);
   border: none;
   cursor: pointer;
 }
@@ -185,6 +185,54 @@ main {
 .genre-fighting {
   background-color: #ff4444;
 }
+.genre-mmorpg {
+  background-color: #ff99cc;
+}
+.genre-platformer {
+  background-color: #ffb84d;
+}
+.genre-shooter {
+  background-color: #ff4d4d;
+}
+.genre-survival {
+  background-color: #33cc66;
+}
+.genre-stealth {
+  background-color: #666666;
+}
+.genre-sandbox {
+  background-color: #ffcc33;
+}
+.genre-music-rhythm {
+  background-color: #ff66ff;
+}
+.genre-party {
+  background-color: #33ffff;
+}
+.genre-visual-novel {
+  background-color: #cc99ff;
+}
+.genre-educational {
+  background-color: #3399ff;
+}
+.genre-indie {
+  background-color: #ff9966;
+}
+.genre-card-board-games {
+  background-color: #ff6666;
+}
+.genre-trivia-quiz {
+  background-color: #66ffcc;
+}
+.genre-horror-survival {
+  background-color: #990000;
+}
+.genre-tactical {
+  background-color: #009966;
+}
+.genre-open-world {
+  background-color: #ffcc99;
+}
 
 /* ================================
    👣 FOOTER
@@ -198,8 +246,16 @@ ul {
 }
 
 .text-main {
-  color: var(--bs-link-color);
-  text-decoration: none;
+  background: linear-gradient(
+    90deg,
+    var(--bs-color-grad1),
+    var(--bs-color-grad2),
+    var(--bs-color-grad3)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
 .payment-methods {
@@ -285,7 +341,7 @@ ul {
 }
 
 .bg-main {
-  background-color: #ba8b02;
+  background-color: var(--bs-color-grad2);
 }
 
 .empty-btn-gradient {
@@ -400,9 +456,9 @@ ul {
 }
 
 .cart-icon-40 {
-  background: rgba(15, 15, 15, 0.938);
+  background: none;
   font-size: 1.7rem;
-  color: #ba8b02;
+  color: var(--bs-color-grad1);
   border: none;
   cursor: pointer;
 }
@@ -438,4 +494,11 @@ ul {
 .card-hover:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.game-name {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

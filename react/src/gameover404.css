@@ -1,0 +1,298 @@
+.notfound-game-over-container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-size: 60px 60px, 200px 200px, 300px 300px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+}
+
+.notfound-container {
+  text-align: center;
+  max-width: 600px;
+  padding: 40px 20px;
+}
+
+.notfound-error-code {
+  font-size: 8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 8px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.notfound-error-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.notfound-error-message {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.notfound-btn {
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #000;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.notfound-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+.notfound-btn-secondary {
+  background: linear-gradient(45deg, #333, #555);
+  color: #ffd700;
+  border: 2px solid #ffd700;
+}
+
+.notfound-icon {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.notfound-custom-icon {
+  width: 120px;
+  height: 120px;
+}
+
+.notfound-gaming-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.notfound-stat {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 15px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.notfound-stat:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.notfound-stat.notfound-clickable {
+  cursor: pointer;
+}
+
+.notfound-stat-icon {
+  font-size: 1.5rem;
+}
+
+.notfound-stat-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.notfound-gaming-footer {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.notfound-gaming-footer p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.notfound-game-genres {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.notfound-genre {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notfound-genre:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #ffd700;
+  transform: scale(1.05);
+}
+
+/* Popup Styles */
+.notfound-discount-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notfound-discount-popup {
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  margin: 20px;
+}
+
+.notfound-popup-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.notfound-discount-popup h3 {
+  color: #ffd700;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.notfound-discount-popup p {
+  color: #ffd700;
+  margin-bottom: 20px;
+}
+
+.notfound-discount-code {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.notfound-discount-code .notfound-code {
+  color: #ffd700;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notfound-discount-code .notfound-description {
+  color: #ffd700;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.notfound-popup-btn {
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #000;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notfound-popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .notfound-error-code {
+    font-size: 5rem;
+  }
+
+  .notfound-error-title {
+    font-size: 2rem;
+  }
+
+  .notfound-error-message {
+    font-size: 1rem;
+  }
+
+  .notfound-gaming-stats {
+    gap: 15px;
+  }
+
+  .notfound-stat {
+    padding: 12px 16px;
+  }
+
+  .notfound-btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+
+  .notfound-discount-popup {
+    padding: 30px 20px;
+    margin: 10px;
+  }
+
+  .notfound-discount-popup h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .notfound-container {
+    padding: 20px 15px;
+  }
+
+  .notfound-gaming-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .notfound-game-genres {
+    gap: 10px;
+  }
+
+  .notfound-genre {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Animazioni per le particelle SVG */
+@keyframes notfound-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.notfound-custom-icon circle[opacity] {
+  animation: notfound-pulse 2s infinite;
+}

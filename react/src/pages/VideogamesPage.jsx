@@ -280,7 +280,7 @@ export default function VideogamesPage() {
                         {/* Nome come link */}
                         <Link
                           to={`/videogames/${videogame.slug}`}
-                          className="fw-bold text-truncate text-white text-decoration-none"
+                          className="fw-bold text-truncate text-white text-decoration-none game-name"
                         >
                           {videogame.name}
                         </Link>
@@ -321,12 +321,14 @@ export default function VideogamesPage() {
             {paginatedGames &&
               paginatedGames.map((videogame) => {
                 return (
-                  <Link
+                  <div
                     key={videogame.id}
-                    to={`/videogames/${videogame.slug}`}
-                    className="list-group-item list-group-item-action border-0 bg-dark text-white mb-2 rounded list-card-hover"
+                    className="list-group-item list-group-item-action border-0 bg-dark text-white mb-2 rounded list-card-hover d-flex align-items-center"
                   >
-                    <div className="d-flex align-items-center">
+                    <Link
+                      to={`/videogames/${videogame.slug}`}
+                      className="d-flex align-items-center flex-grow-1 text-decoration-none text-white"
+                    >
                       <img
                         src={videogame.image_url}
                         alt={videogame.name}
@@ -341,30 +343,24 @@ export default function VideogamesPage() {
                         <h6 className="mb-1 text-white text-truncate">
                           {videogame.name}
                         </h6>
-
-                        {/* Sezione dei Generi */}
-                        <div className="mb-1">
-                          <div className="d-flex gap-1 flex-wrap">
-                            {videogame.genres && videogame.genres.length > 0
-                              ? videogame.genres
-                                  .slice(0, 2)
-                                  .map((genre, index) => (
-                                    <span
-                                      key={index}
-                                      className={`badge genre-${genre.toLowerCase()}`}
-                                      style={{
-                                        fontSize: "0.6rem",
-                                        padding: "0.2rem 0.4rem",
-                                      }}
-                                    >
-                                      {genre}
-                                    </span>
-                                  ))
-                              : "N/A"}
-                          </div>
+                        <div className="mb-1 d-flex gap-1 flex-wrap">
+                          {videogame.genres && videogame.genres.length > 0
+                            ? videogame.genres
+                                .slice(0, 2)
+                                .map((genre, index) => (
+                                  <span
+                                    key={index}
+                                    className={`badge genre-${genre.toLowerCase()}`}
+                                    style={{
+                                      fontSize: "0.6rem",
+                                      padding: "0.2rem 0.4rem",
+                                    }}
+                                  >
+                                    {genre}
+                                  </span>
+                                ))
+                            : "N/A"}
                         </div>
-
-                        {/* Sezione del Voto */}
                         <div className="small">
                           <span>
                             ⭐{" "}
@@ -380,24 +376,33 @@ export default function VideogamesPage() {
                             truncate(videogame.description, 100)}
                         </div>
                       </div>
-                      <div className="text-end" style={{ minWidth: "80px" }}>
-                        {videogame.promo_price ? (
-                          <>
-                            <div className="text-success fw-bold">
-                              €{videogame.promo_price}
-                            </div>
-                            <div className="text-decoration-line-through text-secondary small">
-                              €{videogame.price}
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-white fw-bold">
+                    </Link>
+
+                    {/* Bottone separato dal Link */}
+                    <button
+                      className="btn btn-sm btn-warning ms-2"
+                      onClick={() => handleAddToCart(1, videogame)}
+                    >
+                      +
+                    </button>
+
+                    <div className="text-end ms-2" style={{ minWidth: "80px" }}>
+                      {videogame.promo_price ? (
+                        <>
+                          <div className="text-success fw-bold">
+                            €{videogame.promo_price}
+                          </div>
+                          <div className="text-decoration-line-through text-secondary small">
                             €{videogame.price}
                           </div>
-                        )}
-                      </div>
+                        </>
+                      ) : (
+                        <div className="text-white fw-bold">
+                          €{videogame.price}
+                        </div>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
           </div>
