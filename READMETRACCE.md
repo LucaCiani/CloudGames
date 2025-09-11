@@ -48,10 +48,10 @@
   - [x] visualizzare i prodotti in promozione con prezzo originale e scontato ✅
   - [x] possibilità di filtrare i prodotti in promozione nella pagina di ricerca ✅
 
-- [ ] 4. Codici sconto (inserimento, validazione, periodo) (coefficiente: 2)
+- [x] 4. Codici sconto (inserimento, validazione, periodo) (coefficiente: 2)
 
-  - [ ] inserimento e validazione di un codice promozionale durante il checkout
-  - [ ] il codice sconto deve essere valido entro un determinato periodo (dal/al)
+  - [x] inserimento e validazione di un codice promozionale durante il checkout
+  - [x] il codice sconto deve essere valido entro un determinato periodo (dal/al)
 
 - [ ] 5. Wishlist (aggiunta/rimozione, pagina dedicata) (coefficiente: 2)
 
