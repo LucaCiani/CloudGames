@@ -10,7 +10,7 @@ function useQuery() {
 
 export default function VideogamesPage() {
   // Prendi i videogiochi dal context globale
-  const { videogames } = useGlobalContext();
+  const { videogames, handleAddToCart } = useGlobalContext();
   const location = useLocation();
   const navigate = useNavigate();
   const query = useQuery();
@@ -265,24 +265,27 @@ export default function VideogamesPage() {
               paginatedGames.map((videogame) => {
                 return (
                   <div key={videogame.id} className="col">
-                    <Link
-                      to={`/videogames/${videogame.slug}`}
-                      className="text-decoration-none"
-                    >
-                      <div className="card border-0 h-100 list-card-hover">
+                    <div className="card border-0 h-100">
+                      {/* Link solo sull’immagine */}
+                      <Link to={`/videogames/${videogame.slug}`}>
                         <img
                           src={videogame.image_url}
                           alt={videogame.name}
-                          className="card-img-top rounded"
-                          style={{
-                            height: "220px",
-                            objectFit: "cover",
-                          }}
+                          className="card-img-top rounded list-card-hover "
+                          style={{ height: "220px", objectFit: "cover" }}
                         />
-                        <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                          <span className="fw-bold text-truncate text-white">
-                            {videogame.name}
-                          </span>
+                      </Link>
+
+                      <div className="d-flex justify-content-between align-items-center mt-2 px-1">
+                        {/* Nome come link */}
+                        <Link
+                          to={`/videogames/${videogame.slug}`}
+                          className="fw-bold text-truncate text-white text-decoration-none"
+                        >
+                          {videogame.name}
+                        </Link>
+
+                        <div className="d-flex align-items-center gap-2">
                           <span>
                             {videogame.promo_price ? (
                               <>
@@ -297,9 +300,15 @@ export default function VideogamesPage() {
                               <>€{videogame.price}</>
                             )}
                           </span>
+                          <button
+                            className="btn btn-sm btn-warning"
+                            onClick={() => handleAddToCart(1, videogame)}
+                          >
+                            +
+                          </button>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 );
               })}
