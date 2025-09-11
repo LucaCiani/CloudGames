@@ -56,7 +56,14 @@ export default function VideogamesPage() {
 
   // Filtra i giochi in base alla ricerca
   let filteredGames = search
-    ? videogames?.filter((vg) => vg.name.toLowerCase().includes(search))
+    ? videogames?.filter((vg) => {
+        const gameName = vg.name.toLowerCase();
+        // Split search query into individual words and check if all words are present in the game name
+        const searchWords = search
+          .split(/\s+/)
+          .filter((word) => word.length > 0);
+        return searchWords.every((word) => gameName.includes(word));
+      })
     : videogames;
 
   // Filtra per piattaforma selezionata
@@ -114,14 +121,20 @@ export default function VideogamesPage() {
     }
   };
 
+  const truncate = (text, max = 150) => {
+    if (text.length <= max) return text;
+    return text.slice(0, max).trimEnd() + "...";
+  };
+
   return (
     <>
       <div className="container my-5">
         {/* Mostra la ricerca corrente se presente */}
         {search && (
           <p className="text-white mb-4">
-            Risultati per:{" "}
-            <span className="fw-bold">{query.get("search")}</span>
+            <span className="fw-bold">{filteredGames?.length}</span> risultat
+            {filteredGames?.length === 1 ? "o" : "i"} per:{" "}
+            <span className="fw-bold">{query?.get("search")}</span>
           </p>
         )}
 
@@ -310,42 +323,41 @@ export default function VideogamesPage() {
                         alt={videogame.name}
                         className="rounded me-3"
                         style={{
-                          width: "80px",
-                          height: "80px",
+                          width: "60px",
+                          height: "60px",
                           objectFit: "cover",
                         }}
                       />
-                      <div className="flex-grow-1">
-                        <h6 className="mb-1 text-white">{videogame.name}</h6>
+                      <div className="me-3 text-list-group-title">
+                        <h6 className="mb-1 text-white text-truncate">
+                          {videogame.name}
+                        </h6>
 
                         {/* Sezione dei Generi */}
-                        <div className="mb-2">
-                          <div
-                            className="d-flex gap-2 flex-wrap"
-                            style={{ overflow: "hidden", whiteSpace: "nowrap" }}
-                          >
+                        <div className="mb-1">
+                          <div className="d-flex gap-1 flex-wrap">
                             {videogame.genres && videogame.genres.length > 0
-                              ? videogame.genres.map((genre, index) => (
-                                  <span
-                                    key={index}
-                                    className={`badge genre-${genre.toLowerCase()}`}
-                                    style={{
-                                      display: "inline-block",
-                                      whiteSpace: "nowrap",
-                                      fontSize: "0.65rem",
-                                      padding: "0.3rem 0.6rem",
-                                    }}
-                                  >
-                                    {genre}
-                                  </span>
-                                ))
+                              ? videogame.genres
+                                  .slice(0, 2)
+                                  .map((genre, index) => (
+                                    <span
+                                      key={index}
+                                      className={`badge genre-${genre.toLowerCase()}`}
+                                      style={{
+                                        fontSize: "0.6rem",
+                                        padding: "0.2rem 0.4rem",
+                                      }}
+                                    >
+                                      {genre}
+                                    </span>
+                                  ))
                               : "N/A"}
                           </div>
                         </div>
 
                         {/* Sezione del Voto */}
-                        <div className="mb-2">
-                          <span className="me-2">
+                        <div className="small">
+                          <span>
                             ⭐{" "}
                             {videogame.vote
                               ? parseFloat(videogame.vote).toFixed(1)
@@ -353,10 +365,16 @@ export default function VideogamesPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="text-end">
+                      <div className="m-auto text-list-group-description">
+                        <div className="small text-secondary">
+                          {videogame.description &&
+                            truncate(videogame.description, 100)}
+                        </div>
+                      </div>
+                      <div className="text-end" style={{ minWidth: "80px" }}>
                         {videogame.promo_price ? (
                           <>
-                            <div className="text-success fw-bold fs-5">
+                            <div className="text-success fw-bold">
                               €{videogame.promo_price}
                             </div>
                             <div className="text-decoration-line-through text-secondary small">
@@ -364,7 +382,7 @@ export default function VideogamesPage() {
                             </div>
                           </>
                         ) : (
-                          <div className="text-white fw-bold fs-5">
+                          <div className="text-white fw-bold">
                             €{videogame.price}
                           </div>
                         )}

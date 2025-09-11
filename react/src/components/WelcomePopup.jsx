@@ -117,6 +117,7 @@ export default function WelcomePopup() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     className="form-control"
+                    required
                     disabled={submitting}
                   />
                 </div>

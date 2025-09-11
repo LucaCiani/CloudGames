@@ -72,6 +72,7 @@ export default function ChatBot() {
         { type: "bot", text: data.reply || "Errore nella risposta" },
       ]);
     } catch (error) {
+      console.error("Error sending message:", error);
       setChatMessages((prev) => [
         ...prev,
         { type: "bot", text: "Errore di connessione. Riprova." },

@@ -288,9 +288,22 @@ ul {
 }
 
 .discounted-only {
+  border-radius: 7px;
+  text-transform: uppercase;
+  margin: 10px 0;
+  padding: 15px 45px;
   background-image: none;
   background-color: transparent !important;
   outline: #ba8b02 1px solid !important;
+  border: none !important;
+}
+
+.text-list-group-description {
+  min-width: 300px;
+}
+
+.text-list-group-title {
+  min-width: 300px;
 }
 
 /* ================================
@@ -301,6 +314,15 @@ ul {
 @media (max-width: 991px) {
   .header-img-container {
     height: 320px;
+  }
+
+  .text-list-group-title {
+    min-width: none;
+    flex-grow: 1;
+  }
+
+  .text-list-group-description {
+    display: none;
   }
 }
 

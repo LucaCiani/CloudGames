@@ -31,6 +31,12 @@ async function sendNewsletterEmail(req, res) {
       .status(200)
       .json({ ok: true, message: "Subscription successful" });
   } catch (error) {
+    const status =
+      error.status || error.cause?.status || error.cause?.response?.status;
+
+    if (status === 403) {
+      return res.status(400).json({ error: "Indirizzo email non valido" });
+    }
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }

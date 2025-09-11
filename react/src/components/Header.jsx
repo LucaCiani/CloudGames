@@ -1,10 +1,18 @@
-import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import {
+  NavLink,
+  Link,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function HeaderComponent() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   // Prendi cartItems dal GlobalContext
   const { cartItems = [] } = useContext(GlobalContext);
@@ -15,11 +23,20 @@ export default function HeaderComponent() {
     0
   );
 
+  // Effect to manage search query persistence and clearing
+  useEffect(() => {
+    if (!searchParams.get("search")) {
+      // Clear search when navigating to other pages
+      setSearch("");
+    }
+  }, [location.pathname, searchParams]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (search.trim()) {
-      navigate(`/videogames?search=${encodeURIComponent(search.trim())}`);
-      setSearch("");
+      navigate(
+        `/videogames?search=${encodeURIComponent(search.toLowerCase().trim())}`
+      );
     }
   };
 

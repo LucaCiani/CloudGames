@@ -61,6 +61,13 @@ export default function CheckoutPage() {
     }
   };
 
+  const isFilled =
+    formData.full_name &&
+    formData.address_line &&
+    formData.city &&
+    formData.postal_code &&
+    formData.country;
+
   return (
     <>
       <form className="container  mt-5" onSubmit={handleSubmit}>
@@ -138,7 +145,9 @@ export default function CheckoutPage() {
 
           <button
             type="submit"
-            className="btn-gradient btn mx-auto my-5 col-6 col-lg-4"
+            className={`${
+              isFilled ? "btn-gradient" : "discounted-only"
+            } btn mx-auto my-5 col-6 col-lg-4`}
           >
             Completa l'ordine
           </button>
