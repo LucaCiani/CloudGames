@@ -280,7 +280,7 @@ export default function VideogamesPage() {
                         {/* Nome come link */}
                         <Link
                           to={`/videogames/${videogame.slug}`}
-                          className="fw-bold text-truncate text-white text-decoration-none"
+                          className="fw-bold text-truncate text-white text-decoration-none game-name"
                         >
                           {videogame.name}
                         </Link>
