@@ -1,4 +1,6 @@
 import { MailtrapClient } from "mailtrap";
+import connection from "../db/connection.js";
+import fs from "fs";
 
 const mailtrapClient = new MailtrapClient({
   token: process.env.MAIL_IO_API_KEY,
@@ -29,7 +31,7 @@ async function sendNewsletterEmail(req, res) {
         <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif;">
           <div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
             <!-- Header -->
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center;">
+            <div style="background: linear-gradient(135deg, #eadd66ff 0%, rgba(162, 153, 75, 1) 100%); color: white; padding: 40px 30px; text-align: center;">
               <img src="cid:logo" alt="CloudGames" style="height: 60px; margin-bottom: 20px;">
               <h1 style="margin: 0; font-size: 32px; font-weight: 700;">Benvenuto su CloudGames!</h1>
               <p style="margin: 15px 0 0 0; font-size: 18px; opacity: 0.9;">La tua avventura gaming inizia qui 🎮</p>
@@ -112,7 +114,9 @@ async function sendNewsletterEmail(req, res) {
       attachments: [
         {
           filename: "logo_navbar1.png",
-          path: "./public/logo_navbar1.png",
+          content: fs
+            .readFileSync("./public/logo_navbar1.png")
+            .toString("base64"),
           content_id: "logo",
           disposition: "inline",
         },
@@ -137,12 +141,62 @@ async function sendOrderEmail(req, res) {
     const { email, invoice_id, billing_address_id } = req.body;
 
     const [orderDetails, billingAddress] = await Promise.all([
-      fetch(`http://localhost:3000/invoices/${invoice_id}`).then((res) =>
-        res.json()
+      connection.promise().query(
+        `SELECT 
+          i.id,
+          i.total_amount,
+          i.currency,
+          i.status,
+          i.payment_provider,
+          i.created_at,
+          i.completed_at,
+          d.code AS discount_code,
+          d.discount_percentage,
+          d.expires_at AS discount_expiry,
+          (
+            SELECT JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                   'id', v.id,
+                   'name', v.name,
+                   'description', v.description,
+                   'image_url', v.image_url,
+                   'price', v.price,
+                   'promo_price', v.promo_price,
+                   'developer', v.developer,
+                   'release_date', DATE_FORMAT(v.release_date, '%Y-%m-%dT%H:%i:%s.000Z'),
+                   'vote', v.vote,
+                   'order_quantity', iv2.quantity
+                  ) ORDER BY v.id
+            )
+            FROM invoice_videogame AS iv2
+            JOIN videogames AS v ON v.id = iv2.videogame_id
+            WHERE iv2.invoice_id = i.id
+            ) AS items,
+          (
+            SELECT JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                    'id', ba2.id,
+                    'full_name', ba2.full_name,
+                    'address_line', ba2.address_line,
+                    'city', ba2.city,
+                    'postal_code', ba2.postal_code,
+                    'country', ba2.country,
+                    'created_at', ba2.created_at
+                  ) ORDER BY ba2.id
+            )
+            FROM billing_addresses AS ba2
+            WHERE ba2.invoice_id = i.id
+          ) AS billing_addresses
+        FROM invoices AS i
+        LEFT JOIN discounts AS d ON i.discount_id = d.id
+        WHERE i.id = ?`,
+        [invoice_id]
       ),
-      fetch(
-        `http://localhost:3000/billing-addresses/${billing_address_id}`
-      ).then((res) => res.json()),
+      connection
+        .promise()
+        .query("SELECT * FROM billing_addresses WHERE id = ?", [
+          billing_address_id,
+        ]),
     ]);
 
     if (!orderDetails || !billingAddress) {
@@ -155,7 +209,7 @@ async function sendOrderEmail(req, res) {
     };
 
     // Create formatted videogames list
-    const videogamesListHtml = orderDetails.videogames
+    const videogamesListHtml = JSON.parse(orderDetails[0][0].items || "[]")
       .map(
         (game) => `
       <div style="border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 16px; padding: 16px; background: #ffffff;">
@@ -196,11 +250,11 @@ async function sendOrderEmail(req, res) {
       )
       .join("");
 
-    const discountHtml = orderDetails.discount
+    const discountHtml = orderDetails[0][0].discount_code
       ? `
       <div style="background: #e8f5e8; border: 1px solid #4caf50; border-radius: 6px; padding: 12px; margin: 16px 0;">
         <p style="margin: 0; color: #2e7d32; font-weight: 600;">
-          🎉 Sconto applicato: ${orderDetails.discount.code} (-${orderDetails.discount.discount_percentage}%)
+          🎉 Sconto applicato: ${orderDetails[0][0].discount_code} (-${orderDetails[0][0].discount_percentage}%)
         </p>
       </div>
     `
@@ -211,12 +265,14 @@ async function sendOrderEmail(req, res) {
       to: [{ email }],
       subject: "Conferma del tuo ordine su CloudGames",
       text: `Ciao ${
-        billingAddress.full_name
+        billingAddress[0][0].full_name
       }!\n\nGrazie per il tuo ordine su CloudGames! 🎮\n\nOrdine #${
-        orderDetails.id
-      }\nTotale: €${orderDetails.total_amount.toFixed(2)}\nStato: ${
-        orderDetails.status
-      }\n\nGiochi acquistati:\n${orderDetails.videogames
+        orderDetails[0][0].id
+      }\nTotale: €${(orderDetails[0][0].total_amount / 100).toFixed(
+        2
+      )}\nStato: ${
+        orderDetails[0][0].status
+      }\n\nGiochi acquistati:\n${JSON.parse(orderDetails[0][0].items || "[]")
         .map(
           (game) =>
             `- ${game.name} (x${game.order_quantity}) - €${
@@ -226,10 +282,10 @@ async function sendOrderEmail(req, res) {
             }`
         )
         .join("\n")}\n\nIndirizzo di fatturazione:\n${
-        billingAddress.full_name
-      }\n${billingAddress.address_line}\n${billingAddress.city}, ${
-        billingAddress.postal_code
-      }\n${billingAddress.country}\n\nIl team di CloudGames`,
+        billingAddress[0][0].full_name
+      }\n${billingAddress[0][0].address_line}\n${billingAddress[0][0].city}, ${
+        billingAddress[0][0].postal_code
+      }\n${billingAddress[0][0].country}\n\nIl team di CloudGames`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -241,7 +297,7 @@ async function sendOrderEmail(req, res) {
         <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif;">
           <div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
             <!-- Header -->
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
+            <div style="background: linear-gradient(135deg, #eadd66ff 0%, rgba(162, 153, 75, 1) 100%); color: white; padding: 30px; text-align: center;">
               <img src="cid:logo" alt="CloudGames" style="height: 50px; margin-bottom: 15px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Grazie per il tuo ordine!</h1>
               <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Il tuo acquisto è stato confermato 🎮</p>
@@ -251,7 +307,7 @@ async function sendOrderEmail(req, res) {
             <div style="padding: 30px;">
               <!-- Greeting -->
               <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">Ciao ${
-                billingAddress.full_name
+                billingAddress[0][0].full_name
               }!</h2>
               
               <!-- Order Summary -->
@@ -260,27 +316,27 @@ async function sendOrderEmail(req, res) {
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                   <span style="color: #666;">Numero Ordine:</span>
                   <span style="font-weight: 600; color: #333;">#${
-                    orderDetails.id
+                    orderDetails[0][0].id
                   }</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                   <span style="color: #666;">Data:</span>
                   <span style="color: #333;">${new Date(
-                    orderDetails.created_at
+                    orderDetails[0][0].created_at
                   ).toLocaleDateString("it-IT")}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                   <span style="color: #666;">Stato:</span>
                   <span style="color: #333; text-transform: capitalize;">${
-                    orderDetails.status
+                    orderDetails[0][0].status
                   }</span>
                 </div>
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 15px 0;">
                 <div style="display: flex; justify-content: space-between;">
                   <span style="color: #333; font-size: 18px; font-weight: 600;">Totale:</span>
-                  <span style="color: #667eea; font-size: 20px; font-weight: 700;">€${orderDetails.total_amount.toFixed(
-                    2
-                  )}</span>
+                  <span style="color: #667eea; font-size: 20px; font-weight: 700;">€${(
+                    orderDetails[0][0].total_amount / 100
+                  ).toFixed(2)}</span>
                 </div>
               </div>
 
@@ -296,16 +352,16 @@ async function sendOrderEmail(req, res) {
               <h3 style="color: #333; margin: 0 0 15px 0; font-size: 18px;">Indirizzo di Fatturazione</h3>
               <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
                 <p style="margin: 0 0 5px 0; color: #333; font-weight: 600;">${
-                  billingAddress.full_name
+                  billingAddress[0][0].full_name
                 }</p>
                 <p style="margin: 0 0 5px 0; color: #666;">${
-                  billingAddress.address_line
+                  billingAddress[0][0].address_line
                 }</p>
-                <p style="margin: 0; color: #666;">${billingAddress.city}, ${
-        billingAddress.postal_code
-      }</p>
+                <p style="margin: 0; color: #666;">${
+                  billingAddress[0][0].city
+                }, ${billingAddress[0][0].postal_code}</p>
                 <p style="margin: 5px 0 0 0; color: #666;">${
-                  billingAddress.country
+                  billingAddress[0][0].country
                 }</p>
               </div>
               
@@ -323,12 +379,16 @@ async function sendOrderEmail(req, res) {
       attachments: [
         {
           filename: "logo_navbar1.png",
-          path: "./public/logo_navbar1.png",
+          content: fs
+            .readFileSync("./public/logo_navbar1.png")
+            .toString("base64"),
           content_id: "logo",
           disposition: "inline",
         },
       ],
     });
+    // IMPORTANTE: mancava la risposta al client, causando fetch in attesa
+    return res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
