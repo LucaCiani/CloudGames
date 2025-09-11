@@ -76,7 +76,7 @@
 
 - [ ] 9. Gestione quantità (disponibilità, carrello, esauriti) (coefficiente: 3)
 
-  - [ ] mostrare le quantità disponibili nella pagina di dettaglio
+  - [x] mostrare le quantità disponibili nella pagina di dettaglio
   - [ ] impedire che un prodotto esaurito possa essere aggiunto al carrello
   - [ ] impedire il proseguimento se un prodotto nel carrello diventa esaurito
 
