@@ -93,15 +93,25 @@ export default function HeaderComponent() {
             </li>
           </ul>
 
-          <form className="my-4 my-lg-0" onSubmit={handleSubmit}>
-            <div className="search-bar">
+          <form
+            className="my-4 my-lg-0 d-flex flex-shrink-0"
+            onSubmit={handleSubmit}
+          >
+            <div
+              className="search-bar d-flex"
+              style={{ maxWidth: "200px", minWidth: "120px" }}
+            >
               <input
                 type="text"
                 placeholder="Search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                className="form-control"
               />
-              <button className="search-btn" type="submit">
+              <button
+                className="search-btn btn btn-outline-light ms-1 flex-shrink-0"
+                type="submit"
+              >
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
