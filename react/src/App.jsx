@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import NotFound from "./pages/NotFound";
+import ThankYouPage from "./pages/ThankYouPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/videogames/:slug" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

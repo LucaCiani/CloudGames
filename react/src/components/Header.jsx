@@ -41,8 +41,8 @@ export default function HeaderComponent() {
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark sticky-top navbar-fixed-transparent">
-      <div className="container d-flex justify-content-between align-items-center gap-4 ">
+    <nav className="navbar navbar-expand-md navbar-dark navbar-fixed-transparent">
+      <div className="container d-flex justify-content-between align-items-center container-no-gutter">
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
         </Link>
@@ -60,7 +60,7 @@ export default function HeaderComponent() {
         </button>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav m-auto mt-2 mt-lg-0">
+          <ul className="navbar-nav m-auto mt-2 mt-lg-0 text-navbar">
             <li className="nav-item">
               <NavLink
                 to="/"
@@ -93,15 +93,22 @@ export default function HeaderComponent() {
             </li>
           </ul>
 
-          <form className="my-4 my-lg-0" onSubmit={handleSubmit}>
-            <div className="search-bar gap-2">
+          <form
+            className="my-4 my-lg-0 d-flex flex-shrink-0"
+            onSubmit={handleSubmit}
+          >
+            <div
+              className="search-bar d-flex"
+              style={{ maxWidth: "200px", minWidth: "120px" }}
+            >
               <input
                 type="text"
                 placeholder="Search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                className="form-control"
               />
-              <button className="search-btn" type="submit">
+              <button className="search-btn ms-1 flex-shrink-0" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>

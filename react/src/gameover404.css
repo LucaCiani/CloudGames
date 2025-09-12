@@ -1,0 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+:root {
+  --bs-body-bg: transparent;
+  --bs-body-color: #fff;
+  --bs-link-color: #f0ad4e;
+  --bs-link-hover-color: #ec971f;
+  --bs-color-dark: rgb(39, 39, 37);
+  --bs-color-grad1: #d4a30e;
+  --bs-color-grad1: #dac884;
+  --bs-color-grad2: #bca666;
+  --bs-color-grad3: #634e2e;
+}
+/* Titolo e descrizione */
+.notfound-title {
+  font-size: 8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.notfound-description {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.8;
+  max-width: 600px;
+}
+
+/* Bottoni */
+.notfound-btn {
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #1a1a2e;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px;
+}
+
+.notfound-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+.notfound-btn-secondary {
+  background: linear-gradient(45deg, #333, #555);
+  color: #ffd700;
+  border: 2px solid #ffd700;
+}
+
+/* Icone e statistiche */
+.notfound-gaming-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.notfound-stat {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 15px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.notfound-stat:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.notfound-stat-icon {
+  font-size: 1.5rem;
+}
+
+.notfound-stat-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.notfound-gaming-footer {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.notfound-gaming-footer p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.notfound-game-genres {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.notfound-genre {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notfound-genre:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #ffd700;
+  transform: scale(1.05);
+}
+
+/* Popup Styles */
+.notfound-discount-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.notfound-discount-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.notfound-discount-popup {
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  margin: 20px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.notfound-discount-popup-overlay.active .notfound-discount-popup {
+  transform: scale(1);
+}
+
+.notfound-popup-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.notfound-discount-popup h3 {
+  color: #ffd700;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.notfound-discount-popup p {
+  color: #ffd700;
+  margin-bottom: 20px;
+}
+
+.notfound-discount-code {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Pioggia di monete animata */
+.rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1051;
+  overflow: hidden;
+}
+
+.drop.coin-animated {
+  position: absolute;
+  top: -10%;
+  width: 40px;
+  height: 40px;
+  animation: fall linear infinite;
+  background-size: cover;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-120%);
+  }
+  to {
+    transform: translateY(120vh);
+  }
+}
+
+/* Contatore monete */
+.game-ui {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 15px;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-counter-icon {
+  font-size: 1.5rem;
+}
+
+.coin-counter-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notfound-title {
+    font-size: 4rem;
+  }
+}
+

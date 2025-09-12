@@ -21,15 +21,11 @@ export default function ProductPage() {
     );
   }
 
-  const handleAddToCart = () => {
-    // Logica per aggiungere al carrello
-    console.log("Aggiunto al carrello:", SingleVideogame);
-  };
-
-
-  const relatedVideogames = videogames.filter(vg => {
-    return SingleVideogame.genres.every(genre => vg.genres.includes(genre)) &&
-      vg.id !== SingleVideogame.id;
+  const relatedVideogames = videogames.filter((vg) => {
+    return (
+      SingleVideogame.genres.every((genre) => vg.genres.includes(genre)) &&
+      vg.id !== SingleVideogame.id
+    );
   });
 
   console.log(relatedVideogames);
@@ -70,30 +66,28 @@ export default function ProductPage() {
 
             <ProductAddToCartButton
               quantity={SingleVideogame.quantity}
-              onAddToCart={handleAddToCart}
               product={SingleVideogame}
             />
           </div>
         </div>
       </div>
       <div className="py-5">
-        <h3 className="text-center mb-5">
-          Prodotti correlati
-        </h3>
+        <h3 className="text-center mb-5">Prodotti correlati</h3>
         <div className="row row-cols-sm-1 row-cols-md-3 row-cols-xl-4 px-5 mb-4 container-fluid justify-content-center">
-
-
           {relatedVideogames.length === 0 ? (
             <div className="col-12 text-center text-secondary">
               Nessun gioco correlato disponibile.
             </div>
           ) : (
-
             relatedVideogames.slice(0, 4).map((relatedVg) => {
               return (
-                <div key={relatedVg.id} className="col" style={{
-                  scale: 1
-                }}>
+                <div
+                  key={relatedVg.id}
+                  className="col"
+                  style={{
+                    scale: 1,
+                  }}
+                >
                   <Link
                     to={`/videogames/${relatedVg.slug}`}
                     className="text-decoration-none"
@@ -116,16 +110,10 @@ export default function ProductPage() {
                           {relatedVg.promo_price ? (
                             <>
                               <span className="text-success fw-bold">
-                                €
-                                {
-                                  relatedVg.promo_price
-                                }
+                                €{relatedVg.promo_price}
                               </span>{" "}
                               <span className="text-decoration-line-through text-secondary">
-                                €
-                                {
-                                  relatedVg.price
-                                }
+                                €{relatedVg.price}
                               </span>
                             </>
                           ) : (
@@ -141,7 +129,6 @@ export default function ProductPage() {
           )}
         </div>
       </div>
-
     </>
   );
 }

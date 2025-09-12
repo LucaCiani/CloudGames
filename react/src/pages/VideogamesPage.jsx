@@ -10,7 +10,7 @@ function useQuery() {
 
 export default function VideogamesPage() {
   // Prendi i videogiochi dal context globale
-  const { videogames } = useGlobalContext();
+  const { videogames, handleAddToCart, cartItems } = useGlobalContext();
   const location = useLocation();
   const navigate = useNavigate();
   const query = useQuery();
@@ -54,12 +54,28 @@ export default function VideogamesPage() {
     if (genreFilter && genreFilter !== "all")
       params.set("genre", genreFilter);
     if (discountedOnly) params.set("discounted", "true");
+    if (currentPage && currentPage !== 1) params.set("page", currentPage);
     navigate(
       { pathname: location.pathname, search: params.toString() },
       { replace: true }
     );
+  }, [sortOrder, platformFilter, discountedOnly, search, currentPage]);
+
+  // All'avvio, se la query string ha page, imposta la pagina corrente
+  useEffect(() => {
+    const pageFromQuery = parseInt(query.get("page"), 10);
+    if (!isNaN(pageFromQuery) && pageFromQuery !== currentPage) {
+      setCurrentPage(pageFromQuery);
+    }
+  }, [query.get("page")]);
+
+  // Reset pagina a 1 quando cambia filtro, ricerca o ordinamento
+  useEffect(() => {
+    setCurrentPage(1);
     // eslint-disable-next-line
+
   }, [sortOrder, platformFilter, discountedOnly, search, genreFilter]);
+
 
   // Ottieni tutte le piattaforme disponibili dai videogiochi
   const allPlatforms = Array.from(
@@ -381,24 +397,30 @@ export default function VideogamesPage() {
               paginatedGames.map((videogame) => {
                 return (
                   <div key={videogame.id} className="col">
-                    <Link
-                      to={`/videogames/${videogame.slug}`}
-                      className="text-decoration-none"
-                    >
-                      <div className="card border-0 h-100 list-card-hover">
+                    <div className="card border-0 h-100">
+                      {/* Link solo sull’immagine */}
+                      <Link to={`/videogames/${videogame.slug}`}>
                         <img
                           src={videogame.image_url}
                           alt={videogame.name}
-                          className="card-img-top rounded"
+                          className="card-img-top rounded list-card-hover "
                           style={{
                             height: "220px",
                             objectFit: "cover",
                           }}
                         />
-                        <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                          <span className="fw-bold text-truncate text-white">
-                            {videogame.name}
-                          </span>
+                      </Link>
+
+                      <div className="d-flex justify-content-between align-items-center mt-2 px-1">
+                        {/* Nome come link */}
+                        <Link
+                          to={`/videogames/${videogame.slug}`}
+                          className="fw-bold text-truncate text-white text-decoration-none game-name"
+                        >
+                          {videogame.name}
+                        </Link>
+
+                        <div className="d-flex align-items-center gap-2">
                           <span>
                             {videogame.promo_price ? (
                               <>
@@ -413,9 +435,16 @@ export default function VideogamesPage() {
                               <>€{videogame.price}</>
                             )}
                           </span>
+                          <button
+                            className="btn btn-sm btn-warning"
+                            onClick={() => handleAddToCart(1, videogame)}
+                            disabled={(cartItems.find(item => item.id === videogame.id)?.cartQuantity  || 0) >= (videogame.quantity || 1)}
+                          >
+                            +
+                          </button>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 );
               })}
@@ -428,12 +457,14 @@ export default function VideogamesPage() {
             {paginatedGames &&
               paginatedGames.map((videogame) => {
                 return (
-                  <Link
+                  <div
                     key={videogame.id}
-                    to={`/videogames/${videogame.slug}`}
-                    className="list-group-item list-group-item-action border-0 bg-dark text-white mb-2 rounded list-card-hover"
+                    className="list-group-item list-group-item-action border-0 bg-dark text-white mb-2 rounded list-card-hover d-flex align-items-center"
                   >
-                    <div className="d-flex align-items-center">
+                    <Link
+                      to={`/videogames/${videogame.slug}`}
+                      className="d-flex align-items-center flex-grow-1 text-decoration-none text-white"
+                    >
                       <img
                         src={videogame.image_url}
                         alt={videogame.name}
@@ -449,11 +480,13 @@ export default function VideogamesPage() {
                           {videogame.name}
                         </h6>
 
+
                         {/* Sezione dei Generi */}
                         <div className="mb-1">
                           <div className="d-flex gap-1 flex-wrap">
                             {videogame.genres && videogame.genres.length > 0
                               ? videogame.genres
+
                                 .slice(0, 2)
                                 .map((genre, index) => (
                                   <span
@@ -467,11 +500,11 @@ export default function VideogamesPage() {
                                     {genre}
                                   </span>
                                 ))
+
                               : "N/A"}
                           </div>
-                        </div>
 
-                        {/* Sezione del Voto */}
+                        </div>
                         <div className="small">
                           <span>
                             ⭐{" "}
@@ -487,24 +520,33 @@ export default function VideogamesPage() {
                             truncate(videogame.description, 100)}
                         </div>
                       </div>
-                      <div className="text-end" style={{ minWidth: "80px" }}>
-                        {videogame.promo_price ? (
-                          <>
-                            <div className="text-success fw-bold">
-                              €{videogame.promo_price}
-                            </div>
-                            <div className="text-decoration-line-through text-secondary small">
-                              €{videogame.price}
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-white fw-bold">
+                    </Link>
+
+                    {/* Bottone separato dal Link */}
+                    <button
+                      className="btn btn-sm btn-warning ms-2"
+                      onClick={() => handleAddToCart(1, videogame)}
+                    >
+                      +
+                    </button>
+
+                    <div className="text-end ms-2" style={{ minWidth: "80px" }}>
+                      {videogame.promo_price ? (
+                        <>
+                          <div className="text-success fw-bold">
+                            €{videogame.promo_price}
+                          </div>
+                          <div className="text-decoration-line-through text-secondary small">
                             €{videogame.price}
                           </div>
-                        )}
-                      </div>
+                        </>
+                      ) : (
+                        <div className="text-white fw-bold">
+                          €{videogame.price}
+                        </div>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
           </div>

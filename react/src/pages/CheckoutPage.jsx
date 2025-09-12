@@ -1,5 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback, useEffect } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
   const [formData, setFormData] = useState({
@@ -10,12 +11,34 @@ export default function CheckoutPage() {
     country: "",
     email: "",
   });
+  const { cartItems, setCartItems } = useContext(GlobalContext);
+  const [discountPercentage, setDiscountPercentage] = useState(null);
+  const [discountId, setDiscountId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [discountStatus, setDiscountStatus] = useState({
+    message: "Premi Invio per applicare",
+    color: "",
+  });
+  const navigate = useNavigate();
+  const API_BASE = import.meta.env.VITE_API_BASE;
+  const [submissionError, setSubmissionError] = useState(null);
+  const [orderCompleted, setOrderCompleted] = useState(false);
 
-  const [showDetails, setShowDetails] = useState(false);
-  const { cartItems } = useContext(GlobalContext);
+  const totalAmount = useCallback(
+    (cartItems) => {
+      const subtotal = cartItems.reduce((total, item) => {
+        const price = item.promo_price || item.price || 0;
+        const qty = item.cartQuantity || 1;
+        return total + price * qty;
+      }, 0);
+
+      const discountAmount = (subtotal * (discountPercentage || 0)) / 100;
+      return (subtotal - discountAmount).toFixed(2);
+    },
+    [discountPercentage]
+  );
 
   const handleFormData = (e) => {
-    e.preventDefault();
     const { name, value } = e.target;
 
     if (name === "postal_code") {
@@ -39,36 +62,151 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return; // evita doppi invii
+      setIsSubmitting(true);
+      setSubmissionError(null);
 
-    const button = e.target.querySelector("button[type='submit']");
-    if (button) {
-      button.disabled = true;
-      button.innerHTML = "Invio...";
-    }
+      try {
+        const orderData = {
+          total_amount: Math.round(totalAmount(cartItems) * 100),
+          videogames: cartItems.map((item) => ({
+            id: item.id,
+            quantity: item.cartQuantity || 1,
+          })),
+          ...(discountId ? { discount_id: discountId } : {}),
+        };
 
-    const apiBaseUrl = import.meta.env.VITE_API_BASE;
+        // 1. Crea fattura
+        const invoiceUrl = `${API_BASE}/invoices`;
+        console.debug("[Checkout] POST", invoiceUrl, orderData);
+        const invoiceRes = await fetch(invoiceUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, ...orderData }),
+        });
+        if (!invoiceRes.ok) throw new Error("Errore creazione fattura");
+        const invoiceJson = await invoiceRes.json();
+        const invoiceId = invoiceJson?.created_id;
+        if (!invoiceId) throw new Error("ID fattura mancante");
 
-    try {
-      const res = await fetch(`${apiBaseUrl}/billing-addresses/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+        // 2. Crea indirizzo di fatturazione
+        const billingAddressData = {
+          full_name: formData.full_name,
+          address_line: formData.address_line,
+          city: formData.city,
+          postal_code: formData.postal_code,
+          country: formData.country,
+        };
+        const billingUrl = `${API_BASE}/billing-addresses`;
+        console.debug("[Checkout] POST", billingUrl, billingAddressData);
+        const billingRes = await fetch(billingUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(billingAddressData),
+        });
+        if (!billingRes.ok)
+          throw new Error("Errore creazione indirizzo fatturazione");
+        const billingJson = await billingRes.json();
+        const billingAddressId = billingJson?.created_id;
+        if (!billingAddressId)
+          throw new Error("ID indirizzo fatturazione mancante");
 
-      if (res.ok) {
-        console.log("dati inviati");
-        setShowDetails(true);
-      } else {
-        console.error("errore durante l'invio dei dati");
+        // 3. Invia email ordine
+        try {
+          const emailUrl = `${API_BASE}/emails/orders`;
+          console.debug("[Checkout] POST", emailUrl);
+          const emailRes = await fetch(emailUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: formData.email,
+              invoice_id: invoiceId,
+              billing_address_id: billingAddressId,
+            }),
+          });
+          if (!emailRes.ok) console.warn("Invio email fallito");
+        } catch (emailErr) {
+          console.warn("Errore invio email", emailErr);
+        }
+
+        try {
+          // 4. Aggiorna stock videogames
+          console.debug("[Checkout] Updating stock for purchased videogames");
+          await Promise.all(
+            cartItems.map(async (item) => {
+              const videogameRes = await fetch(
+                `${API_BASE}/videogames/${item.id}`
+              );
+              if (!videogameRes.ok) {
+                console.warn(
+                  `Videogioco con ID ${item.id} non trovato per aggiornamento stock`
+                );
+                return;
+              }
+              const videogame = await videogameRes.json();
+              const currentQuantity =
+                videogame.quantity !== undefined
+                  ? videogame.quantity
+                  : videogame.data?.quantity ?? 0;
+
+              const res = await fetch(`${API_BASE}/videogames/${item.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  quantity: currentQuantity - (item.cartQuantity || 1),
+                }),
+              });
+              if (!res.ok) {
+                console.warn(
+                  `Aggiornamento stock fallito per videogioco ID ${item.id}`
+                );
+              }
+            })
+          );
+        } catch (err) {
+          console.error("Errore aggiornamento stock videogames", err);
+        }
+
+        localStorage.removeItem("videogames");
+        setCartItems([]); // Svuota il carrello globale
+
+        // Navigazione finale
+        console.debug("[Checkout] Navigating to /thank-you");
+        setOrderCompleted(true);
+        navigate("/thank-you");
+      } catch (error) {
+        console.error("Errore durante l'invio del modulo:", error);
+        setSubmissionError(error.message || "Errore durante l'invio");
+        setIsSubmitting(false);
       }
-    } catch (error) {
-      console.error("si è verificato un problema", error);
+    },
+    [
+      API_BASE,
+      cartItems,
+      discountId,
+      formData,
+      isSubmitting,
+      setCartItems,
+      navigate,
+      totalAmount,
+    ]
+  );
+
+  // Fallback nel caso navigate non abbia effetto (edge cases di StrictMode / transizioni)
+  useEffect(() => {
+    if (orderCompleted) {
+      const timer = setTimeout(() => {
+        if (window.location.pathname !== "/thank-you") {
+          console.warn("[Checkout] Fallback redirect for /thank-you");
+          window.location.href = "/thank-you";
+        }
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [orderCompleted]);
 
   const isFilled =
     formData.full_name &&
@@ -80,11 +218,48 @@ export default function CheckoutPage() {
     cartItems &&
     cartItems.length > 0;
 
+  const handleDiscountCode = async (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const codeInput = e.target.value.trim();
+    if (!codeInput) return;
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE}/discounts/codes/${codeInput}`
+      );
+      const data = await res.json();
+      if (!res.ok || !data || data.error)
+        throw new Error("Codice sconto non valido");
+      const now = new Date();
+      const validFrom = new Date(data.valid_from);
+      const expiresAt = new Date(data.expires_at);
+      if (now < validFrom)
+        return setDiscountStatus({
+          message: "Codice non ancora valido",
+          color: "orange",
+        });
+      if (now > expiresAt)
+        return setDiscountStatus({ message: "Codice scaduto", color: "red" });
+      setDiscountStatus({
+        message: `Valido: -${data.discount_percentage}%`,
+        color: "green",
+      });
+      e.target.value = "";
+      setDiscountPercentage(data.discount_percentage);
+      setDiscountId(data.id);
+    } catch (err) {
+      setDiscountStatus({
+        message: err.message || "Codice non valido",
+        color: "red",
+      });
+    }
+  };
+
   return (
     <>
       <form className="container mt-5" onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-12 col-lg-8 px-5">
+          <div className="col-12 col-xl-8 px-5">
             <h2 className="text-center mb-5">
               Inserisci i dati per la fatturazzione
             </h2>
@@ -181,7 +356,7 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-          <div className="col-4 border-secondary border-start px-5 d-none d-lg-block">
+          <div className="col-12 col-xl-4 border-secondary border-start px-5 border-xl-0 mt-5 mt-xl-0">
             <h2 className="text-center mb-5">Riepilogo</h2>
             <div className="d-flex flex-column gap-3">
               {cartItems && cartItems.length > 0 ? (
@@ -201,9 +376,7 @@ export default function CheckoutPage() {
                       className="rounded"
                     />
                     <div className="flex-grow-1 text-start">
-                      <h6 className="mb-1 text-white">
-                        {item.name || item.title || "Nome non disponibile"}
-                      </h6>
+                      <h6 className="mb-1 text-white">{item.name}</h6>
                       <span className="text-secondary">
                         Quantità: {item.cartQuantity || 1}
                       </span>
@@ -227,68 +400,57 @@ export default function CheckoutPage() {
               ) : (
                 <p className="text-center">Il carrello è vuoto</p>
               )}
-              <div className="d-flex justify-content-between mt-4">
-                <span className="fw-bold">Totale:</span>
-                <span className="fw-bold">
-                  €
-                  {cartItems
-                    ? cartItems
-                        .reduce((total, item) => {
-                          const price = item.promo_price || item.price || 0;
-                          const qty = item.cartQuantity || 1;
-                          return total + price * qty;
-                        }, 0)
-                        .toFixed(2)
-                    : "0.00"}
-                </span>
-              </div>
+              {cartItems && cartItems.length > 0 && (
+                <>
+                  <div className="mt-4">
+                    <h5 className="fw-bold">Codice Sconto</h5>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="codice_sconto"
+                      placeholder="Inserisci il codice"
+                      onKeyDown={handleDiscountCode}
+                      maxLength={20}
+                      minLength={1}
+                    />
+                    <p
+                      className="mt-1 mb-0 text-status-code"
+                      style={{ color: discountStatus.color }}
+                    >
+                      {discountStatus.message}
+                    </p>
+                  </div>
+                  <div className="d-flex justify-content-between mt-4">
+                    <span className="fw-bold">Totale:</span>
+                    <span className="fw-bold">€{totalAmount(cartItems)}</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
         <div className="text-center">
+          {submissionError && (
+            <div
+              className="alert alert-danger py-2 px-3 fw-semibold"
+              role="alert"
+            >
+              {submissionError}
+            </div>
+          )}
           <button
             type="submit"
-            disabled={!isFilled}
+            disabled={!isFilled || isSubmitting}
             className={`${
-              isFilled ? "btn-gradient fw-bold" : "empty-btn-gradient"
+              isFilled && !isSubmitting
+                ? "btn-gradient fw-bold"
+                : "empty-btn-gradient"
             } mx-auto my-5 col-6 col-lg-4`}
           >
-            Completa l'ordine
+            {isSubmitting ? "Invio..." : "Completa l'ordine"}
           </button>
         </div>
       </form>
-
-      {showDetails && (
-        <div className="card container ">
-          <div className="row row-cols-1 justify-content-center">
-            <div className="col col-md-6 col-lg-5">
-              <h5 className="card-title text-center">Riepilogo Dati</h5>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item py-4 ">
-                  <b>Nome completo</b>: {formData.full_name}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Indirizzo</b>: {formData.address_line}
-                </li>
-                <li>
-                  <li className="list-group-item py-4 ">
-                    <b>E-mail</b>: {formData.email}
-                  </li>
-                </li>
-                <li className="list-group-item py-4">
-                  <b>Città</b>: {formData.city}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Codice Postale</b>: {formData.postal_code}
-                </li>
-                <li className="list-group-item py-4 ">
-                  <b>Paese</b>: {formData.country}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

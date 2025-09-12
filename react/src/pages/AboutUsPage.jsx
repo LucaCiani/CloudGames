@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../aboutus.css";
 
 export default function AboutUsPage() {
@@ -32,7 +33,7 @@ export default function AboutUsPage() {
 
   return (
     <section className="aboutus-section">
-      <div className="aboutus-container">
+      <div className="container text-center">
         <h1 className="aboutus-title">Chi siamo</h1>
 
         <p className="aboutus-paragraph">
@@ -40,10 +41,8 @@ export default function AboutUsPage() {
           creare un ecommerce dedicato a tutti i gamer. La nostra missione è
           offrire la migliore esperienza di acquisto possibile per ogni
           appassionato di gaming.
-        </p>
-
-        <p className="aboutus-paragraph">
-          I nostri server sono potenti e sicuri, progettati per garantire
+          <br />
+          <br />I nostri server sono potenti e sicuri, progettati per garantire
           prestazioni elevate e la massima affidabilità in ogni momento. La
           sicurezza dei dati e la velocità di navigazione sono le nostre
           priorità assolute per offrirti un'esperienza di shopping senza
@@ -76,8 +75,8 @@ export default function AboutUsPage() {
           <div className="github-container">
             {teamMembers.map((member) => (
               <div className="github-member" key={member.id}>
-                <a
-                  href={`https://github.com/${member.github}`}
+                <Link
+                  to={`https://github.com/${member.github}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="github-link"
@@ -89,7 +88,7 @@ export default function AboutUsPage() {
                   />
                   <div className="github-name">{member.name}</div>
                   <div className="github-role">{member.role}</div>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

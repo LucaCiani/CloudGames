@@ -1,37 +1,18 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
-export default function ProductAddToCartButton({
-  quantity,
-  onAddToCart,
-  product,
-}) {
+export default function ProductAddToCartButton({ quantity, product }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const isSingleGamePage = location.pathname.startsWith("/videogames/");
 
   // Stato globale
-  const { cartItems, setCartItems } = useContext(GlobalContext);
+  const { cartItems, setCartItems, handleAddToCart } =
+    useContext(GlobalContext);
 
-  // Manteniamo comunque il caricamento dal localStorage all'avvio, se vuoi persistere
-  useEffect(() => {
-    const savedCart = localStorage.getItem("videogames");
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart).filter(
-          (item) => item !== null && item !== undefined
-        );
-        setCartItems(parsedCart);
-      } catch (error) {
-        console.error("Errore nel parsing del localStorage:", error);
-        setCartItems([]);
-      }
-    }
-  }, [setCartItems]);
-
-  const handleAddToCart = () => {
+  /* const handleAddToCart = () => {
     if (quantity === 0 || !product) return;
 
     const existingItemIndex = cartItems.findIndex(
@@ -52,11 +33,9 @@ export default function ProductAddToCartButton({
     setCartItems(newCartItems); // 👈 Aggiornamento globale
     localStorage.setItem("videogames", JSON.stringify(newCartItems));
 
-    if (onAddToCart) onAddToCart();
-
     console.log("Prodotto aggiunto:", product);
     console.log("Carrello aggiornato:", newCartItems);
-  };
+  }; */
 
   const totalQuantity = cartItems.reduce(
     (sum, item) => sum + (item.cartQuantity || 1),
@@ -92,8 +71,13 @@ export default function ProductAddToCartButton({
       {isSingleGamePage && (
         <button
           className="btn-gradient w-100"
-          disabled={quantity === 0}
-          onClick={handleAddToCart}
+          disabled={
+            quantity === 0 ||
+            (product &&
+              (cartItems.find((i) => i.id === product.id)?.cartQuantity || 0) >=
+                quantity)
+          }
+          onClick={() => handleAddToCart(1, product)}
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"
@@ -183,6 +167,7 @@ export default function ProductAddToCartButton({
                                 (item.cartQuantity || 1) + 1
                               )
                             }
+                            disabled={item.cartQuantity >= (item.quantity || 1)} // <-- aggiungi questa riga
                           >
                             +
                           </button>
