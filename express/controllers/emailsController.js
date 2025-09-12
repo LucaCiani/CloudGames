@@ -18,8 +18,8 @@ async function sendNewsletterEmail(req, res) {
     await mailtrapClient.send({
       from: sender,
       to: [{ email }],
-      subject: "Benvenuti su CloudGames! 🎮",
-      text: "Grazie di esserti iscritto alla newsletter di CloudGames! 🎮\n\nCome regalo di benvenuto, ecco uno sconto del 10% sul tuo prossimo acquisto con il codice WELCOME10.\n\nBuon divertimento!\nIl team di CloudGames",
+      subject: "Benvenuti su CloudGames!",
+      text: "Grazie di esserti iscritto alla newsletter di CloudGames!\n\nCome regalo di benvenuto, ecco uno sconto del 10% sul tuo prossimo acquisto con il codice WELCOME10.\n\nBuon divertimento!\nIl team di CloudGames",
       html: `
         <!DOCTYPE html>
         <html>
@@ -34,7 +34,7 @@ async function sendNewsletterEmail(req, res) {
             <div style="background: linear-gradient(135deg, #eadd66ff 0%, rgba(162, 153, 75, 1) 100%); color: white; padding: 40px 30px; text-align: center;">
               <img src="cid:logo" alt="CloudGames" style="height: 60px; margin-bottom: 20px;">
               <h1 style="margin: 0; font-size: 32px; font-weight: 700;">Benvenuto su CloudGames!</h1>
-              <p style="margin: 15px 0 0 0; font-size: 18px; opacity: 0.9;">La tua avventura gaming inizia qui 🎮</p>
+              <p style="margin: 15px 0 0 0; font-size: 18px; opacity: 0.9;">La tua avventura gaming inizia qui</p>
             </div>
             
             <!-- Content -->
@@ -71,21 +71,21 @@ async function sendNewsletterEmail(req, res) {
                 <h3 style="color: #333; text-align: center; margin: 0 0 25px 0; font-size: 22px;">Cosa puoi aspettarti:</h3>
                 <div style="display: grid; gap: 20px;">
                   <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                    <div style="background: #667eea; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🎮</div>
+                    <div style="background: #667eea; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; justify-content: center; align-items: center;">🎮</div>
                     <div>
                       <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">Novità sui Giochi</h4>
                       <p style="margin: 0; color: #666; font-size: 14px;">Le ultime uscite e anteprime esclusive</p>
                     </div>
                   </div>
                   <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                    <div style="background: #4caf50; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">💰</div>
+                    <div style="background: #4caf50; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; justify-content: center; align-items: center;">💰</div>
                     <div>
                       <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">Offerte Esclusive</h4>
                       <p style="margin: 0; color: #666; font-size: 14px;">Sconti speciali solo per gli iscritti</p>
                     </div>
                   </div>
                   <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                    <div style="background: #ff9800; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">⭐</div>
+                    <div style="background: #ff9800; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; justify-content: center; align-items: center;">⭐</div>
                     <div>
                       <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">Recensioni e Consigli</h4>
                       <p style="margin: 0; color: #666; font-size: 14px;">I nostri esperti ti consigliano i migliori giochi</p>
@@ -98,7 +98,7 @@ async function sendNewsletterEmail(req, res) {
               <div style="text-align: center; padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
                 <p style="margin: 0 0 10px 0; color: #333; font-size: 18px; font-weight: 600;">Inizia subito la tua avventura!</p>
                 <p style="margin: 0 0 20px 0; color: #666; font-size: 16px;">Esplora il nostro catalogo di giochi e trova il tuo prossimo preferito.</p>
-                <a href="#" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 12px 30px; border-radius: 25px; font-weight: 600; display: inline-block; transition: transform 0.2s;">
+                <a href="http://localhost:5173" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 12px 30px; border-radius: 25px; font-weight: 600; display: inline-block; transition: transform 0.2s;">
                   Scopri i Giochi
                 </a>
                 <p style="margin: 20px 0 0 0; color: #666; font-size: 14px;">
@@ -129,6 +129,11 @@ async function sendNewsletterEmail(req, res) {
       error.status || error.cause?.status || error.cause?.response?.status;
 
     if (status === 403) {
+      console.log(
+        error.cause?.message ||
+          error.cause?.response?.data?.message ||
+          "Email validation error"
+      );
       return res.status(400).json({ error: "Indirizzo email non valido" });
     }
     console.error(error);
@@ -208,7 +213,6 @@ async function sendOrderEmail(req, res) {
       email: "no-reply@demomailtrap.co",
     };
 
-    // Create formatted videogames list
     const videogamesListHtml = JSON.parse(orderDetails[0][0].items || "[]")
       .map(
         (game) => `
@@ -217,7 +221,7 @@ async function sendOrderEmail(req, res) {
           <img src="${game.image_url}" alt="${
           game.name
         }" style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;">
-          <div style="flex: 1;">
+          <div style="flex: 1; margin-left: 16px;">
             <h3 style="margin: 0 0 8px 0; color: #333; font-size: 18px; font-weight: 600;">${
               game.name
             }</h3>
@@ -228,7 +232,7 @@ async function sendOrderEmail(req, res) {
               <span style="color: #333; font-weight: 600;">Quantità: ${
                 game.order_quantity
               }</span>
-              <span style="color: #333; font-weight: 600;">
+              <span style="color: #333; font-weight: 600; margin-left: 12px;">
                 Prezzo: €${
                   game.promo_price
                     ? game.promo_price.toFixed(2)
@@ -254,19 +258,20 @@ async function sendOrderEmail(req, res) {
       ? `
       <div style="background: #e8f5e8; border: 1px solid #4caf50; border-radius: 6px; padding: 12px; margin: 16px 0;">
         <p style="margin: 0; color: #2e7d32; font-weight: 600;">
-          🎉 Sconto applicato: ${orderDetails[0][0].discount_code} (-${orderDetails[0][0].discount_percentage}%)
+          Sconto applicato: ${orderDetails[0][0].discount_code} (-${orderDetails[0][0].discount_percentage}%)
         </p>
       </div>
     `
       : "";
 
+    // Email to the client
     await mailtrapClient.send({
       from: sender,
       to: [{ email }],
       subject: "Conferma del tuo ordine su CloudGames",
       text: `Ciao ${
         billingAddress[0][0].full_name
-      }!\n\nGrazie per il tuo ordine su CloudGames! 🎮\n\nOrdine #${
+      }!\n\nGrazie per il tuo ordine su CloudGames!\n\nOrdine #${
         orderDetails[0][0].id
       }\nTotale: €${(orderDetails[0][0].total_amount / 100).toFixed(
         2
@@ -300,7 +305,7 @@ async function sendOrderEmail(req, res) {
             <div style="background: linear-gradient(135deg, #eadd66ff 0%, rgba(162, 153, 75, 1) 100%); color: white; padding: 30px; text-align: center;">
               <img src="cid:logo" alt="CloudGames" style="height: 50px; margin-bottom: 15px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Grazie per il tuo ordine!</h1>
-              <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Il tuo acquisto è stato confermato 🎮</p>
+              <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Il tuo acquisto è stato confermato</p>
             </div>
             
             <!-- Content -->
@@ -387,7 +392,120 @@ async function sendOrderEmail(req, res) {
         },
       ],
     });
-    // IMPORTANTE: mancava la risposta al client, causando fetch in attesa
+
+    // Email to the seller
+    await mailtrapClient.send({
+      from: sender,
+      to: [{ email }],
+      subject: `Nuovo ordine ricevuto - Ordine #${orderDetails[0][0].id}`,
+      text: `Ciao!\n\nHai ricevuto un nuovo ordine su CloudGames.\n\nOrdine #${
+        orderDetails[0][0].id
+      }\nTotale: €${(orderDetails[0][0].total_amount / 100).toFixed(
+        2
+      )}\nStato: ${
+        orderDetails[0][0].status
+      }\n\nGiochi acquistati:\n${JSON.parse(orderDetails[0][0].items || "[]")
+        .map(
+          (game) =>
+            `- ${game.name} (x${game.order_quantity}) - €${
+              game.promo_price
+                ? game.promo_price.toFixed(2)
+                : game.price.toFixed(2)
+            }`
+        )
+        .join("\n")}\n\nIndirizzo di fatturazione:\n${
+        billingAddress[0][0].full_name
+      }\n${billingAddress[0][0].address_line}\n${billingAddress[0][0].city}, ${
+        billingAddress[0][0].postal_code
+      }\n${billingAddress[0][0].country}\n\n`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Nuovo Ordine Ricevuto</title>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #eadd66ff 0%, rgba(162, 153, 75, 1) 100%); color: white; padding: 30px; text-align: center;">
+              <img src="cid:logo" alt="CloudGames" style="height: 50px; margin-bottom: 15px;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Nuovo ordine ricevuto!</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Hai un nuovo acquisto su CloudGames</p>
+            </div>
+
+            <!-- Content -->
+            <div style="padding: 30px;">
+              <!-- Order Summary -->
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">Dettagli Ordine</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="color: #666;">Numero Ordine:</span>
+                  <span style="font-weight: 600; color: #333;">#${
+                    orderDetails[0][0].id
+                  }</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="color: #666;">Data:</span>
+                  <span style="color: #333;">${new Date(
+                    orderDetails[0][0].created_at
+                  ).toLocaleDateString("it-IT")}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="color: #666;">Stato:</span>
+                  <span style="color: #333; text-transform: capitalize;">${
+                    orderDetails[0][0].status
+                  }</span>
+                </div>
+                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 15px 0;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: #333; font-size: 18px; font-weight: 600;">Totale:</span>
+                  <span style="color: #667eea; font-size: 20px; font-weight: 700;">€${(
+                    orderDetails[0][0].total_amount / 100
+                  ).toFixed(2)}</span>
+                </div>
+              </div>
+              ${discountHtml}
+              <!-- Games List -->
+              <h3 style="color: #333; margin: 0 0 20px 0; font-size: 20px;">Giochi Acquistati</h3>
+              <div style="margin-bottom: 25px;">
+                ${videogamesListHtml}
+              </div>
+              <!-- Billing Address -->
+              <h3 style="color: #333; margin: 0 0 15px 0; font-size: 18px;">Indirizzo di Fatturazione</h3>
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                <p style="margin: 0 0 5px 0; color: #333; font-weight: 600;">${
+                  billingAddress[0][0].full_name
+                }</p>
+                <p style="margin: 0 0 5px 0; color: #666;">${
+                  billingAddress[0][0].address_line
+                }</p>
+                <p style="margin: 0; color: #666;">${
+                  billingAddress[0][0].city
+                }, ${billingAddress[0][0].postal_code}</p>
+                <p style="margin: 5px 0 0 0; color: #666;">${
+                  billingAddress[0][0].country
+                }</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      category: "new_order",
+      attachments: [
+        {
+          filename: "logo_navbar1.png",
+          content: fs
+            .readFileSync("./public/logo_navbar1.png")
+            .toString("base64"),
+          content_id: "logo",
+          disposition: "inline",
+        },
+      ],
+    });
+
     return res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
