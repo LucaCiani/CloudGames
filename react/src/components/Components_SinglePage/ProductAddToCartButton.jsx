@@ -71,7 +71,12 @@ export default function ProductAddToCartButton({ quantity, product }) {
       {isSingleGamePage && (
         <button
           className="btn-gradient w-100"
-          disabled={quantity === 0}
+          disabled={
+            quantity === 0 ||
+            (product &&
+              (cartItems.find((i) => i.id === product.id)?.cartQuantity || 0) >=
+                quantity)
+          }
           onClick={() => handleAddToCart(1, product)}
           type="button"
           data-bs-toggle="offcanvas"
@@ -162,6 +167,7 @@ export default function ProductAddToCartButton({ quantity, product }) {
                                 (item.cartQuantity || 1) + 1
                               )
                             }
+                            disabled={item.cartQuantity >= (item.quantity || 1)} // <-- aggiungi questa riga
                           >
                             +
                           </button>
