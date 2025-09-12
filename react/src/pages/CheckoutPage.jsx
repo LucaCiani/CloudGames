@@ -79,7 +79,22 @@ export default function CheckoutPage() {
           ...(discountId ? { discount_id: discountId } : {}),
         };
 
-        // 1. Crea fattura
+        // 1. Verifica stock
+        for (const item of cartItems) {
+          const res = await fetch(`${API_BASE}/videogames/${item.id}`);
+          if (!res.ok)
+            throw new Error(`Videogioco con ID ${item.id} non trovato`);
+          const videogame = await res.json();
+          const availableQuantity =
+            videogame.quantity !== undefined
+              ? videogame.quantity
+              : videogame.data?.quantity ?? 0;
+          if (availableQuantity < (item.cartQuantity || 1)) {
+            throw new Error(`Quantità insufficiente per ${item.name}`);
+          }
+        }
+
+        // 2. Crea fattura
         const invoiceUrl = `${API_BASE}/invoices`;
         console.debug("[Checkout] POST", invoiceUrl, orderData);
         const invoiceRes = await fetch(invoiceUrl, {
@@ -92,7 +107,7 @@ export default function CheckoutPage() {
         const invoiceId = invoiceJson?.created_id;
         if (!invoiceId) throw new Error("ID fattura mancante");
 
-        // 2. Crea indirizzo di fatturazione
+        // 3. Crea indirizzo di fatturazione
         const billingAddressData = {
           full_name: formData.full_name,
           address_line: formData.address_line,
@@ -114,7 +129,7 @@ export default function CheckoutPage() {
         if (!billingAddressId)
           throw new Error("ID indirizzo fatturazione mancante");
 
-        // 3. Invia email ordine
+        // 4. Invia email ordine
         try {
           const emailUrl = `${API_BASE}/emails/orders`;
           console.debug("[Checkout] POST", emailUrl);
@@ -133,7 +148,7 @@ export default function CheckoutPage() {
         }
 
         try {
-          // 4. Aggiorna stock videogames
+          // 5. Aggiorna stock videogames
           console.debug("[Checkout] Updating stock for purchased videogames");
           await Promise.all(
             cartItems.map(async (item) => {
@@ -156,7 +171,10 @@ export default function CheckoutPage() {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                  quantity: currentQuantity - (item.cartQuantity || 1),
+                  quantity: Math.max(
+                    0,
+                    currentQuantity - (item.cartQuantity || 1)
+                  ),
                 }),
               });
               if (!res.ok) {
@@ -258,6 +276,14 @@ export default function CheckoutPage() {
   return (
     <>
       <form className="container mt-5" onSubmit={handleSubmit}>
+        {submissionError && (
+          <div
+            className="text-center fw-bold alert alert-danger mb-5"
+            role="alert"
+          >
+            {submissionError}
+          </div>
+        )}
         <div className="row">
           <div className="col-12 col-xl-8 px-5">
             <h2 className="text-center mb-5">
@@ -430,14 +456,6 @@ export default function CheckoutPage() {
           </div>
         </div>
         <div className="text-center">
-          {submissionError && (
-            <div
-              className="alert alert-danger py-2 px-3 fw-semibold"
-              role="alert"
-            >
-              {submissionError}
-            </div>
-          )}
           <button
             type="submit"
             disabled={!isFilled || isSubmitting}
