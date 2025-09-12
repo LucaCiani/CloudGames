@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import Shuffle from "./Shuffle";
 import { Link } from "react-router-dom";
 import "../gameover404.css";
 
@@ -93,7 +94,19 @@ export default function NotFound() {
 
       {/* Contenuto principale della pagina */}
       <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-4 text-center position-relative">
-        <h1 className="notfound-title">ERROR 404</h1>
+        <Shuffle
+          text="ERROR 404"
+          shuffleDirection="right"
+          duration={0.35}
+          animationMode="evenodd"
+          shuffleTimes={1}
+          ease="power3.out"
+          stagger={0.03}
+          threshold={0.1}
+          triggerOnce={true}
+          triggerOnHover={true}
+          respectReducedMotion={true}
+        />
         <p className="notfound-description">
           Ops! Sembra che tu abbia perso una vita! La pagina che cerchi non
           esiste nel nostro universo gaming.
@@ -120,11 +133,7 @@ export default function NotFound() {
             {/* Contatore monete */}
             <div className="col-12 col-md-auto order-1 order-md-3 d-flex justify-content-center justify-content-md-end">
               <div className="game-ui">
-                <img
-                  src="/moneta.png"
-                  alt="Moneta"
-                  
-                />
+                <img src="/moneta.png" alt="Moneta" />
                 <span className="coin-counter-text">
                   {coinsCollected}/{maxCoins}
                 </span>

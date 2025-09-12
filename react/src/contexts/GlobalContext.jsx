@@ -13,7 +13,7 @@ function GlobalProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   const handleAddToCart = (quantity, product) => {
-    if (quantity === 0 || !product) return;
+    if (quantity === 0 || !product || quantity > product.quantity) return;
 
     const existingItemIndex = cartItems.findIndex(
       (item) => item.id === product.id

@@ -115,6 +115,7 @@ export default function CartPage() {
                     onClick={() =>
                       updateQuantity(item.id, (item.cartQuantity || 1) + 1)
                     }
+                    disabled={item.cartQuantity >= (item.quantity || 1)}
                   >
                     +
                   </button>
