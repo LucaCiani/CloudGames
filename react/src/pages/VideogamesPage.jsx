@@ -25,24 +25,20 @@ export default function VideogamesPage() {
   );
   const [viewMode, setViewMode] = useState("grid"); // "grid" o "list"
 
-  const [genreFilter, setGenreFilter] = useState(
-    query.get("genre") || "all"
-  );
-
+  const [genreFilter, setGenreFilter] = useState(query.get("genre") || "all");
 
   // Stato per la ricerca testuale
   const search = query.get("search")?.toLowerCase() || "";
 
   // Stato per la paginazione
   const [currentPage, setCurrentPage] = useState(1); // Pagina corrente
-  const [resultsPerPage, setResultsPerPage] = useState(15)  // Risultati per pagina
+  const [resultsPerPage, setResultsPerPage] = useState(15); // Risultati per pagina
 
   // Cambio numero risultati
   const handleResultsPerPageChange = (count) => {
     setResultsPerPage(count);
     setCurrentPage(1); // Reset alla prima pagina
   };
-
 
   // Aggiorna la query string nell'URL quando cambiano i filtri/ordinamento
   useEffect(() => {
@@ -51,18 +47,26 @@ export default function VideogamesPage() {
     if (sortOrder && sortOrder !== "az") params.set("sort", sortOrder);
     if (platformFilter && platformFilter !== "all")
       params.set("platform", platformFilter);
-    if (genreFilter && genreFilter !== "all")
-      params.set("genre", genreFilter);
+    if (genreFilter && genreFilter !== "all") params.set("genre", genreFilter);
     if (discountedOnly) params.set("discounted", "true");
-    if (resultsPerPage && resultsPerPage !== 15) params.set("results", resultsPerPage);
-    if (viewMode && viewMode !== "grid") params.set("view", viewMode)
-
+    if (resultsPerPage && resultsPerPage !== 15)
+      params.set("results", resultsPerPage);
+    if (viewMode && viewMode !== "grid") params.set("view", viewMode);
 
     navigate(
       { pathname: location.pathname, search: params.toString() },
       { replace: true }
     );
-  }, [sortOrder, platformFilter, discountedOnly, search, currentPage, genreFilter, resultsPerPage, viewMode]);
+  }, [
+    sortOrder,
+    platformFilter,
+    discountedOnly,
+    search,
+    currentPage,
+    genreFilter,
+    resultsPerPage,
+    viewMode,
+  ]);
 
   // All'avvio, se la query string ha page, imposta la pagina corrente
   useEffect(() => {
@@ -76,9 +80,7 @@ export default function VideogamesPage() {
   useEffect(() => {
     setCurrentPage(1);
     // eslint-disable-next-line
-
   }, [sortOrder, platformFilter, discountedOnly, search, genreFilter]);
-
 
   // Ottieni tutte le piattaforme disponibili dai videogiochi
   const allPlatforms = Array.from(
@@ -87,31 +89,22 @@ export default function VideogamesPage() {
     )
   );
 
-
   const allGenre = Array.from(
-    new Set(
-      (videogames || []).flatMap((vg) => vg.genres || []).filter(Boolean)
-    )
-
+    new Set((videogames || []).flatMap((vg) => vg.genres || []).filter(Boolean))
   );
 
   console.log(allGenre);
 
-
-
-
-
-
   // Filtra i giochi in base alla ricerca
   let filteredGames = search
     ? videogames?.filter((vg) => {
-      const gameName = vg.name.toLowerCase();
-      // Split search query into individual words and check if all words are present in the game name
-      const searchWords = search
-        .split(/\s+/)
-        .filter((word) => word.length > 0);
-      return searchWords.every((word) => gameName.includes(word));
-    })
+        const gameName = vg.name.toLowerCase();
+        // Split search query into individual words and check if all words are present in the game name
+        const searchWords = search
+          .split(/\s+/)
+          .filter((word) => word.length > 0);
+        return searchWords.every((word) => gameName.includes(word));
+      })
     : videogames;
 
   // Filtra per piattaforma selezionata
@@ -120,7 +113,6 @@ export default function VideogamesPage() {
       (vg.platforms || []).includes(platformFilter)
     );
   }
-
 
   if (genreFilter !== "all") {
     filteredGames = filteredGames?.filter((vg) =>
@@ -195,7 +187,7 @@ export default function VideogamesPage() {
 
         {/* Barra dei filtri e dei bottoni */}
         {/* <div className="d-flex flex-wrap gap-3 mb-4 align-items-center"> */}
-        <div className="row row-cols row-cols-md-3" >
+        <div className="row row-cols row-cols-md-3">
           {/* bottone filtro genere  */}
 
           <div className="dropdown col">
@@ -206,15 +198,14 @@ export default function VideogamesPage() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {genreFilter === "all"
-                ? "Tutti i generi"
-                : genreFilter}
+              {genreFilter === "all" ? "Tutti i generi" : genreFilter}
             </button>
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
                 <button
-                  className={`dropdown-item${genreFilter === "all" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    genreFilter === "all" ? " active" : ""
+                  }`}
                   onClick={() => setGenreFilter("all")}
                 >
                   Tutti i generi
@@ -223,8 +214,9 @@ export default function VideogamesPage() {
               {allGenre.map((genre) => (
                 <li key={genre}>
                   <button
-                    className={`dropdown-item${genreFilter === genre ? " active" : ""
-                      }`}
+                    className={`dropdown-item${
+                      genreFilter === genre ? " active" : ""
+                    }`}
                     onClick={() => setGenreFilter(genre)}
                   >
                     {genre}
@@ -233,7 +225,6 @@ export default function VideogamesPage() {
               ))}
             </ul>
           </div>
-
 
           {/* Dropdown piattaforme */}
           <div className="dropdown col">
@@ -251,8 +242,9 @@ export default function VideogamesPage() {
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
                 <button
-                  className={`dropdown-item${platformFilter === "all" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    platformFilter === "all" ? " active" : ""
+                  }`}
                   onClick={() => setPlatformFilter("all")}
                 >
                   Tutte le piattaforme
@@ -261,8 +253,9 @@ export default function VideogamesPage() {
               {allPlatforms.map((platform) => (
                 <li key={platform}>
                   <button
-                    className={`dropdown-item${platformFilter === platform ? " active" : ""
-                      }`}
+                    className={`dropdown-item${
+                      platformFilter === platform ? " active" : ""
+                    }`}
                     onClick={() => setPlatformFilter(platform)}
                   >
                     {platform}
@@ -276,8 +269,9 @@ export default function VideogamesPage() {
 
           <div className="dropdown col d-flex justify-content-center">
             <button
-              className={`${discountedOnly ? "btn-gradient" : "empty-btn-gradient"
-                }`}
+              className={`${
+                discountedOnly ? "btn-gradient" : "empty-btn-gradient"
+              }`}
               onClick={() => setDiscountedOnly((prev) => !prev)}
             >
               Solo scontati
@@ -295,27 +289,33 @@ export default function VideogamesPage() {
               id="filterDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-            >Numero risultati
+            >
+              Numero risultati
             </button>
-
-
 
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
-                <button className={`dropdown-item${resultsPerPage === 15 ? " active" : ""
-                  }`} onClick={() => setResultsPerPage(15)}>Mostra 15</button>
+                <button
+                  className={`dropdown-item${
+                    resultsPerPage === 15 ? " active" : ""
+                  }`}
+                  onClick={() => setResultsPerPage(15)}
+                >
+                  Mostra 15
+                </button>
               </li>
               <li>
-                <button className={`dropdown-item${resultsPerPage === 24 ? " active" : ""
-                  }`} onClick={() => setResultsPerPage(24)}>Mostra 24</button>
+                <button
+                  className={`dropdown-item${
+                    resultsPerPage === 24 ? " active" : ""
+                  }`}
+                  onClick={() => setResultsPerPage(24)}
+                >
+                  Mostra 24
+                </button>
               </li>
             </ul>
           </div>
-
-
-
-
-
 
           {/* Dropdown ordinamento */}
 
@@ -332,8 +332,9 @@ export default function VideogamesPage() {
             <ul className="dropdown-menu" aria-labelledby="sortDropdown">
               <li>
                 <button
-                  className={`dropdown-item${sortOrder === "az" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    sortOrder === "az" ? " active" : ""
+                  }`}
                   onClick={() => setSortOrder("az")}
                 >
                   A-Z
@@ -341,8 +342,9 @@ export default function VideogamesPage() {
               </li>
               <li>
                 <button
-                  className={`dropdown-item${sortOrder === "za" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    sortOrder === "za" ? " active" : ""
+                  }`}
                   onClick={() => setSortOrder("za")}
                 >
                   Z-A
@@ -350,8 +352,9 @@ export default function VideogamesPage() {
               </li>
               <li>
                 <button
-                  className={`dropdown-item${sortOrder === "price-asc" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    sortOrder === "price-asc" ? " active" : ""
+                  }`}
                   onClick={() => setSortOrder("price-asc")}
                 >
                   Prezzo crescente
@@ -359,8 +362,9 @@ export default function VideogamesPage() {
               </li>
               <li>
                 <button
-                  className={`dropdown-item${sortOrder === "price-desc" ? " active" : ""
-                    }`}
+                  className={`dropdown-item${
+                    sortOrder === "price-desc" ? " active" : ""
+                  }`}
                   onClick={() => setSortOrder("price-desc")}
                 >
                   Prezzo decrescente
@@ -377,23 +381,14 @@ export default function VideogamesPage() {
               onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
             >
               <i
-                className={`fa-solid ${viewMode === "grid" ? "fa-list" : "fa-grip"
-                  }`}
+                className={`fa-solid ${
+                  viewMode === "grid" ? "fa-list" : "fa-grip"
+                }`}
               ></i>
               {viewMode === "grid" ? " Lista" : " Griglia"}
             </button>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
 
         {/* VISTA GRIGLIA: mostra le card dei videogiochi */}
         {viewMode === "grid" && (
@@ -443,7 +438,11 @@ export default function VideogamesPage() {
                           <button
                             className="btn btn-sm btn-warning"
                             onClick={() => handleAddToCart(1, videogame)}
-                            disabled={(cartItems.find(item => item.id === videogame.id)?.cartQuantity || 0) >= (videogame.quantity || 1)}
+                            disabled={
+                              (cartItems.find(
+                                (item) => item.id === videogame.id
+                              )?.cartQuantity || 0) >= (videogame.quantity || 1)
+                            }
                           >
                             +
                           </button>
@@ -485,34 +484,31 @@ export default function VideogamesPage() {
                           {videogame.name}
                         </h6>
 
-
                         {/* Sezione dei Generi */}
                         <div className="mb-1">
                           <div className="d-flex gap-1 flex-wrap">
                             {videogame.genres && videogame.genres.length > 0
                               ? videogame.genres
 
-                                .slice(0, 2)
-                                .map((genre, index) => (
-                                  <span
-                                    key={index}
-                                    className={`badge genre-${genre.toLowerCase()}`}
-                                    style={{
-                                      fontSize: "0.6rem",
-                                      padding: "0.2rem 0.4rem",
-                                    }}
-                                  >
-                                    {genre}
-                                  </span>
-                                ))
-
+                                  .slice(0, 2)
+                                  .map((genre, index) => (
+                                    <span
+                                      key={index}
+                                      className={`badge genre-${genre.toLowerCase()}`}
+                                      style={{
+                                        fontSize: "0.6rem",
+                                        padding: "0.2rem 0.4rem",
+                                      }}
+                                    >
+                                      {genre}
+                                    </span>
+                                  ))
                               : "N/A"}
                           </div>
-
                         </div>
                         <div className="small">
-                          <span>
-                            ⭐{" "}
+                          <span className="vote-star">
+                            <img src="/star.png" alt="Stella" />
                             {videogame.vote
                               ? parseFloat(videogame.vote).toFixed(1)
                               : "N/A"}
@@ -591,10 +587,11 @@ export default function VideogamesPage() {
             return (
               <button
                 key={page}
-                className={`btn btn-sm ${page === currentPage
-                  ? "btn-warning text-white"
-                  : "btn-outline-warning"
-                  }`}
+                className={`btn btn-sm ${
+                  page === currentPage
+                    ? "btn-warning text-white"
+                    : "btn-outline-warning"
+                }`}
                 onClick={() => goToPage(page)}
               >
                 {page}
