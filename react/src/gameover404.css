@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 :root {
   --bs-body-bg: transparent;
@@ -12,7 +12,7 @@
   --bs-color-grad3: #634e2e;
 }
 /* Titolo e descrizione */
-.notfound-title {
+/* .notfound-title {
   font-size: 8rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -21,7 +21,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
+} */
 
 .notfound-description {
   font-size: 1.2rem;
@@ -70,8 +70,9 @@
   background: rgba(255, 215, 0, 0.1);
   border: 1px solid #ffd700;
   border-radius: 15px;
-  padding: 15px 20px;
+  padding: 0 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   transition: all 0.3s ease;
@@ -252,3 +253,38 @@
   }
 }
 
+
+.shuffle-parent {
+  color: var(--bs-color-grad1);
+  display: inline-block;
+  white-space: normal;
+  word-wrap: break-word;
+  will-change: transform;
+  line-height: 1; /* keep line height consistent before/after split to avoid jump */
+  font-size: 4rem;
+  font-family: 'Press Start 2P', sans-serif;
+  text-transform: uppercase;
+  visibility: hidden; /* hidden until initialized to avoid flash/jump */
+}
+
+.shuffle-parent.is-ready {
+  visibility: visible;
+}
+
+.shuffle-char-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+  position: relative;
+}
+
+.shuffle-char-wrapper > span {
+  display: inline-flex;
+  will-change: transform;
+}
+
+.shuffle-char {
+  line-height: 1;
+  display: inline-block;
+  text-align: center;
+}

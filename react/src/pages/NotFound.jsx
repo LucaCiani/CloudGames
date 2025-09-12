@@ -95,6 +95,7 @@ export default function NotFound() {
       {/* Contenuto principale della pagina */}
       <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-4 text-center position-relative">
         <Shuffle
+          // ...altre props
           text="ERROR 404"
           shuffleDirection="right"
           duration={0.35}
@@ -107,6 +108,7 @@ export default function NotFound() {
           triggerOnHover={true}
           respectReducedMotion={true}
         />
+
         <p className="notfound-description">
           Ops! Sembra che tu abbia perso una vita! La pagina che cerchi non
           esiste nel nostro universo gaming.
@@ -118,11 +120,12 @@ export default function NotFound() {
         {/* Statistiche gaming */}
         <div className="notfound-gaming-stats">
           <div className="notfound-stat">
-            <span className="notfound-stat-icon">💀</span>
-            <span className="notfound-stat-text">Errore 404</span>
+            <img src="snorlax.png" alt="ciao" />
+            <span className="notfound-stat-text">Non puoi passare,</span>
+            <span className="notfound-stat-text">Snorlax blocca la strada!</span>
           </div>
           <div className="notfound-stat">
-            <span className="notfound-stat-icon">🏆</span>
+            <img src=""/>
             <span className="notfound-stat-text">Achievement: "Explorer"</span>
           </div>
         </div>

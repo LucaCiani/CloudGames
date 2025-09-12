@@ -324,11 +324,11 @@ async function update(req, res) {
 
 /* modify (partial edit) */
 function modify(req, res) {
-  // estraiamo l'ID del videogioco dalla URL
   const { id } = req.params;
   if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
-  // estraiamo i nuovi valori dal corpo della richiesta
+
   const {
+    slug,
     name,
     description,
     price,
@@ -339,73 +339,66 @@ function modify(req, res) {
     quantity,
     vote,
   } = req.body;
-  // inizializziamo due array:
-  // - 'fields' conterrà le parti dell'SQL da aggiornare
-  // - 'values' conterrà i nuovi valori corrispondenti
+
   const fields = [];
   const values = [];
-  // se è presente il nome e non è vuoto, lo aggiunge agli array
-  if (name && name.length > 0) {
+
+  if (slug !== undefined) {
+    fields.push("slug = ?");
+    values.push(slug);
+  }
+  if (name !== undefined) {
     fields.push("name = ?");
     values.push(name);
   }
-  // se è presente la descrizione e non è vuota, la aggiunge agli array
-  if (description) {
+  if (description !== undefined) {
     fields.push("description = ?");
     values.push(description);
   }
-  // se è presente il prezzo, lo aggiunge agli array
-  if (price) {
+  if (price !== undefined) {
     fields.push("price = ?");
     values.push(price);
   }
-  // se è presente il prezzo promozionale, lo aggiunge agli array
-  if (promo_price) {
+  if (promo_price !== undefined) {
     fields.push("promo_price = ?");
     values.push(promo_price);
   }
-  // se è presente lo sviluppatore e non è vuoto, lo aggiunge agli array
-  if (developer) {
+  if (developer !== undefined) {
     fields.push("developer = ?");
     values.push(developer);
   }
-  // se è presente la data di rilascio e non è vuota, la aggiunge agli array
-  if (release_date) {
+  if (release_date !== undefined) {
+    const releaseDateSql = new Date(release_date)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
     fields.push("release_date = ?");
-    values.push(release_date);
+    values.push(releaseDateSql);
   }
-  // se è presente l'URL dell'immagine e non è vuoto, lo aggiunge agli array
-  if (image_url && image_url.length > 0) {
+  if (image_url !== undefined) {
     fields.push("image_url = ?");
     values.push(image_url);
   }
-  // se è presente la quantità, la aggiunge agli array
-  if (quantity) {
+  if (quantity !== undefined) {
     fields.push("quantity = ?");
     values.push(quantity);
   }
-  // se è presente il voto, lo aggiunge agli array
-  if (vote) {
+  if (vote !== undefined) {
     fields.push("vote = ?");
     values.push(vote);
   }
-  // Se nessun campo è stato fornito per l'aggiornamento, restituisce errore
+
   if (fields.length === 0)
     return res.status(400).json({ error: "No fields to update" });
 
-  // Costruisce dinamicamente la query SQL usando solo i campi forniti
   const sql = `UPDATE videogames SET ${fields.join(", ")} WHERE id = ?`;
-  // Aggiunge l'ID alla fine dell'array dei valori (serve per il WHERE)
   values.push(id);
-  // Esegue la query nel database
+
   connection.query(sql, values, (err, results) => {
-    // Gestisce eventuali errori della query
     if (err) return res.status(500).json({ error: "Internal server error" });
-    // Se nessun videogioco è stato modificato (id non trovato), restituisce errore 404
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "Videogame not found" });
     }
-    // Se tutto è andato bene, restituisce un messaggio di successo
     return res.status(204).send();
   });
 }

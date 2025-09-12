@@ -74,11 +74,11 @@
   - [x] permettere di raccogliere l’email del visitatore
   - [x] inviare un’email di ringraziamento
 
-- [ ] 9. Gestione quantità (disponibilità, carrello, esauriti) (coefficiente: 3)
+- [x] 9. Gestione quantità (disponibilità, carrello, esauriti) (coefficiente: 3)
 
   - [x] mostrare le quantità disponibili nella pagina di dettaglio
-  - [ ] impedire che un prodotto esaurito possa essere aggiunto al carrello
-  - [ ] impedire il proseguimento se un prodotto nel carrello diventa esaurito
+  - [x] impedire che un prodotto esaurito possa essere aggiunto al carrello
+  - [x] impedire il proseguimento se un prodotto nel carrello diventa esaurito
 
 - [ ] 10. Confronta prodotti (tabella fino a 3 prodotti) (coefficiente: 3)
 
