@@ -42,7 +42,7 @@ export default function HeaderComponent() {
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark sticky-top navbar-fixed-transparent">
-      <div className="container d-flex justify-content-between align-items-center gap-4 ">
+      <div className="container d-flex justify-content-between align-items-center container-no-gutter">
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
         </Link>
