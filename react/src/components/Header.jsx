@@ -60,7 +60,7 @@ export default function HeaderComponent() {
         </button>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav m-auto mt-2 mt-lg-0 text-navbar">
+          <ul className="navbar-nav m-auto mt-lg-0 text-navbar">
             <li className="nav-item">
               <NavLink
                 to="/"

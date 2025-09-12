@@ -431,6 +431,21 @@ ul {
   }
 }
 
+@media (max-width: 990px) and (min-width: 760px) {
+  .navbar .container {
+    max-width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+@media (max-width: 990px) and (min-width: 760px) {
+  .navbar .container,
+  .navbar-nav {
+    gap: 0.5rem !important;
+  }
+}
+
 /* ================================
    🔽 DROPDOWN MENU PERSONALIZZATO
 ================================ */
