@@ -55,6 +55,12 @@ export default function VideogamesPage() {
         }
     }, [query.get("page")]);
 
+    // Reset pagina a 1 quando cambia filtro, ricerca o ordinamento
+    useEffect(() => {
+        setCurrentPage(1);
+        // eslint-disable-next-line
+    }, [search, sortOrder, platformFilter, discountedOnly]);
+
     // Ottieni tutte le piattaforme disponibili dai videogiochi
     const allPlatforms = Array.from(
         new Set(
