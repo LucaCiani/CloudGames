@@ -208,3 +208,15 @@ export const sviluppatoreKeywords = [
   "made by",
   "developed by",
 ];
+
+// Parole chiave per richieste di giochi nuovi/recenti
+export const recentiKeywords = [
+  "nuovo",
+  "nuovi",
+  "uscito",
+  "usciti",
+  "recente",
+  "recenti",
+  "appena uscito",
+  "appena usciti",
+];

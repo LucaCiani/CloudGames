@@ -8,6 +8,7 @@ import {
   prezzoKeywords,
   piattaformaKeywords,
   sviluppatoreKeywords,
+  recentiKeywords,
 } from "../data/keywords.js";
 
 const router = express.Router();
@@ -261,7 +262,7 @@ router.post("/", async (req, res) => {
                   (g) =>
                     `${g.name} costa €${g.promo_price || g.price} ${
                       g.promo_price ? `(prezzo pieno €${g.price})` : ""
-                    }. [Vai alla pagina](/videogames/${createSlug(g.name)})`
+                    }`
                 )
                 .join("; ");
               systemPrompt += ` Ecco le informazioni sui prezzi: ${priceInfo}.`;
@@ -349,7 +350,48 @@ router.post("/", async (req, res) => {
       );
     }
 
-    // 8. RICERCA GENERALE
+    // 8. GIOCHI RECENTI
+    else if (
+      recentiKeywords.some((keyword) => lowerMessage.includes(keyword))
+    ) {
+      console.log("🔍 Query per giochi recenti...");
+
+      connection.query(
+        `
+        SELECT name, price, promo_price, developer, release_date
+  FROM videogames
+  WHERE release_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+    AND release_date <= CURDATE()
+  ORDER BY release_date DESC
+  LIMIT 4
+        `,
+        (error, games) => {
+          if (error) {
+            console.log("❌ Errore query giochi recenti:", error);
+            systemPrompt += " Al momento non ci sono giochi nuovi disponibili.";
+          } else {
+            console.log("Giochi recenti trovati:", games);
+            if (games && games.length > 0) {
+              const recentGames = games
+                .map(
+                  (g) =>
+                    `${g.name} di ${g.developer || "N/A"} - €${
+                      g.promo_price || g.price
+                    } (uscito il ${g.release_date})`
+                )
+                .join("; ");
+              systemPrompt += ` Ecco i giochi più recenti: ${recentGames}.`;
+            } else {
+              systemPrompt +=
+                " Al momento non ci sono giochi nuovi usciti negli ultimi mesi.";
+            }
+          }
+          callOpenAI(systemPrompt);
+        }
+      );
+    }
+
+    // 9. RICERCA GENERALE
     else {
       console.log("🔍 Ricerca generale...");
 
