@@ -578,3 +578,7 @@ ul {
   height: 21px;
   vertical-align: middle;
 }
+
+.btn-sm {
+  font-size: 0.75rem;
+}
