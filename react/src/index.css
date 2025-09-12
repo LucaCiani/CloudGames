@@ -385,8 +385,18 @@ ul {
   }
 }
 
+/* Tablet: max-width 992px */
+@media (min-width: 992px) {
+
+  .navbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0.5rem !important;
+  }
+}
+
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
+
   .header-img-container {
     height: 320px;
   }
@@ -399,10 +409,24 @@ ul {
   .text-list-group-description {
     display: none;
   }
+
+  .navbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0 !important;
+  }
+}
+
+/* Small Tablet: max-width 768px */
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 0.5rem;
+  }
 }
 
 /* Small Tablet: max-width 767px */
 @media (max-width: 767px) {
+
   .footer-text {
     text-align: center;
 
@@ -431,6 +455,7 @@ ul {
   }
 }
 
+/* Cosa cazzo sono questi Umberto??? non cancellarli 🤬 😡 */ 
 @media (max-width: 990px) and (min-width: 760px) {
   .navbar .container {
     max-width: 100%;
@@ -439,6 +464,7 @@ ul {
   }
 }
 
+/* Cosa cazzo sono questi Umberto??? non cancellarli 🤬 😡 */
 @media (max-width: 990px) and (min-width: 760px) {
   .navbar .container,
   .navbar-nav {
