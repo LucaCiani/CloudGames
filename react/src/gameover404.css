@@ -1,46 +1,39 @@
-.notfound-game-over-container {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-size: 60px 60px, 200px 200px, 300px 300px;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffd700;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
-.notfound-container {
-  text-align: center;
-  max-width: 600px;
-  padding: 40px 20px;
+:root {
+  --bs-body-bg: transparent;
+  --bs-body-color: #fff;
+  --bs-link-color: #f0ad4e;
+  --bs-link-hover-color: #ec971f;
+  --bs-color-dark: rgb(39, 39, 37);
+  --bs-color-grad1: #d4a30e;
+  --bs-color-grad1: #dac884;
+  --bs-color-grad2: #bca666;
+  --bs-color-grad3: #634e2e;
 }
-
-.notfound-error-code {
+/* Titolo e descrizione */
+.notfound-title {
   font-size: 8rem;
   font-weight: bold;
   margin-bottom: 20px;
-  text-shadow: 0 4px 8px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
   background: linear-gradient(45deg, #ffd700, #ffed4e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.notfound-error-title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.notfound-error-message {
+.notfound-description {
   font-size: 1.2rem;
   margin-bottom: 40px;
-  opacity: 0.9;
-  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 600px;
 }
 
+/* Bottoni */
 .notfound-btn {
   background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #000;
+  color: #1a1a2e;
   padding: 15px 30px;
   border: none;
   border-radius: 50px;
@@ -51,7 +44,6 @@
   text-decoration: none;
   display: inline-block;
   margin: 10px;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
 .notfound-btn:hover {
@@ -65,17 +57,7 @@
   border: 2px solid #ffd700;
 }
 
-.notfound-icon {
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-.notfound-custom-icon {
-  width: 120px;
-  height: 120px;
-}
-
+/* Icone e statistiche */
 .notfound-gaming-stats {
   display: flex;
   justify-content: center;
@@ -100,10 +82,6 @@
   transform: translateY(-2px);
 }
 
-.notfound-stat.notfound-clickable {
-  cursor: pointer;
-}
-
 .notfound-stat-icon {
   font-size: 1.5rem;
 }
@@ -113,6 +91,7 @@
   font-size: 0.9rem;
 }
 
+/* Footer */
 .notfound-gaming-footer {
   margin-top: 40px;
   padding-top: 30px;
@@ -156,10 +135,18 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
+  z-index: 1050;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.notfound-discount-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .notfound-discount-popup {
@@ -170,6 +157,12 @@
   text-align: center;
   max-width: 400px;
   margin: 20px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.notfound-discount-popup-overlay.active .notfound-discount-popup {
+  transform: scale(1);
 }
 
 .notfound-popup-icon {
@@ -194,105 +187,67 @@
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 25px;
-}
-
-.notfound-discount-code .notfound-code {
-  color: #ffd700;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 5px;
+  letter-spacing: 2px;
 }
 
-.notfound-discount-code .notfound-description {
-  color: #ffd700;
-  font-size: 1rem;
-  margin-bottom: 0;
+/* Pioggia di monete animata */
+.rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1051;
+  overflow: hidden;
 }
 
-.notfound-popup-btn {
-  background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #000;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 25px;
-  font-weight: bold;
+.drop.coin-animated {
+  position: absolute;
+  top: -10%;
+  width: 40px;
+  height: 40px;
+  animation: fall linear infinite;
+  background-size: cover;
+  pointer-events: auto;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.notfound-popup-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+@keyframes fall {
+  from {
+    transform: translateY(-120%);
+  }
+  to {
+    transform: translateY(120vh);
+  }
 }
 
-/* Responsive Design */
+/* Contatore monete */
+.game-ui {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 15px;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-counter-icon {
+  font-size: 1.5rem;
+}
+
+.coin-counter-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .notfound-error-code {
-    font-size: 5rem;
+  .notfound-title {
+    font-size: 4rem;
   }
-
-  .notfound-error-title {
-    font-size: 2rem;
-  }
-
-  .notfound-error-message {
-    font-size: 1rem;
-  }
-
-  .notfound-gaming-stats {
-    gap: 15px;
-  }
-
-  .notfound-stat {
-    padding: 12px 16px;
-  }
-
-  .notfound-btn {
-    padding: 12px 25px;
-    font-size: 1rem;
-  }
-
-  .notfound-discount-popup {
-    padding: 30px 20px;
-    margin: 10px;
-  }
-
-  .notfound-discount-popup h3 {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .notfound-container {
-    padding: 20px 15px;
-  }
-
-  .notfound-gaming-stats {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .notfound-game-genres {
-    gap: 10px;
-  }
-
-  .notfound-genre {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Animazioni per le particelle SVG */
-@keyframes notfound-pulse {
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.notfound-custom-icon circle[opacity] {
-  animation: notfound-pulse 2s infinite;
 }

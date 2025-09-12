@@ -108,6 +108,17 @@
   object-fit: contain;
 }
 
+.text-navbar {
+  background: linear-gradient(
+    90deg,
+    var(--bs-color-grad1),
+    var(--bs-color-grad1),
+    var(--bs-color-grad1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 /* ================================
    📄 BODY
 ================================ */
@@ -255,7 +266,6 @@ ul {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
- 
 }
 
 .payment-methods {
