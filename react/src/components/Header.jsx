@@ -41,7 +41,7 @@ export default function HeaderComponent() {
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark sticky-top navbar-fixed-transparent">
+    <nav className="navbar navbar-expand-md navbar-dark navbar-fixed-transparent">
       <div className="container d-flex justify-content-between align-items-center container-no-gutter">
         <Link to={"/"} className="navbar-brand">
           <img src="/logo_navbar1.png" alt="logo" className="logo_navbar" />
@@ -60,7 +60,7 @@ export default function HeaderComponent() {
         </button>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav m-auto mt-lg-0 text-navbar">
+          <ul className="navbar-nav m-auto mt-2 mt-lg-0 text-navbar">
             <li className="nav-item">
               <NavLink
                 to="/"
