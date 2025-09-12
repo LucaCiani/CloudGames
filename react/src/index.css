@@ -152,16 +152,20 @@ main {
 }
 
 .playstation {
-  background-color: #003791;
+  background: linear-gradient(to right, #281dc0, #250d7b);
+  
 }
 .xbox {
-  background-color: #107c10;
+  background: linear-gradient(to right, #107c10, #064c06);
+  
 }
 .pc {
-  background-color: #666666;
+  background: linear-gradient(to right, #666666, #454545);
+  
 }
 .nintendo {
-  background-color: #e60012;
+  background: linear-gradient(to right, #cd0213, #b90211c5);
+   
 }
 
 /* ================================
@@ -169,6 +173,7 @@ main {
 ================================ */
 .genre-horror {
   background-color: #ff33a8;
+  
 }
 .genre-action {
   background-color: #ff5733;
@@ -244,6 +249,11 @@ main {
 }
 .genre-open-world {
   background-color: #ffcc99;
+}
+
+
+span.badge {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 /* ================================

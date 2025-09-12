@@ -15,7 +15,7 @@ export default function Footer() {
     <div className="container">
       <hr />
 
-      <div className="row row-cols-1 row-cols-md-3 d-flex justify-content-between my-5">
+      <div className="row row-cols-2 row-cols-md-3 d-flex justify-content-between my-5">
         <div className="col">
           <ul className="footer-text">
             <li>
