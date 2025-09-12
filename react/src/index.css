@@ -506,15 +506,17 @@ ul {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
+
+
+
+
+
+
+
+
 .game-name {
   max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.container-no-gutter {
-  --bs-gutter-x: 0;
-  padding-left: 0;
-  padding-right: 0;
 }

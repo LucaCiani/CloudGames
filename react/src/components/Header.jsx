@@ -108,10 +108,7 @@ export default function HeaderComponent() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="form-control"
               />
-              <button
-                className="search-btn btn btn-outline-light ms-1 flex-shrink-0"
-                type="submit"
-              >
+              <button className="search-btn ms-1 flex-shrink-0" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
