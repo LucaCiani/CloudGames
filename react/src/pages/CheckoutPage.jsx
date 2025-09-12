@@ -132,6 +132,44 @@ export default function CheckoutPage() {
           console.warn("Errore invio email", emailErr);
         }
 
+        try {
+          // 4. Aggiorna stock videogames
+          console.debug("[Checkout] Updating stock for purchased videogames");
+          await Promise.all(
+            cartItems.map(async (item) => {
+              const videogameRes = await fetch(
+                `${API_BASE}/videogames/${item.id}`
+              );
+              if (!videogameRes.ok) {
+                console.warn(
+                  `Videogioco con ID ${item.id} non trovato per aggiornamento stock`
+                );
+                return;
+              }
+              const videogame = await videogameRes.json();
+              const currentQuantity =
+                videogame.quantity !== undefined
+                  ? videogame.quantity
+                  : videogame.data?.quantity ?? 0;
+
+              const res = await fetch(`${API_BASE}/videogames/${item.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  quantity: currentQuantity - (item.cartQuantity || 1),
+                }),
+              });
+              if (!res.ok) {
+                console.warn(
+                  `Aggiornamento stock fallito per videogioco ID ${item.id}`
+                );
+              }
+            })
+          );
+        } catch (err) {
+          console.error("Errore aggiornamento stock videogames", err);
+        }
+
         localStorage.removeItem("videogames");
         setCartItems([]); // Svuota il carrello globale
 
