@@ -506,10 +506,11 @@ async function sendOrderEmail(req, res) {
       ],
     });
 
-    return res.status(200).json({ ok: true });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+    // Always send a response so the client fetch can resolve
+    return res.status(200).json({ ok: true, invoice_id, billing_address_id });
+  } catch (err) {
+    console.error("emailsController.sendOrderEmail error", err);
+    return res.status(500).json({ error: "Failed to send order email" });
   }
 }
 

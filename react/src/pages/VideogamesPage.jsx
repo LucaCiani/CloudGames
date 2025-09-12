@@ -25,12 +25,24 @@ export default function VideogamesPage() {
   );
   const [viewMode, setViewMode] = useState("grid"); // "grid" o "list"
 
+  const [genreFilter, setGenreFilter] = useState(
+    query.get("genre") || "all"
+  );
+
+
   // Stato per la ricerca testuale
   const search = query.get("search")?.toLowerCase() || "";
 
   // Stato per la paginazione
   const [currentPage, setCurrentPage] = useState(1); // Pagina corrente
-  const resultsPerPage = 15; // Risultati per pagina
+  const [resultsPerPage, setResultsPerPage] = useState(15)  // Risultati per pagina
+
+  // Cambio numero risultati
+  const handleResultsPerPageChange = (count) => {
+    setResultsPerPage(count);
+    setCurrentPage(1); // Reset alla prima pagina
+  };
+
 
   // Aggiorna la query string nell'URL quando cambiano i filtri/ordinamento
   useEffect(() => {
@@ -39,6 +51,8 @@ export default function VideogamesPage() {
     if (sortOrder && sortOrder !== "az") params.set("sort", sortOrder);
     if (platformFilter && platformFilter !== "all")
       params.set("platform", platformFilter);
+    if (genreFilter && genreFilter !== "all")
+      params.set("genre", genreFilter);
     if (discountedOnly) params.set("discounted", "true");
     if (currentPage && currentPage !== 1) params.set("page", currentPage);
     navigate(
@@ -59,7 +73,9 @@ export default function VideogamesPage() {
   useEffect(() => {
     setCurrentPage(1);
     // eslint-disable-next-line
-  }, [search, sortOrder, platformFilter, discountedOnly]);
+
+  }, [sortOrder, platformFilter, discountedOnly, search, genreFilter]);
+
 
   // Ottieni tutte le piattaforme disponibili dai videogiochi
   const allPlatforms = Array.from(
@@ -68,22 +84,44 @@ export default function VideogamesPage() {
     )
   );
 
+
+  const allGenre = Array.from(
+    new Set(
+      (videogames || []).flatMap((vg) => vg.genres || []).filter(Boolean)
+    )
+
+  );
+
+  console.log(allGenre);
+
+
+
+
+
+
   // Filtra i giochi in base alla ricerca
   let filteredGames = search
     ? videogames?.filter((vg) => {
-        const gameName = vg.name.toLowerCase();
-        // Split search query into individual words and check if all words are present in the game name
-        const searchWords = search
-          .split(/\s+/)
-          .filter((word) => word.length > 0);
-        return searchWords.every((word) => gameName.includes(word));
-      })
+      const gameName = vg.name.toLowerCase();
+      // Split search query into individual words and check if all words are present in the game name
+      const searchWords = search
+        .split(/\s+/)
+        .filter((word) => word.length > 0);
+      return searchWords.every((word) => gameName.includes(word));
+    })
     : videogames;
 
   // Filtra per piattaforma selezionata
   if (platformFilter !== "all") {
     filteredGames = filteredGames?.filter((vg) =>
       (vg.platforms || []).includes(platformFilter)
+    );
+  }
+
+
+  if (genreFilter !== "all") {
+    filteredGames = filteredGames?.filter((vg) =>
+      (vg.genres || []).includes(genreFilter)
     );
   }
 
@@ -153,66 +191,51 @@ export default function VideogamesPage() {
         )}
 
         {/* Barra dei filtri e dei bottoni */}
-        <div className="d-flex flex-wrap gap-3 mb-4 align-items-center">
-          {/* Dropdown ordinamento */}
-          <div className="dropdown me-2">
+        {/* <div className="d-flex flex-wrap gap-3 mb-4 align-items-center"> */}
+        <div className="row row-cols row-cols-md-3" >
+          {/* bottone filtro genere  */}
+
+          <div className="dropdown col">
             <button
-              className="btn btn-sm btn-gradient dropdown-toggle"
+              className=" btn-gradient dropdown-toggle mx-auto"
               type="button"
-              id="sortDropdown"
+              id="filterDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Ordina
+              {genreFilter === "all"
+                ? "Tutti i generi"
+                : genreFilter}
             </button>
-            <ul className="dropdown-menu" aria-labelledby="sortDropdown">
+            <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
                 <button
-                  className={`dropdown-item${
-                    sortOrder === "az" ? " active" : ""
-                  }`}
-                  onClick={() => setSortOrder("az")}
+                  className={`dropdown-item${genreFilter === "all" ? " active" : ""
+                    }`}
+                  onClick={() => setGenreFilter("all")}
                 >
-                  A-Z
+                  Tutti i generi
                 </button>
               </li>
-              <li>
-                <button
-                  className={`dropdown-item${
-                    sortOrder === "za" ? " active" : ""
-                  }`}
-                  onClick={() => setSortOrder("za")}
-                >
-                  Z-A
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`dropdown-item${
-                    sortOrder === "price-asc" ? " active" : ""
-                  }`}
-                  onClick={() => setSortOrder("price-asc")}
-                >
-                  Prezzo crescente
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`dropdown-item${
-                    sortOrder === "price-desc" ? " active" : ""
-                  }`}
-                  onClick={() => setSortOrder("price-desc")}
-                >
-                  Prezzo decrescente
-                </button>
-              </li>
+              {allGenre.map((genre) => (
+                <li key={genre}>
+                  <button
+                    className={`dropdown-item${genreFilter === genre ? " active" : ""
+                      }`}
+                    onClick={() => setGenreFilter(genre)}
+                  >
+                    {genre}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
+
           {/* Dropdown piattaforme */}
-          <div className="dropdown me-2">
+          <div className="dropdown col">
             <button
-              className=" btn-gradient dropdown-toggle"
+              className=" btn-gradient dropdown-toggle mx-auto"
               type="button"
               id="filterDropdown"
               data-bs-toggle="dropdown"
@@ -225,9 +248,8 @@ export default function VideogamesPage() {
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
                 <button
-                  className={`dropdown-item${
-                    platformFilter === "all" ? " active" : ""
-                  }`}
+                  className={`dropdown-item${platformFilter === "all" ? " active" : ""
+                    }`}
                   onClick={() => setPlatformFilter("all")}
                 >
                   Tutte le piattaforme
@@ -236,9 +258,8 @@ export default function VideogamesPage() {
               {allPlatforms.map((platform) => (
                 <li key={platform}>
                   <button
-                    className={`dropdown-item${
-                      platformFilter === platform ? " active" : ""
-                    }`}
+                    className={`dropdown-item${platformFilter === platform ? " active" : ""
+                      }`}
                     onClick={() => setPlatformFilter(platform)}
                   >
                     {platform}
@@ -249,28 +270,125 @@ export default function VideogamesPage() {
           </div>
 
           {/* Bottone per mostrare solo giochi scontati */}
-          <button
-            className={`${
-              discountedOnly ? "btn-gradient" : "empty-btn-gradient"
-            }`}
-            onClick={() => setDiscountedOnly((prev) => !prev)}
-          >
-            Solo scontati
-          </button>
+
+          <div className="dropdown col d-flex justify-content-center">
+            <button
+              className={`${discountedOnly ? "btn-gradient" : "empty-btn-gradient"
+                }`}
+              onClick={() => setDiscountedOnly((prev) => !prev)}
+            >
+              Solo scontati
+            </button>
+          </div>
+        </div>
+
+        {/* bottone per cambiare il numero di risultati in pagina */}
+
+        <div className="row row-cols row-cols-md-3 mb-5 ">
+          <div className="dropdown col">
+            <button
+              className="btn btn-sm btn-gradient dropdown-toggle mx-auto"
+              type="button"
+              id="sortDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >Numero risultati
+            </button>
+
+
+
+            <ul className="dropdown-menu" aria-labelledby="sortDropdown">
+              <li>
+                <button className="dropdown-item" onClick={() => handleResultsPerPageChange(15)}>Mostra 15</button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleResultsPerPageChange(24)}>Mostra 24</button>
+              </li>
+            </ul>
+          </div>
+
+
+
+
+
+
+          {/* Dropdown ordinamento */}
+
+          <div className="dropdow col ">
+            <button
+              className="btn btn-sm btn-gradient dropdown-toggle mx-auto"
+              type="button"
+              id="sortDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Ordina
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="sortDropdown">
+              <li>
+                <button
+                  className={`dropdown-item${sortOrder === "az" ? " active" : ""
+                    }`}
+                  onClick={() => setSortOrder("az")}
+                >
+                  A-Z
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`dropdown-item${sortOrder === "za" ? " active" : ""
+                    }`}
+                  onClick={() => setSortOrder("za")}
+                >
+                  Z-A
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`dropdown-item${sortOrder === "price-asc" ? " active" : ""
+                    }`}
+                  onClick={() => setSortOrder("price-asc")}
+                >
+                  Prezzo crescente
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`dropdown-item${sortOrder === "price-desc" ? " active" : ""
+                    }`}
+                  onClick={() => setSortOrder("price-desc")}
+                >
+                  Prezzo decrescente
+                </button>
+              </li>
+            </ul>
+          </div>
 
           {/* Bottone per cambiare vista griglia/lista */}
-          <button
-            className="btn-gradient ms-auto"
-            onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-          >
-            <i
-              className={`fa-solid ${
-                viewMode === "grid" ? "fa-list" : "fa-grip"
-              }`}
-            ></i>
-            {viewMode === "grid" ? " Lista" : " Griglia"}
-          </button>
+
+          <div className="dropdown col">
+            <button
+              className="btn-gradient mx-auto"
+              onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+            >
+              <i
+                className={`fa-solid ${viewMode === "grid" ? "fa-list" : "fa-grip"
+                  }`}
+              ></i>
+              {viewMode === "grid" ? " Lista" : " Griglia"}
+            </button>
+          </div>
         </div>
+
+
+
+
+
+
+
+
+
+
 
         {/* VISTA GRIGLIA: mostra le card dei videogiochi */}
         {viewMode === "grid" && (
@@ -361,9 +479,14 @@ export default function VideogamesPage() {
                         <h6 className="mb-1 text-white text-truncate">
                           {videogame.name}
                         </h6>
-                        <div className="mb-1 d-flex gap-1 flex-wrap">
-                          {videogame.genres && videogame.genres.length > 0
-                            ? videogame.genres
+
+
+                        {/* Sezione dei Generi */}
+                        <div className="mb-1">
+                          <div className="d-flex gap-1 flex-wrap">
+                            {videogame.genres && videogame.genres.length > 0
+                              ? videogame.genres
+
                                 .slice(0, 2)
                                 .map((genre, index) => (
                                   <span
@@ -377,7 +500,10 @@ export default function VideogamesPage() {
                                     {genre}
                                   </span>
                                 ))
-                            : "N/A"}
+
+                              : "N/A"}
+                          </div>
+
                         </div>
                         <div className="small">
                           <span>
@@ -460,11 +586,10 @@ export default function VideogamesPage() {
             return (
               <button
                 key={page}
-                className={`btn btn-sm ${
-                  page === currentPage
-                    ? "btn-warning text-white"
-                    : "btn-outline-warning"
-                }`}
+                className={`btn btn-sm ${page === currentPage
+                  ? "btn-warning text-white"
+                  : "btn-outline-warning"
+                  }`}
                 onClick={() => goToPage(page)}
               >
                 {page}
