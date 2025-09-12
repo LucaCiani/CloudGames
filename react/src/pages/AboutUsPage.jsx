@@ -49,7 +49,7 @@ export default function AboutUsPage() {
           compromessi.
         </p>
 
-        <h2 className="aboutus-subtitle">I nostri punti di forza</h2>
+        <h2 className="aboutus-subtitle aboutus-title2">I nostri punti di forza</h2>
 
         <div className="aboutus-points">
           <div className="aboutus-point">

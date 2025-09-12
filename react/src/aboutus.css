@@ -1,4 +1,17 @@
 /* ABOUT US SECTION */
+
+:root {
+  --bs-body-bg: transparent;
+  --bs-body-color: #fff;
+  --bs-link-color: #f0ad4e;
+  --bs-link-hover-color: #ec971f;
+  --bs-color-dark: rgb(39, 39, 37);
+  --bs-color-grad1: #d4a30e;
+  --bs-color-grad1: #dac884;
+  --bs-color-grad2: #bca666;
+  --bs-color-grad3: #634e2e;
+}
+
 .aboutus-section {
   padding: 80px 20px;
   min-height: 100vh;
@@ -33,9 +46,43 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(45deg, #b08d2f, #c9b037);
+  background: linear-gradient(
+    45deg,
+    var(--bs-color-grad1),
+    var(--bs-color-grad2),
+    var(--bs-color-grad3)
+  );
   border-radius: 2px;
 }
+
+.aboutus-title2 {
+  font-size: 3rem;
+  margin-bottom: 40px;
+  color: #ffffff;
+  font-weight: bold;
+  position: relative;
+}
+
+.aboutus-title2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width:300px;
+  height: 4px;
+  background: linear-gradient(
+    45deg,
+    var(--bs-color-grad1),
+    var(--bs-color-grad2),
+    var(--bs-color-grad3)
+  );
+  border-radius: 2px;
+}
+
+
+
+
 
 .aboutus-paragraph {
   font-size: 1.3rem;
@@ -62,7 +109,12 @@
 }
 
 .aboutus-point {
-  background: linear-gradient(45deg, #a59361, #726319);
+  background: linear-gradient(
+    45deg,
+    var(--bs-color-grad3),
+    var(--bs-color-grad2),
+    var(--bs-color-grad3)
+  );
   padding: 25px;
   border-radius: 15px;
   border: 2px solid #e9e991;
@@ -71,6 +123,12 @@
 }
 
 .aboutus-point:hover {
+   background: linear-gradient(
+    90deg,
+    var(--bs-color-grad3),
+    var(--bs-color-grad2),
+    var(--bs-color-grad3)
+  );
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border-color: #c9b037;
@@ -93,7 +151,7 @@
 .github-section {
   margin-top: 60px;
   padding: 40px 0;
-  border-top: 2px solid #e9ecef;
+  border-top: 2px solid var(--bs-color-grad2);
 }
 
 .github-title {
@@ -137,13 +195,13 @@
   height: 80px;
   border-radius: 50%;
   margin-bottom: 15px;
-  border: 3px solid #e9ecef;
+  border: 3px solid var(--bs-color-grad1);
   transition: border-color 0.3s ease;
   object-fit: cover;
 }
 
 .github-link:hover .github-avatar {
-  border-color: #0066cc;
+  border-color: var(--bs-color-grad2);
 }
 
 .github-name {

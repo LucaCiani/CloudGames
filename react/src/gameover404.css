@@ -253,7 +253,6 @@
   }
 }
 
-
 .shuffle-parent {
   color: var(--bs-color-grad1);
   display: inline-block;
@@ -262,7 +261,7 @@
   will-change: transform;
   line-height: 1; /* keep line height consistent before/after split to avoid jump */
   font-size: 4rem;
-  font-family: 'Press Start 2P', sans-serif;
+  font-family: "Press Start 2P", sans-serif;
   text-transform: uppercase;
   visibility: hidden; /* hidden until initialized to avoid flash/jump */
 }
