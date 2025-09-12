@@ -67,6 +67,9 @@
    Modifica qui per cambiare la scrollbar o il padding dei messaggi
 ================================ */
 .chatbot-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   flex: 1;
   padding: 12px;
   overflow-y: auto;
@@ -104,21 +107,35 @@
 /* ================================
    Messaggio utente (allineato a destra, colore arancio)
 ================================ */
+/* ================================
+   Messaggio utente
+================================ */
 .chatbot-message.user {
-  background-color: var(--bs-color-grad1);
-  color: #222222d3;
-  align-self: flex-end;
+  align-self: flex-start;
+  background-color: #23221f; /* sfondo scuro */
+  color: #d4a30e; /* giallo principale */
+  border: 1.5px solid #634e2e; /* bordo marrone caldo */
+  border-radius: 12px;
+  padding: 8px 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* ================================
-   Messaggio bot (allineato a sinistra, colore giallo)
+   Messaggio bot
 ================================ */
 .chatbot-message.bot {
-  background-color: var(--bs-color-grad1);
-  color: #222222d3;
-  align-self: flex-start;
+  align-self: flex-end;
+  background-color: #2c2b28; /* grigio scuro leggermente più chiaro */
+  color: #54819e; /* blu-grigio per contrasto */
+  border: 1.5px solid #314e61; /* bordo blu-grigio scuro */
+  border-radius: 12px;
+  padding: 8px 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-
 /* ================================
    Messaggio di caricamento ("Bot sta scrivendo...")
 ================================ */
@@ -153,6 +170,13 @@
 .chatbot-input::placeholder {
   color: var(--bs-color-grad1);
   opacity: 0.8;
+}
+
+.chatbot-input:focus {
+ 
+  color: #fff;
+  outline: 1px solid var(--bs-color-grad1);
+  border-color: var(--bs-color-grad1);
 }
 
 /* Bottone invio */
