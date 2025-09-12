@@ -152,16 +152,20 @@ main {
 }
 
 .playstation {
-  background-color: #003791;
+  background: linear-gradient(to right, #281dc0, #250d7b);
+  
 }
 .xbox {
-  background-color: #107c10;
+  background: linear-gradient(to right, #107c10, #064c06);
+  
 }
 .pc {
-  background-color: #666666;
+  background: linear-gradient(to right, #666666, #454545);
+  
 }
 .nintendo {
-  background-color: #e60012;
+  background: linear-gradient(to right, #cd0213, #b90211c5);
+   
 }
 
 /* ================================
@@ -169,6 +173,7 @@ main {
 ================================ */
 .genre-horror {
   background-color: #ff33a8;
+  
 }
 .genre-action {
   background-color: #ff5733;
@@ -244,6 +249,11 @@ main {
 }
 .genre-open-world {
   background-color: #ffcc99;
+}
+
+
+span.badge {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 /* ================================
@@ -388,7 +398,6 @@ ul {
 
 /* Tablet: max-width 992px */
 @media (min-width: 992px) {
-
   .navbar {
     --bs-navbar-padding-x: 0;
     --bs-navbar-padding-y: 0.5rem !important;
@@ -397,13 +406,12 @@ ul {
 
 /* Tablet: max-width 991px */
 @media (max-width: 991px) {
-
   .header-img-container {
     height: 320px;
   }
 
   .text-list-group-title {
-    min-width: none;
+    min-width: 0px;
     flex-grow: 1;
   }
 
@@ -419,7 +427,6 @@ ul {
 
 /* Small Tablet: max-width 768px */
 @media (max-width: 768px) {
-
   .navbar {
     padding: 0.5rem;
   }
@@ -427,7 +434,6 @@ ul {
 
 /* Small Tablet: max-width 767px */
 @media (max-width: 767px) {
-
   .footer-text {
     text-align: center;
 
@@ -456,7 +462,7 @@ ul {
   }
 }
 
-/* Cosa cazzo sono questi Umberto??? non cancellarli 🤬 😡 */ 
+/* Cosa cazzo sono questi Umberto??? non cancellarli 🤬 😡 */
 @media (max-width: 990px) and (min-width: 760px) {
   .navbar .container {
     max-width: 100%;
@@ -568,7 +574,7 @@ ul {
   outline: none;
 }
 
- /* Stella supermario*/
+/* Stella supermario*/
 .vote-star {
   display: flex;
   align-items: center;
@@ -579,4 +585,8 @@ ul {
   width: 21px;
   height: 21px;
   vertical-align: middle;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
 }

@@ -71,19 +71,19 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
-      <div className="py-5">
+      <div className="container my-5">
         <h3 className="text-center mb-5">Prodotti correlati</h3>
-        <div className="row row-cols-sm-1 row-cols-md-3 row-cols-xl-4 px-5 mb-4 container-fluid justify-content-center">
+        <div className="row">
           {relatedVideogames.length === 0 ? (
             <div className="col-12 text-center text-secondary">
               Nessun gioco correlato disponibile.
             </div>
           ) : (
-            relatedVideogames.slice(0, 4).map((relatedVg) => {
+            relatedVideogames.slice(0, 3).map((relatedVg) => {
               return (
                 <div
                   key={relatedVg.id}
-                  className="col"
+                  className="col-12 col-md-6 col-lg-4 mb-4 px-3"
                   style={{
                     scale: 1,
                   }}

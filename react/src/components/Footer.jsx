@@ -15,7 +15,7 @@ export default function Footer() {
     <div className="container">
       <hr />
 
-      <div className="row row-cols-1 row-cols-md-3 d-flex justify-content-between my-5">
+      <div className="row row-cols-2 row-cols-md-3 d-flex justify-content-between my-5">
         <div className="col">
           <ul className="footer-text">
             <li>
@@ -158,9 +158,9 @@ export default function Footer() {
         </div>
       </div>
       <hr />
-      <div className="row row-cols-1 row-cols-md-2 mb-5 ">
-        <div className="col d-flex align-items-center">
-          <ul className="payment-methods d-flex justify-content-between ">
+      <div className="row row-cols-1 row-cols-md-2 my-3 justify-content-between align-items-center">
+        <div className="col-6">
+          <ul className="payment-methods d-flex justify-content-between px-3">
             <li>
               <i className="fa-brands fa-cc-visa"></i>
             </li>
@@ -178,7 +178,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-6 mx-auto d-flex justify-content-center">
+        <div className="col-6 d-flex justify-content-end">
           <img
             src="/trustpilot.png"
             alt="trustpilot"
