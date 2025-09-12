@@ -24,8 +24,8 @@
 } */
 
 .notfound-description {
-  font-size: 1.2rem;
-  margin-bottom: 40px;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
   opacity: 0.8;
   max-width: 600px;
 }
@@ -221,7 +221,7 @@
     transform: translateY(-120%);
   }
   to {
-    transform: translateY(120vh);
+    transform: translateY(100vh);
   }
 }
 

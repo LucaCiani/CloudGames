@@ -6,16 +6,26 @@ import "../gameover404.css";
 export default function NotFound() {
   // Numero massimo di monete da raccogliere
   const maxCoins = 10;
+  // Numero massimo di monete animate contemporaneamente
   const animatedCoins = 5;
+
   // Stato: array di oggetti moneta, ognuna con posizione, durata animazione, delay, stato raccolta e id unico
   const [coins, setCoins] = useState(
-    Array.from({ length: maxCoins }).map(() => ({
-      left: Math.random() * 95, // posizione orizzontale random (percentuale)
-      duration: 5 + Math.random() * 3, // durata animazione random (più veloce)
-      delay: Math.random() * 2, // delay random per effetto pioggia più naturale
-      collected: false, // stato raccolta
-      id: Math.random().toString(36).slice(2), // id unico
-    }))
+    Array.from({ length: maxCoins }).map(() => {
+      // Scegli casualmente se la moneta va a sinistra o a destra
+      const isLeft = Math.random() < 0.5;
+      // Se sinistra: tra 0 e 25%, se destra: tra 80 e 98%
+      const left = isLeft
+        ? Math.random() * 25 // 0% - 25%
+        : 80 + Math.random() * 18; // 80% - 98%
+      return {
+        left,
+        duration: 5 + Math.random() * 3, // durata animazione random
+        delay: Math.random() * 2, // delay random per effetto pioggia naturale
+        collected: false, // stato raccolta
+        id: Math.random().toString(36).slice(2), // id unico
+      };
+    })
   );
 
   // Stato: quante monete sono state raccolte
@@ -56,10 +66,9 @@ export default function NotFound() {
   };
 
   /**
-   * Chiude il popup sconto e resetta il gioco delle monete:
+   * Chiude il popup sconto:
    * - Nasconde il popup
-   * - Dopo 1 secondo, resetta tutte le monete (nuove posizioni, nuovi tempi)
-   * - Resetta il contatore raccolte
+   * - (Non resetta il gioco: il minigioco resta completato)
    */
   const closeDiscount = () => {
     setShowDiscountPopup(false);
@@ -93,9 +102,9 @@ export default function NotFound() {
       </div>
 
       {/* Contenuto principale della pagina */}
-      <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-4 text-center position-relative">
+      <div className="container d-flex flex-column align-items-center justify-content-around min-vh-100 py-4 text-center position-relative">
+        {/* Titolo animato */}
         <Shuffle
-          // ...altre props
           text="ERROR 404"
           shuffleDirection="right"
           duration={0.35}
@@ -109,6 +118,7 @@ export default function NotFound() {
           respectReducedMotion={true}
         />
 
+        {/* Descrizione sotto il titolo */}
         <p className="notfound-description">
           Ops! Sembra che tu abbia perso una vita! La pagina che cerchi non
           esiste nel nostro universo gaming.
@@ -120,31 +130,29 @@ export default function NotFound() {
         {/* Statistiche gaming */}
         <div className="notfound-gaming-stats">
           <div className="notfound-stat">
-            <img src="snorlax.png" alt="ciao" />
-            <span className="notfound-stat-text">Non puoi passare,</span>
-            <span className="notfound-stat-text">Snorlax blocca la strada!</span>
+            <img src="luffy.png" alt="img Luffy D. Monkey" />
+            <span className="notfound-stat-text">Achievement: "Explorer"</span>
+            <span className="notfound-stat-text">
+              Hai trovato l’Isola Misteriosa 404
+            </span>
           </div>
           <div className="notfound-stat">
-            <img src=""/>
-            <span className="notfound-stat-text">Achievement: "Explorer"</span>
+            <img src="snorlax.png" alt="Snorlak Pokemon" />
+            <span className="notfound-stat-text">Non puoi passare,</span>
+            <span className="notfound-stat-text">
+              Snorlax blocca la strada!
+            </span>
           </div>
         </div>
 
         {/* Bottoni di navigazione e contatore monete */}
         <div className="container my-4">
           <div className="row justify-content-center align-items-center g-3">
-            {/* Contatore monete */}
-            <div className="col-12 col-md-auto order-1 order-md-3 d-flex justify-content-center justify-content-md-end">
-              <div className="game-ui">
-                <img src="/moneta.png" alt="Moneta" />
-                <span className="coin-counter-text">
-                  {coinsCollected}/{maxCoins}
-                </span>
-              </div>
-            </div>
+            {/* Contatore monete (puoi aggiungere qui se vuoi un box separato) */}
+            <div className="col-12 col-md-auto order-1 order-md-3 d-flex justify-content-center justify-content-md-end"></div>
             {/* Bottoni */}
             <div className="col-12 col-md-auto order-2 order-md-2 d-flex flex-column flex-md-row justify-content-center align-items-center">
-              <Link to="/" className="notfound-btn mb-2 mb-md-0 me-md-3">
+              <Link to="/" className="notfound-btn notfound-btn-secondary">
                 🏠 Respawn alla Home
               </Link>
               <button
@@ -157,17 +165,12 @@ export default function NotFound() {
           </div>
         </div>
 
-        {/* Footer con suggerimenti */}
-        <div className="notfound-gaming-footer">
-          <p>
-            🎯 Suggerimento: Prova a cercare nei nostri giochi più popolari!
-          </p>
-          <div className="notfound-game-genres">
-            <span className="notfound-genre">🏎️ Racing</span>
-            <span className="notfound-genre">⚔️ Action</span>
-            <span className="notfound-genre">🧩 Puzzle</span>
-            <span className="notfound-genre">🏆 Sports</span>
-          </div>
+        {/* Contatore monete raccolte */}
+        <div className="notfound-btn notfound-btn-secondary">
+          <img src="/moneta.png" alt="Moneta" />
+          <span className="coin-counter-text">
+            {coinsCollected}/{maxCoins}
+          </span>
         </div>
       </div>
 

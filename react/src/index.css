@@ -567,3 +567,14 @@ ul {
   /* oppure un altro colore */
   outline: none;
 }
+.vote-star {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vote-star img {
+  width: 21px;
+  height: 21px;
+  vertical-align: middle;
+}
