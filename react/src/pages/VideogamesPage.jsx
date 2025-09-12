@@ -186,10 +186,8 @@ export default function VideogamesPage() {
         )}
 
         {/* Barra dei filtri e dei bottoni */}
-        {/* <div className="d-flex flex-wrap gap-3 mb-4 align-items-center"> */}
         <div className="row row-cols row-cols-md-3">
-          {/* bottone filtro genere  */}
-
+          {/* generi  */}
           <div className="dropdown col">
             <button
               className=" btn-gradient dropdown-toggle mx-auto"
@@ -198,7 +196,7 @@ export default function VideogamesPage() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {genreFilter === "all" ? "Tutti i generi" : genreFilter}
+              {genreFilter === "all" ? "generi" : genreFilter}
             </button>
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
@@ -226,7 +224,7 @@ export default function VideogamesPage() {
             </ul>
           </div>
 
-          {/* Dropdown piattaforme */}
+          {/* piattaforme */}
           <div className="dropdown col">
             <button
               className=" btn-gradient dropdown-toggle mx-auto"
@@ -235,9 +233,7 @@ export default function VideogamesPage() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {platformFilter === "all"
-                ? "Tutte le piattaforme"
-                : platformFilter}
+              {platformFilter === "all" ? "piattaforme" : platformFilter}
             </button>
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
@@ -265,8 +261,7 @@ export default function VideogamesPage() {
             </ul>
           </div>
 
-          {/* Bottone per mostrare solo giochi scontati */}
-
+          {/* in sconto */}
           <div className="dropdown col d-flex justify-content-center">
             <button
               className={`${
@@ -274,13 +269,12 @@ export default function VideogamesPage() {
               }`}
               onClick={() => setDiscountedOnly((prev) => !prev)}
             >
-              Solo scontati
+              In sconto
             </button>
           </div>
         </div>
 
-        {/* bottone per cambiare il numero di risultati in pagina */}
-
+        {/* N. risultati */}
         <div className="row row-cols row-cols-md-3 mb-5 ">
           <div className="dropdown col">
             <button
@@ -290,9 +284,8 @@ export default function VideogamesPage() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Numero risultati
+              N. risultati
             </button>
-
             <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
                 <button
@@ -301,7 +294,7 @@ export default function VideogamesPage() {
                   }`}
                   onClick={() => setResultsPerPage(15)}
                 >
-                  Mostra 15
+                  15 videogame
                 </button>
               </li>
               <li>
@@ -311,14 +304,13 @@ export default function VideogamesPage() {
                   }`}
                   onClick={() => setResultsPerPage(24)}
                 >
-                  Mostra 24
+                  24 videogame
                 </button>
               </li>
             </ul>
           </div>
 
           {/* Dropdown ordinamento */}
-
           <div className="dropdow col ">
             <button
               className="btn btn-sm btn-gradient dropdown-toggle mx-auto"
@@ -374,7 +366,6 @@ export default function VideogamesPage() {
           </div>
 
           {/* Bottone per cambiare vista griglia/lista */}
-
           <div className="dropdown col">
             <button
               className="btn-gradient mx-auto"
@@ -385,7 +376,6 @@ export default function VideogamesPage() {
                   viewMode === "grid" ? "fa-list" : "fa-grip"
                 }`}
               ></i>
-              {viewMode === "grid" ? " Lista" : " Griglia"}
             </button>
           </div>
         </div>
@@ -410,7 +400,6 @@ export default function VideogamesPage() {
                           }}
                         />
                       </Link>
-
                       <div className="d-flex justify-content-between align-items-center mt-2 px-1">
                         {/* Nome come link */}
                         <Link
@@ -419,7 +408,6 @@ export default function VideogamesPage() {
                         >
                           {videogame.name}
                         </Link>
-
                         <div className="d-flex align-items-center gap-2">
                           <span>
                             {videogame.promo_price ? (
@@ -483,13 +471,11 @@ export default function VideogamesPage() {
                         <h6 className="mb-1 text-white text-truncate">
                           {videogame.name}
                         </h6>
-
                         {/* Sezione dei Generi */}
                         <div className="mb-1">
                           <div className="d-flex gap-1 flex-wrap">
                             {videogame.genres && videogame.genres.length > 0
                               ? videogame.genres
-
                                   .slice(0, 2)
                                   .map((genre, index) => (
                                     <span
@@ -522,7 +508,6 @@ export default function VideogamesPage() {
                         </div>
                       </div>
                     </Link>
-
                     {/* Bottone separato dal Link */}
                     <button
                       className="btn btn-sm btn-warning ms-2"
@@ -530,7 +515,6 @@ export default function VideogamesPage() {
                     >
                       +
                     </button>
-
                     <div className="text-end ms-2" style={{ minWidth: "80px" }}>
                       {videogame.promo_price ? (
                         <>
@@ -570,20 +554,16 @@ export default function VideogamesPage() {
           >
             &lt;
           </button>
-
           {/* Pagine numeriche */}
           {Array.from({ length: totalPages }).map((_, index) => {
             const page = index + 1;
-
             // Calcoliamo il range di pagine da visualizzare
             const start = Math.max(currentPage - 2, 1); // 2 pagine prima della corrente
             const end = Math.min(currentPage + 2, totalPages); // 2 pagine dopo la corrente
-
             // Verifica se la pagina è dentro il range da visualizzare
             if (page < start || page > end) {
               return null; // Non renderizzare la pagina se non è nel range
             }
-
             return (
               <button
                 key={page}
@@ -598,7 +578,6 @@ export default function VideogamesPage() {
               </button>
             );
           })}
-
           {/* Bottone Successivo */}
           <button
             className="btn btn-outline-warning btn-sm"
