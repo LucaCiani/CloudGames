@@ -54,12 +54,15 @@ export default function VideogamesPage() {
     if (genreFilter && genreFilter !== "all")
       params.set("genre", genreFilter);
     if (discountedOnly) params.set("discounted", "true");
-    if (currentPage && currentPage !== 1) params.set("page", currentPage);
+    if (resultsPerPage && resultsPerPage !== 15) params.set("results", resultsPerPage);
+    if (viewMode && viewMode !== "grid") params.set("view", viewMode)
+
+
     navigate(
       { pathname: location.pathname, search: params.toString() },
       { replace: true }
     );
-  }, [sortOrder, platformFilter, discountedOnly, search, currentPage, genreFilter]);
+  }, [sortOrder, platformFilter, discountedOnly, search, currentPage, genreFilter, resultsPerPage, viewMode]);
 
   // All'avvio, se la query string ha page, imposta la pagina corrente
   useEffect(() => {
@@ -287,9 +290,9 @@ export default function VideogamesPage() {
         <div className="row row-cols row-cols-md-3 mb-5 ">
           <div className="dropdown col">
             <button
-              className="btn btn-sm btn-gradient dropdown-toggle mx-auto"
+              className=" btn-gradient dropdown-toggle mx-auto"
               type="button"
-              id="sortDropdown"
+              id="filterDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >Numero risultati
@@ -297,12 +300,14 @@ export default function VideogamesPage() {
 
 
 
-            <ul className="dropdown-menu" aria-labelledby="sortDropdown">
+            <ul className="dropdown-menu" aria-labelledby="filterDropdown">
               <li>
-                <button className="dropdown-item" onClick={() => handleResultsPerPageChange(15)}>Mostra 15</button>
+                <button className={`dropdown-item${resultsPerPage === 15 ? " active" : ""
+                  }`} onClick={() => setResultsPerPage(15)}>Mostra 15</button>
               </li>
               <li>
-                <button className="dropdown-item" onClick={() => handleResultsPerPageChange(24)}>Mostra 24</button>
+                <button className={`dropdown-item${resultsPerPage === 24 ? " active" : ""
+                  }`} onClick={() => setResultsPerPage(24)}>Mostra 24</button>
               </li>
             </ul>
           </div>
