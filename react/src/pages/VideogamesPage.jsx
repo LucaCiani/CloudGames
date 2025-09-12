@@ -59,7 +59,7 @@ export default function VideogamesPage() {
       { pathname: location.pathname, search: params.toString() },
       { replace: true }
     );
-  }, [sortOrder, platformFilter, discountedOnly, search, currentPage]);
+  }, [sortOrder, platformFilter, discountedOnly, search, currentPage, genreFilter]);
 
   // All'avvio, se la query string ha page, imposta la pagina corrente
   useEffect(() => {
@@ -438,7 +438,7 @@ export default function VideogamesPage() {
                           <button
                             className="btn btn-sm btn-warning"
                             onClick={() => handleAddToCart(1, videogame)}
-                            disabled={(cartItems.find(item => item.id === videogame.id)?.cartQuantity  || 0) >= (videogame.quantity || 1)}
+                            disabled={(cartItems.find(item => item.id === videogame.id)?.cartQuantity || 0) >= (videogame.quantity || 1)}
                           >
                             +
                           </button>
