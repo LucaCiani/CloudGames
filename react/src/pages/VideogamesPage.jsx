@@ -93,8 +93,6 @@ export default function VideogamesPage() {
     new Set((videogames || []).flatMap((vg) => vg.genres || []).filter(Boolean))
   );
 
-  console.log(allGenre);
-
   // Filtra i giochi in base alla ricerca
   let filteredGames = search
     ? videogames?.filter((vg) => {
