@@ -567,6 +567,8 @@ ul {
   /* oppure un altro colore */
   outline: none;
 }
+
+ /* Stella supermario*/
 .vote-star {
   display: flex;
   align-items: center;

@@ -3,12 +3,11 @@ export default function ProductInfo({ name, vote, developer }) {
     <>
       <h1 className="mb-3">{name}</h1>
       <div className="mb-3">
-        <span className="me-2">
-          ⭐ {parseFloat(vote).toString()}
+        <span className="me-2 vote-star">
+          <img src="/star.png" alt="Stella" />
+          {parseFloat(vote).toString()}
         </span>
-        <span className="text-secondary">
-          Developer: {developer}
-        </span>
+        <span className="text-secondary">Developer: {developer}</span>
       </div>
     </>
   );
