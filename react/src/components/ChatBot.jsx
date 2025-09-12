@@ -107,7 +107,9 @@ export default function ChatBot() {
             )}
             {chatMessages.map((msg, index) => (
               <div key={index} className={`chatbot-message ${msg.type}`}>
-                <strong>{msg.type === "user" ? "Tu: " : "Bot: "}</strong>
+                <strong>
+                  {msg.type === "user" ? "Tu : " : "CloudGames Assistant : "}
+                </strong>
                 {msg.text}
               </div>
             ))}

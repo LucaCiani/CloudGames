@@ -111,21 +111,24 @@
     var(--bs-color-grad2),
     var(--bs-color-grad3)
   );
-  background-size: 200% 100%;
-  background-position: 100% 50%;
+  background-size: 200% 200%;
+  background-position: left center;
   padding: 25px;
   border-radius: 15px;
   border: 2px solid #e9e991;
-  transition: all 0.3s ease;
+  transition: background 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    background-position 0.7s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s,
+    border-color 0.3s, transform 0.3s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .aboutus-point:hover {
-  background-position: 0% 50%;
+  background-position: right center;
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border-color: #c9b037;
 }
+
 
 .aboutus-point h4 {
   font-size: 1.4rem;
