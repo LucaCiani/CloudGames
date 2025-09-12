@@ -1,7 +1,23 @@
 import express from "express";
 import connection from "../db/connection.js";
+import {
+  consigliKeywords,
+  genereKeywords,
+  budgetKeywords,
+  offerteKeywords,
+  prezzoKeywords,
+  piattaformaKeywords,
+  sviluppatoreKeywords,
+} from "../data/keywords.js";
 
 const router = express.Router();
+
+function createSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
 router.post("/", async (req, res) => {
   try {
@@ -58,11 +74,7 @@ router.post("/", async (req, res) => {
     };
 
     // 1. CONSIGLI GENERALI DI GIOCHI
-    if (
-      lowerMessage.includes("consiglia") ||
-      lowerMessage.includes("raccomanda") ||
-      lowerMessage.includes("suggerisci")
-    ) {
+    if (consigliKeywords.some((keyword) => lowerMessage.includes(keyword))) {
       console.log("🔍 Query per consigli generali...");
 
       connection.query(
@@ -70,7 +82,7 @@ router.post("/", async (req, res) => {
         SELECT v.name, v.price, v.promo_price, v.description, v.developer 
         FROM videogames v 
         ORDER BY RAND()
-        LIMIT 5
+        LIMIT 4
       `,
         (error, games) => {
           if (error) {
@@ -103,16 +115,7 @@ router.post("/", async (req, res) => {
     }
 
     // 2. FILTRO PER GENERE/CATEGORIA
-    else if (
-      lowerMessage.includes("azione") ||
-      lowerMessage.includes("avventura") ||
-      lowerMessage.includes("sport") ||
-      lowerMessage.includes("strategia") ||
-      lowerMessage.includes("rpg") ||
-      lowerMessage.includes("genere") ||
-      lowerMessage.includes("tipo") ||
-      lowerMessage.includes("categoria")
-    ) {
+    else if (genereKeywords.some((keyword) => lowerMessage.includes(keyword))) {
       console.log("🔍 Query per generi...");
 
       connection.query(
@@ -122,7 +125,7 @@ router.post("/", async (req, res) => {
         LEFT JOIN videogame_genre vg ON v.id = vg.videogame_id
         LEFT JOIN genres g ON vg.genre_id = g.id
         GROUP BY v.id
-        LIMIT 10
+        LIMIT 4
       `,
         (error, games) => {
           if (error) {
@@ -149,13 +152,7 @@ router.post("/", async (req, res) => {
     }
 
     // 3. BUDGET/GIOCHI ECONOMICI
-    else if (
-      lowerMessage.includes("economico") ||
-      lowerMessage.includes("budget") ||
-      lowerMessage.includes("poco") ||
-      lowerMessage.includes("conveniente") ||
-      lowerMessage.includes("under")
-    ) {
+    else if (budgetKeywords.some((keyword) => lowerMessage.includes(keyword))) {
       console.log("🔍 Query per giochi economici...");
 
       connection.query(
@@ -164,7 +161,7 @@ router.post("/", async (req, res) => {
         FROM videogames 
         WHERE (promo_price IS NOT NULL AND promo_price < 30) OR (promo_price IS NULL AND price < 30)
         ORDER BY COALESCE(promo_price, price) ASC
-        LIMIT 8
+        LIMIT 4
       `,
         (error, games) => {
           if (error) {
@@ -192,11 +189,7 @@ router.post("/", async (req, res) => {
 
     // 4. OFFERTE E SCONTI
     else if (
-      lowerMessage.includes("offerta") ||
-      lowerMessage.includes("sconto") ||
-      lowerMessage.includes("promozione") ||
-      lowerMessage.includes("scontato") ||
-      lowerMessage.includes("promo")
+      offerteKeywords.some((keyword) => lowerMessage.includes(keyword))
     ) {
       console.log("🔍 Query per offerte...");
 
@@ -206,7 +199,7 @@ router.post("/", async (req, res) => {
         FROM videogames v
         WHERE v.promo_price IS NOT NULL AND v.promo_price > 0
         ORDER BY ((v.price - v.promo_price) / v.price * 100) DESC
-        LIMIT 8
+        LIMIT 4
       `,
         (error, games) => {
           if (error) {
@@ -235,14 +228,9 @@ router.post("/", async (req, res) => {
     }
 
     // 5. PREZZI SPECIFICI
-    else if (
-      lowerMessage.includes("prezzo") ||
-      lowerMessage.includes("costo") ||
-      lowerMessage.includes("quanto costa")
-    ) {
+    else if (prezzoKeywords.some((keyword) => lowerMessage.includes(keyword))) {
       console.log("🔍 Query per prezzi...");
 
-      // Estrai il nome del gioco dalla domanda
       const gameKeywords = lowerMessage
         .replace(/prezzo|costo|quanto costa|di|del|€|euro/g, "")
         .trim();
@@ -251,10 +239,10 @@ router.post("/", async (req, res) => {
         `
         SELECT name, price, promo_price, developer 
         FROM videogames 
-        WHERE LOWER(name) LIKE ? OR LOWER(developer) LIKE ?
-        LIMIT 5
+        WHERE LOWER(name) LIKE ? OR LOWER(developer) LIKE ? OR SOUNDEX(name) = SOUNDEX(?)
+        LIMIT 4
       `,
-        [`%${gameKeywords}%`, `%${gameKeywords}%`],
+        [`%${gameKeywords}%`, `%${gameKeywords}%`, gameKeywords],
         (error, games) => {
           if (error) {
             console.log("❌ Errore query prezzi:", error);
@@ -273,7 +261,7 @@ router.post("/", async (req, res) => {
                   (g) =>
                     `${g.name} costa €${g.promo_price || g.price} ${
                       g.promo_price ? `(prezzo pieno €${g.price})` : ""
-                    }`
+                    }. [Vai alla pagina](/videogames/${createSlug(g.name)})`
                 )
                 .join("; ");
               systemPrompt += ` Ecco le informazioni sui prezzi: ${priceInfo}.`;
@@ -289,12 +277,7 @@ router.post("/", async (req, res) => {
 
     // 6. PIATTAFORME
     else if (
-      lowerMessage.includes("piattaforma") ||
-      lowerMessage.includes("console") ||
-      lowerMessage.includes("pc") ||
-      lowerMessage.includes("playstation") ||
-      lowerMessage.includes("xbox") ||
-      lowerMessage.includes("nintendo")
+      piattaformaKeywords.some((keyword) => lowerMessage.includes(keyword))
     ) {
       console.log("🔍 Query per piattaforme...");
 
@@ -305,7 +288,7 @@ router.post("/", async (req, res) => {
         LEFT JOIN platform_videogame pv ON v.id = pv.videogame_id
         LEFT JOIN platforms p ON pv.platform_id = p.id
         GROUP BY v.id
-        LIMIT 10
+        LIMIT 4
       `,
         (error, games) => {
           if (error) {
@@ -333,11 +316,7 @@ router.post("/", async (req, res) => {
 
     // 7. SVILUPPATORI
     else if (
-      lowerMessage.includes("sviluppatore") ||
-      lowerMessage.includes("developer") ||
-      lowerMessage.includes("chi ha fatto") ||
-      lowerMessage.includes("creato da") ||
-      lowerMessage.includes("studio")
+      sviluppatoreKeywords.some((keyword) => lowerMessage.includes(keyword))
     ) {
       console.log("🔍 Query per sviluppatori...");
 
@@ -348,7 +327,7 @@ router.post("/", async (req, res) => {
         WHERE developer IS NOT NULL 
         GROUP BY developer
         ORDER BY game_count DESC
-        LIMIT 8
+        LIMIT 4
       `,
         (error, developers) => {
           if (error) {
@@ -378,10 +357,15 @@ router.post("/", async (req, res) => {
         `
         SELECT v.name, v.price, v.promo_price, v.developer, v.description
         FROM videogames v 
-        WHERE LOWER(v.name) LIKE ? OR LOWER(v.description) LIKE ? OR LOWER(v.developer) LIKE ?
-        LIMIT 8
+        WHERE LOWER(v.name) LIKE ? OR LOWER(v.description) LIKE ? OR LOWER(v.developer) LIKE ? OR SOUNDEX(v.name) = SOUNDEX(?)
+        LIMIT 4
       `,
-        [`%${lowerMessage}%`, `%${lowerMessage}%`, `%${lowerMessage}%`],
+        [
+          `%${lowerMessage}%`,
+          `%${lowerMessage}%`,
+          `%${lowerMessage}%`,
+          lowerMessage,
+        ],
         (error, games) => {
           if (error) {
             console.log("❌ Errore ricerca generale:", error);
@@ -401,7 +385,7 @@ router.post("/", async (req, res) => {
             } else {
               // Fallback: mostra giochi casuali
               connection.query(
-                "SELECT name, price, promo_price FROM videogames ORDER BY RAND() LIMIT 5",
+                "SELECT name, price, promo_price FROM videogames ORDER BY RAND() LIMIT 4",
                 (err, randomGames) => {
                   if (!err && randomGames.length > 0) {
                     const random = randomGames.map((g) => g.name).join(", ");
