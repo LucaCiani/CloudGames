@@ -47,17 +47,17 @@ router.post("/", async (req, res) => {
                 },
                 { role: "user", content: message },
               ],
-              max_tokens: 200 /* lunghezza messaggio bot */,
+              max_tokens: 150 /* lunghezza messaggio bot */,
               temperature: 0.5 /* Creativo o presico === (temp1=creativo) - (temp0=preciso) */,
             }),
           }
         );
-
+       
         const data = await response.json();
         res.json({
-          reply:
-            data.choices?.[0]?.message?.content ||
-            "⚠️ Nessuna risposta dall'AI",
+          reply: (
+            data.choices?.[0]?.message?.content || "⚠️ Nessuna risposta dall'AI"
+          ).replace(/\*\*/g, ""),
         });
       } catch (aiError) {
         console.error("Errore OpenAI:", aiError);
