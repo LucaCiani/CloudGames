@@ -151,21 +151,17 @@ main {
   padding: 0.5rem 1rem;
 }
 
-.playstation {
+.platform-playstation {
   background: linear-gradient(to right, #281dc0, #250d7b);
-  
 }
-.xbox {
+.platform-xbox {
   background: linear-gradient(to right, #107c10, #064c06);
-  
 }
-.pc {
+.platform-pc {
   background: linear-gradient(to right, #666666, #454545);
-  
 }
-.nintendo {
+.platform-nintendo {
   background: linear-gradient(to right, #cd0213, #b90211c5);
-   
 }
 
 /* ================================
@@ -173,7 +169,6 @@ main {
 ================================ */
 .genre-horror {
   background-color: #ff33a8;
-  
 }
 .genre-action {
   background-color: #ff5733;
@@ -251,9 +246,10 @@ main {
   background-color: #ffcc99;
 }
 
-
-span.badge {
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+span.badge[class*="genre-"],
+span.badge[class*="platform-"] {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 /* ================================
@@ -552,13 +548,6 @@ ul {
 .card-hover:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-}
-
-.game-name {
-  max-width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .container-no-gutter {

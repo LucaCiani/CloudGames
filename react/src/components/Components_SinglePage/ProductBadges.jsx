@@ -7,7 +7,10 @@ export default function ProductBadges({ platforms, genres }) {
         <div className="d-flex gap-2">
           {/* Cicla su tutte le piattaforme e mostra un badge per ognuna */}
           {platforms.map((platform, index) => (
-            <span key={index} className={`badge ${platform.toLowerCase()}`}>
+            <span
+              key={index}
+              className={`badge platform-${platform.toLowerCase()}`}
+            >
               {platform}
             </span>
           ))}

@@ -439,21 +439,21 @@ export default function VideogamesPage() {
                         {/* Nome come link */}
                         <Link
                           to={`/videogames/${videogame.slug}`}
-                          className="fw-bold text-truncate text-white text-decoration-none game-name"
+                          className="fw-bold text-truncate text-white text-decoration-none game-name flex-grow-1"
                         >
                           {videogame.name}
                         </Link>
                         <div className="d-flex align-items-center gap-2">
                           <span>
                             {videogame.promo_price ? (
-                              <>
+                              <span className="text-nowrap">
                                 <span className="text-success fw-bold">
                                   €{videogame.promo_price}
                                 </span>{" "}
                                 <span className="text-decoration-line-through text-secondary">
                                   €{videogame.price}
                                 </span>
-                              </>
+                              </span>
                             ) : (
                               <>€{videogame.price}</>
                             )}

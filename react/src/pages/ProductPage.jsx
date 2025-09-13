@@ -9,7 +9,7 @@ import ProductAddToCartButton from "../components/Components_SinglePage/ProductA
 
 export default function ProductPage() {
   const { slug } = useParams();
-  const { videogames } = useGlobalContext();
+  const { videogames, cartItems, handleAddToCart } = useGlobalContext();
 
   const SingleVideogame = videogames?.find((game) => game.slug === slug);
 
@@ -27,8 +27,6 @@ export default function ProductPage() {
       vg.id !== SingleVideogame.id
     );
   });
-
-  console.log(relatedVideogames);
 
   return (
     <>
@@ -73,7 +71,7 @@ export default function ProductPage() {
       </div>
       <div className="container my-5">
         <h3 className="text-center mb-5">Prodotti correlati</h3>
-        <div className="row">
+        <div className="row justify-content-center">
           {relatedVideogames.length === 0 ? (
             <div className="col-12 text-center text-secondary">
               Nessun gioco correlato disponibile.
@@ -88,41 +86,53 @@ export default function ProductPage() {
                     scale: 1,
                   }}
                 >
-                  <Link
-                    to={`/videogames/${relatedVg.slug}`}
-                    className="text-decoration-none"
-                  >
-                    <div className="card border-0 h-100">
+                  <div className="card border-0 h-100">
+                    <Link
+                      to={`/videogames/${relatedVg.slug}`}
+                      className="text-decoration-none"
+                    >
                       <img
                         src={relatedVg.image_url}
                         alt={relatedVg.name}
-                        className="card-img-top rounded"
+                        className="card-img-top rounded list-card-hover"
                         style={{
                           height: "220px",
                           objectFit: "cover",
                         }}
                       />
-                      <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                        <span className="fw-bold text-truncate text-white">
-                          {relatedVg.name}
-                        </span>
+                    </Link>
+                    <div className="d-flex justify-content-between align-items-center mt-2 px-1">
+                      <span className="fw-bold text-truncate text-white">
+                        {relatedVg.name}
+                      </span>
+                      <div className="d-flex align-items-center gap-2">
                         <span>
                           {relatedVg.promo_price ? (
-                            <>
+                            <span className="text-nowrap">
                               <span className="text-success fw-bold">
                                 €{relatedVg.promo_price}
                               </span>{" "}
                               <span className="text-decoration-line-through text-secondary">
                                 €{relatedVg.price}
                               </span>
-                            </>
+                            </span>
                           ) : (
                             <>€{relatedVg.price}</>
                           )}
                         </span>
+                        <button
+                          className="btn btn-warning btn-sm"
+                          onClick={() => handleAddToCart(1, relatedVg)}
+                          disabled={
+                            (cartItems.find((item) => item.id === relatedVg.id)
+                              ?.cartQuantity || 0) >= (relatedVg.quantity || 1)
+                          }
+                        >
+                          <i className="bi bi-plus-lg"></i>
+                        </button>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               );
             })
