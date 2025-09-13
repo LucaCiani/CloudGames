@@ -128,8 +128,8 @@
 .chatbot-message.bot {
   align-self: flex-end;
   background-color: #2c2b28; /* grigio scuro leggermente più chiaro */
-  color: #54819e; /* blu-grigio per contrasto */
-  border: 1.5px solid #314e61; /* bordo blu-grigio scuro */
+  color: #ca8317; /* blu-grigio per contrasto */
+  border: 1.5px solid #815334; /* bordo blu-grigio scuro */
   border-radius: 12px;
   padding: 8px 12px;
   max-width: 70%;

@@ -13,13 +13,6 @@ import {
 
 const router = express.Router();
 
-function createSlug(name) {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
 router.post("/", async (req, res) => {
   try {
     const { message } = req.body;
@@ -54,8 +47,8 @@ router.post("/", async (req, res) => {
                 },
                 { role: "user", content: message },
               ],
-              max_tokens: 400,
-              temperature: 0.7,
+              max_tokens: 200 /* lunghezza messaggio bot */,
+              temperature: 0.5 /* Creativo o presico === (temp1=creativo) - (temp0=preciso) */,
             }),
           }
         );
