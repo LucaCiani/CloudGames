@@ -455,10 +455,10 @@ export default function VideogamesPage() {
         </div>
 
         {/* VISTA GRIGLIA: mostra le card dei videogiochi */}
-        {viewMode === "grid" && (
-          <div className="row g-4">
-            {paginatedGames &&
-              paginatedGames.map((videogame) => {
+        {viewMode === "grid" &&
+          (paginatedGames && paginatedGames.length > 0 ? (
+            <div className="row g-4">
+              {paginatedGames.map((videogame) => {
                 return (
                   <div key={videogame.id} className="col-12 col-md-6 col-xl-4">
                     <div className="card border-0 h-100">
@@ -514,14 +514,16 @@ export default function VideogamesPage() {
                   </div>
                 );
               })}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="text-center text-white my-5">Nessun risultato</div>
+          ))}
 
         {/* VISTA LISTA: mostra i videogiochi in formato lista */}
-        {viewMode === "list" && (
-          <div className="list-group">
-            {paginatedGames &&
-              paginatedGames.map((videogame) => {
+        {viewMode === "list" &&
+          (paginatedGames && paginatedGames.length > 0 ? (
+            <div className="list-group">
+              {paginatedGames.map((videogame) => {
                 return (
                   <div
                     key={videogame.id}
@@ -608,8 +610,10 @@ export default function VideogamesPage() {
                   </div>
                 );
               })}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="text-center text-white my-5">Nessun risultato</div>
+          ))}
       </div>
 
       {/* Controlli della paginazione */}
