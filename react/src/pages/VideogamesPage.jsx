@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useGlobalContext from "../contexts/useGlobalContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProductAddToCartButton from "../components/Components_SinglePage/ProductAddToCartButton";
@@ -31,10 +31,61 @@ export default function VideogamesPage() {
   const search = query.get("search")?.toLowerCase() || "";
 
   // Stato per la paginazione
-  const [currentPage, setCurrentPage] = useState(1); // Pagina corrente
-  const [resultsPerPage, setResultsPerPage] = useState(15); // Risultati per pagina
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(query.get("page")) || 1
+  ); // Pagina corrente
+  const [resultsPerPage, setResultsPerPage] = useState(
+    query.get("results") || 15
+  ); // Risultati per pagina
 
-  // Cambio numero risultati | TODO: ma a che server questa?
+  // Ref per gestire mount iniziale e confronto filtri precedenti
+  const initialMountRef = useRef(true);
+  const prevFiltersRef = useRef({
+    sortOrder,
+    platformFilter,
+    genreFilter,
+    discountedOnly,
+    resultsPerPage,
+    search,
+  });
+
+  // Reset della pagina a 1 SOLO quando cambiano i filtri dopo il primo mount (escludiamo viewMode apposta).
+  // Evita che un link /videogames?page=3 venga sovrascritto all'avvio.
+  useEffect(() => {
+    if (initialMountRef.current) {
+      initialMountRef.current = false;
+    } else {
+      const prev = prevFiltersRef.current;
+      const filtersChanged =
+        prev.sortOrder !== sortOrder ||
+        prev.platformFilter !== platformFilter ||
+        prev.genreFilter !== genreFilter ||
+        prev.discountedOnly !== discountedOnly ||
+        prev.resultsPerPage !== resultsPerPage ||
+        prev.search !== search; // includiamo anche la ricerca come filtro logico
+      if (filtersChanged && currentPage !== 1) {
+        setCurrentPage(1);
+      }
+    }
+    prevFiltersRef.current = {
+      sortOrder,
+      platformFilter,
+      genreFilter,
+      discountedOnly,
+      resultsPerPage,
+      search,
+    };
+  }, [
+    sortOrder,
+    platformFilter,
+    genreFilter,
+    discountedOnly,
+    resultsPerPage,
+    search,
+    currentPage,
+  ]);
+
+  // Cambio numero risultati | TODO: ma a che serve questa?
   // eslint-disable-next-line no-unused-vars
   const handleResultsPerPageChange = (count) => {
     setResultsPerPage(count);
@@ -53,36 +104,24 @@ export default function VideogamesPage() {
     if (resultsPerPage && resultsPerPage !== 15)
       params.set("results", resultsPerPage);
     if (viewMode && viewMode !== "grid") params.set("view", viewMode);
+    if (currentPage && currentPage !== 1) params.set("page", currentPage);
 
     navigate(
       { pathname: location.pathname, search: params.toString() },
       { replace: true }
     );
   }, [
-    sortOrder,
-    platformFilter,
-    discountedOnly,
-    search,
     currentPage,
+    discountedOnly,
     genreFilter,
-    resultsPerPage,
-    viewMode,
-    navigate,
     location.pathname,
+    navigate,
+    platformFilter,
+    resultsPerPage,
+    search,
+    sortOrder,
+    viewMode,
   ]);
-
-  // All'avvio, se la query string ha page, imposta la pagina corrente
-  useEffect(() => {
-    const pageFromQuery = parseInt(query.get("page"), 10);
-    if (!isNaN(pageFromQuery) && pageFromQuery !== currentPage) {
-      setCurrentPage(pageFromQuery);
-    }
-  }, [currentPage, query]);
-
-  // Reset pagina a 1 quando cambia filtro, ricerca o ordinamento
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [sortOrder, platformFilter, discountedOnly, search, genreFilter]);
 
   // Ottieni tutte le piattaforme disponibili dai videogiochi
   const allPlatforms = Array.from(
@@ -597,7 +636,7 @@ export default function VideogamesPage() {
             <button
               key={page}
               className={`btn btn-sm ${
-                page === currentPage
+                page === parseInt(currentPage)
                   ? "btn-warning text-white"
                   : "btn-outline-warning"
               }`}
