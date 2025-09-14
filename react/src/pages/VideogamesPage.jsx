@@ -368,7 +368,7 @@ export default function VideogamesPage() {
                     }`}
                     onClick={() => setSortOrder("price-asc")}
                   >
-                    Prezzo crescente
+                    Prezzo più basso
                   </button>
                 </li>
                 <li>
@@ -378,7 +378,7 @@ export default function VideogamesPage() {
                     }`}
                     onClick={() => setSortOrder("price-desc")}
                   >
-                    Prezzo decrescente
+                    Prezzo più alto
                   </button>
                 </li>
               </ul>
