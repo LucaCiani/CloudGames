@@ -88,6 +88,6 @@
 
   - [ ] integrare un sistema di pagamento
 
-- [ ] 12. Assistente AI/chatbot (coefficiente: 5)
+- [x] 12. Assistente AI/chatbot (coefficiente: 5)
 
-  - [ ] chatbot che aiuta gli utenti a trovare risposte sul prodotto visualizzato
+  - [x] chatbot che aiuta gli utenti a trovare risposte sul prodotto visualizzato
