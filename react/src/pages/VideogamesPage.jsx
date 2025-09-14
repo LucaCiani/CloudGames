@@ -465,7 +465,7 @@ export default function VideogamesPage() {
                       {/* Badge "In sconto" */}
                       {videogame.promo_price && (
                         <span
-                          className="badge bg-success position-absolute"
+                          className="badge bg-success position-absolute in-sconto-badge"
                           style={{ top: "10px", left: "10px", zIndex: 2 }}
                         >
                           In sconto

@@ -579,3 +579,8 @@ ul {
 .btn-sm {
   font-size: 0.75rem;
 }
+
+.card:hover .in-sconto-badge {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
