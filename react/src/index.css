@@ -168,83 +168,57 @@ main {
    🏷️ GENRE-BADGE COLORS
 ================================ */
 .genre-horror {
-  background-color: #ff33a8;
+  background: linear-gradient(to right, #aa0d0d, #6b0000);
+  
 }
 .genre-action {
-  background-color: #ff5733;
+  
+  background: linear-gradient(to right, #ff5733, #c70039);
 }
 .genre-adventure {
-  background-color: #33c1ff;
+ background: linear-gradient(to right, #33c1ff, #006297);
 }
 .genre-rpg {
-  background-color: #8d33ff;
+  background: linear-gradient(to right, #863fe1, #5b0ab1);
 }
 .genre-strategy {
-  background-color: #4ccb36;
+  background: linear-gradient(to right, #4ccb36, #176f06);
 }
 .genre-sports {
-  background-color: #ffc300;
+  background: linear-gradient(to right, #dab854, #927317);
 }
 .genre-racing {
-  background-color: #3375ff;
+  background: linear-gradient(to right, #3375ff, #001696);
 }
 .genre-simulation {
-  background-color: #a833ff;
+  background: linear-gradient(to right, #a833ff, #661fb3);
 }
 .genre-puzzle {
-  background-color: #33fff6;
+  background: linear-gradient(to right, #3ac6c8, #0e8080);
 }
 .genre-fighting {
-  background-color: #ff4444;
+  background: linear-gradient(to right, #ba7878, #7c4d4d);
 }
-.genre-mmorpg {
-  background-color: #ff99cc;
-}
+
 .genre-platformer {
-  background-color: #ffb84d;
+  background: linear-gradient(to right, #ffb84d, #cc8a00);
 }
 .genre-shooter {
-  background-color: #ff4d4d;
+  background: linear-gradient(to right, #a51212, #600000);
 }
 .genre-survival {
-  background-color: #33cc66;
+  background: linear-gradient(to right, #33cc73, #047a2b);
 }
-.genre-stealth {
-  background-color: #666666;
-}
+
 .genre-sandbox {
-  background-color: #ffcc33;
+  background: linear-gradient(to right, #ef58ec, #893187);
 }
-.genre-music-rhythm {
-  background-color: #ff66ff;
-}
-.genre-party {
-  background-color: #33ffff;
-}
-.genre-visual-novel {
-  background-color: #cc99ff;
-}
-.genre-educational {
-  background-color: #3399ff;
-}
+
 .genre-indie {
-  background-color: #ff9966;
+  background: linear-gradient(to right, #ff9966, #ff5e62);
 }
-.genre-card-board-games {
-  background-color: #ff6666;
-}
-.genre-trivia-quiz {
-  background-color: #66ffcc;
-}
-.genre-horror-survival {
-  background-color: #990000;
-}
-.genre-tactical {
-  background-color: #009966;
-}
-.genre-open-world {
-  background-color: #ffcc99;
-}
+
+
 
 span.badge[class*="genre-"],
 span.badge[class*="platform-"] {
