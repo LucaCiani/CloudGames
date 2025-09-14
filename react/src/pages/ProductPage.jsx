@@ -86,11 +86,21 @@ export default function ProductPage() {
                     scale: 1,
                   }}
                 >
-                  <div className="card border-0 h-100">
+                  <div className="card border-0 h-100 position-relative">
                     <Link
                       to={`/videogames/${relatedVg.slug}`}
                       className="text-decoration-none"
                     >
+                      {/* Badge "In sconto" */}
+                      {relatedVg.promo_price && (
+                        <span
+                          className="badge bg-success position-absolute"
+                          style={{ top: "10px", left: "10px", zIndex: 2 }}
+                        >
+                          In sconto
+                        </span>
+                      )}
+                      {/* Immagine con hover */}
                       <img
                         src={relatedVg.image_url}
                         alt={relatedVg.name}

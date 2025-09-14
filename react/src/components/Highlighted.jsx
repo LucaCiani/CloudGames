@@ -109,7 +109,7 @@ export default function Highlighted() {
                   className="text-decoration-none"
                 >
                   <div
-                    className="card border-0 h-100"
+                    className="card border-0 h-100 position-relative overflow-hidden"
                     onMouseEnter={() => setHoveredVideo(videogame.id)}
                     onMouseLeave={() => setHoveredVideo(null)}
                     style={{
@@ -121,6 +121,15 @@ export default function Highlighted() {
                       zIndex: hoveredVideo === videogame.id ? 10 : 1,
                     }}
                   >
+                    {/* Badge "In sconto" */}
+                    {videogame.promo_price && hoveredVideo !== videogame.id && (
+                      <span
+                        className="badge bg-success position-absolute"
+                        style={{ top: "10px", left: "10px", zIndex: 2 }}
+                      >
+                        In sconto
+                      </span>
+                    )}
                     {/* Video in hover con autoplay */}
                     {hoveredVideo === videogame.id &&
                     getEmbedVideoUrl(videogame) ? (
@@ -148,7 +157,6 @@ export default function Highlighted() {
                         }}
                       />
                     )}
-
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
                       <span className="fw-bold text-truncate">
                         {videogame.name}

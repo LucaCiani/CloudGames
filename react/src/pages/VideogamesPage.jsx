@@ -461,7 +461,16 @@ export default function VideogamesPage() {
               {paginatedGames.map((videogame) => {
                 return (
                   <div key={videogame.id} className="col-12 col-md-6 col-xl-4">
-                    <div className="card border-0 h-100">
+                    <div className="card border-0 h-100 position-relative">
+                      {/* Badge "In sconto" */}
+                      {videogame.promo_price && (
+                        <span
+                          className="badge bg-success position-absolute"
+                          style={{ top: "10px", left: "10px", zIndex: 2 }}
+                        >
+                          In sconto
+                        </span>
+                      )}
                       {/* Link solo sull'immagine */}
                       <Link to={`/videogames/${videogame.slug}`}>
                         <img
