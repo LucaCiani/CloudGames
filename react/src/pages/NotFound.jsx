@@ -7,21 +7,22 @@ export default function NotFound() {
   // Numero massimo di monete da raccogliere
   const maxCoins = 10;
   // Numero massimo di monete animate contemporaneamente
-  const animatedCoins = 5;
+  const animatedCoins = 6;
 
   // Stato: array di oggetti moneta, ognuna con posizione, durata animazione, delay, stato raccolta e id unico
   const [coins, setCoins] = useState(
     Array.from({ length: maxCoins }).map(() => {
       // Scegli casualmente se la moneta va a sinistra o a destra
       const isLeft = Math.random() < 0.5;
-      // Se sinistra: tra 0 e 25%, se destra: tra 80 e 98%
+      // Per evitare che le monete vadano troppo vicino ai bordi:
+      // Sinistra: tra 8% e 22%, Destra: tra 78% e 92%
       const left = isLeft
-        ? Math.random() * 25 // 0% - 25%
-        : 80 + Math.random() * 18; // 80% - 98%
+        ? 8 + Math.random() * 14 // 8% - 22%
+        : 78 + Math.random() * 14; // 78% - 92%
       return {
         left,
-        duration: 5 + Math.random() * 3, // durata animazione random
-        delay: Math.random() * 2, // delay random per effetto pioggia naturale
+        duration: 5 + Math.random() * 4, // durata animazione random
+        delay: Math.random() * 3, // delay random per effetto pioggia naturale
         collected: false, // stato raccolta
         id: Math.random().toString(36).slice(2), // id unico
       };
@@ -186,7 +187,7 @@ export default function NotFound() {
             className="notfound-discount-popup"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="notfound-popup-icon">🎉</div>
+            <img src="Pokepopup.png" alt="Pokemon Popup" />
             <h3>CONGRATULAZIONI!</h3>
             <p>
               Hai raccolto tutte le {maxCoins} monete! Ecco il tuo codice
@@ -197,7 +198,12 @@ export default function NotFound() {
               Sconto del 10% su tutti i giochi!
             </p>
             <button onClick={closeDiscount} className="notfound-btn">
-              Fantastico! 🎮
+              Fantastico!{" "}
+              <img
+                src="pad.png"
+                alt="pad"
+                style={{ width: "32px", height: "32px" }}
+              />
             </button>
           </div>
         </div>
