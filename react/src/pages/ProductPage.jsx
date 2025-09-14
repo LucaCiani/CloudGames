@@ -89,22 +89,26 @@ export default function ProductPage() {
                   <div className="card border-0 h-100 position-relative">
                     <Link
                       to={`/videogames/${relatedVg.slug}`}
-                      className="text-decoration-none"
+                      className="position-relative list-card-hover"
                     >
                       {/* Badge "In sconto" */}
                       {relatedVg.promo_price && (
                         <span
                           className="badge bg-success position-absolute"
-                          style={{ top: "10px", left: "10px", zIndex: 2 }}
+                          style={{
+                            top: "10px",
+                            left: "10px",
+                            zIndex: 2,
+                            pointerEvents: "none",
+                          }}
                         >
                           In sconto
                         </span>
                       )}
-                      {/* Immagine con hover */}
                       <img
                         src={relatedVg.image_url}
                         alt={relatedVg.name}
-                        className="card-img-top rounded list-card-hover"
+                        className="card-img-top rounded"
                         style={{
                           height: "220px",
                           objectFit: "cover",
@@ -112,9 +116,12 @@ export default function ProductPage() {
                       />
                     </Link>
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                      <span className="fw-bold text-truncate text-white">
+                      <Link
+                        to={`/videogames/${relatedVg.slug}`}
+                        className="fw-bold text-truncate text-white text-decoration-none game-name flex-grow-1"
+                      >
                         {relatedVg.name}
-                      </span>
+                      </Link>
                       <div className="d-flex align-items-center gap-2">
                         <span>
                           {relatedVg.promo_price ? (

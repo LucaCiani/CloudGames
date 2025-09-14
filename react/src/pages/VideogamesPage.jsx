@@ -23,7 +23,7 @@ export default function VideogamesPage() {
   const [discountedOnly, setDiscountedOnly] = useState(
     query.get("discounted") === "true"
   );
-  const [viewMode, setViewMode] = useState("grid"); // "grid" o "list"
+  const [viewMode, setViewMode] = useState(query.get("view") || "grid"); // "grid" o "list"
 
   const [genreFilter, setGenreFilter] = useState(query.get("genre") || "all");
 
@@ -84,13 +84,6 @@ export default function VideogamesPage() {
     search,
     currentPage,
   ]);
-
-  // Cambio numero risultati | TODO: ma a che serve questa?
-  // eslint-disable-next-line no-unused-vars
-  const handleResultsPerPageChange = (count) => {
-    setResultsPerPage(count);
-    setCurrentPage(1); // Reset alla prima pagina
-  };
 
   // Aggiorna la query string nell'URL quando cambiano i filtri/ordinamento
   useEffect(() => {
@@ -214,12 +207,12 @@ export default function VideogamesPage() {
 
   return (
     <>
-      {/* Barra dei filtri e dei bottoni */}
+      {/* Contenuto pagina */}
       <div className="container my-5 mb-4 px-3">
         {/* Sezione ricerca */}
         <div className="d-flex gap-4 flex-wrap">
           {/* Mostra la ricerca corrente se presente */}
-          {search && (
+          {search && filteredGames?.length > 0 && (
             <div className="row mb-3">
               <div className="col-12">
                 <p className="text-white">
@@ -228,15 +221,6 @@ export default function VideogamesPage() {
                   {filteredGames?.length === 1 ? "o" : "i"} per:{" "}
                   <span className="fw-bold">{query?.get("search")}</span>
                 </p>
-              </div>
-            </div>
-          )}
-
-          {/* Messaggio se nessun gioco trovato */}
-          {filteredGames?.length === 0 && (
-            <div className="row mb-3">
-              <div className="col-12 text-center text-white">
-                Nessun risultato trovato.
               </div>
             </div>
           )}
@@ -454,7 +438,7 @@ export default function VideogamesPage() {
           </div>
         </div>
 
-        {/* VISTA GRIGLIA: mostra le card dei videogiochi */}
+        {/* VISTA GRIGLIA: mostra i videogiochi in formato griglia */}
         {viewMode === "grid" &&
           (paginatedGames && paginatedGames.length > 0 ? (
             <div className="row g-4">
@@ -462,21 +446,29 @@ export default function VideogamesPage() {
                 return (
                   <div key={videogame.id} className="col-12 col-md-6 col-xl-4">
                     <div className="card border-0 h-100 position-relative">
-                      {/* Badge "In sconto" */}
-                      {videogame.promo_price && (
-                        <span
-                          className="badge bg-success position-absolute in-sconto-badge"
-                          style={{ top: "10px", left: "10px", zIndex: 2 }}
-                        >
-                          In sconto
-                        </span>
-                      )}
-                      {/* Link solo sull'immagine */}
-                      <Link to={`/videogames/${videogame.slug}`}>
+                      {/* Link with image and badge container */}
+                      <Link
+                        to={`/videogames/${videogame.slug}`}
+                        className="position-relative list-card-hover"
+                      >
+                        {/* Badge "In sconto" */}
+                        {videogame.promo_price && (
+                          <span
+                            className="badge bg-success position-absolute"
+                            style={{
+                              top: "10px",
+                              left: "10px",
+                              zIndex: 2,
+                              pointerEvents: "none",
+                            }}
+                          >
+                            In sconto
+                          </span>
+                        )}
                         <img
                           src={videogame.image_url}
                           alt={videogame.name}
-                          className="card-img-top rounded list-card-hover "
+                          className="card-img-top rounded"
                           style={{
                             height: "220px",
                             objectFit: "cover",
@@ -525,7 +517,9 @@ export default function VideogamesPage() {
               })}
             </div>
           ) : (
-            <div className="text-center text-white my-5">Nessun risultato</div>
+            <div className="text-center text-white my-5">
+              Nessun risultato trovato.
+            </div>
           ))}
 
         {/* VISTA LISTA: mostra i videogiochi in formato lista */}
@@ -621,53 +615,57 @@ export default function VideogamesPage() {
               })}
             </div>
           ) : (
-            <div className="text-center text-white my-5">Nessun risultato</div>
+            <div className="text-center text-white my-5">
+              Nessun risultato trovato.
+            </div>
           ))}
       </div>
 
       {/* Controlli della paginazione */}
-      <div className="d-flex justify-content-center gap-2 mt-4">
-        {/* Bottone Precedente */}
-        <button
-          className="btn btn-outline-warning btn-sm"
-          onClick={() => goToPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-        {/* Pagine numeriche */}
-        {Array.from({ length: totalPages }).map((_, index) => {
-          const page = index + 1;
-          // Calcoliamo il range di pagine da visualizzare
-          const start = Math.max(currentPage - 2, 1); // 2 pagine prima della corrente
-          const end = Math.min(currentPage + 2, totalPages); // 2 pagine dopo la corrente
-          // Verifica se la pagina è dentro il range da visualizzare
-          if (page < start || page > end) {
-            return null; // Non renderizzare la pagina se non è nel range
-          }
-          return (
-            <button
-              key={page}
-              className={`btn btn-sm ${
-                page === parseInt(currentPage)
-                  ? "btn-warning text-white"
-                  : "btn-outline-warning"
-              }`}
-              onClick={() => goToPage(page)}
-            >
-              {page}
-            </button>
-          );
-        })}
-        {/* Bottone Successivo */}
-        <button
-          className="btn btn-outline-warning btn-sm"
-          onClick={() => goToPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          &gt;
-        </button>
-      </div>
+      {filteredGames?.length > 0 && (
+        <div className="d-flex justify-content-center gap-2 mt-4">
+          {/* Bottone Precedente */}
+          <button
+            className="btn btn-outline-warning btn-sm"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          {/* Pagine numeriche */}
+          {Array.from({ length: totalPages }).map((_, index) => {
+            const page = index + 1;
+            // Calcoliamo il range di pagine da visualizzare
+            const start = Math.max(currentPage - 2, 1); // 2 pagine prima della corrente
+            const end = Math.min(currentPage + 2, totalPages); // 2 pagine dopo la corrente
+            // Verifica se la pagina è dentro il range da visualizzare
+            if (page < start || page > end) {
+              return null; // Non renderizzare la pagina se non è nel range
+            }
+            return (
+              <button
+                key={page}
+                className={`btn btn-sm ${
+                  page === parseInt(currentPage)
+                    ? "btn-warning text-white"
+                    : "btn-outline-warning"
+                }`}
+                onClick={() => goToPage(page)}
+              >
+                {page}
+              </button>
+            );
+          })}
+          {/* Bottone Successivo */}
+          <button
+            className="btn btn-outline-warning btn-sm"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
+        </div>
+      )}
       <ProductAddToCartButton />
       <ChatBot />
     </>

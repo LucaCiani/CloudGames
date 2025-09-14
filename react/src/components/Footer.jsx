@@ -14,9 +14,8 @@ export default function Footer() {
   return (
     <div className="container">
       <hr />
-
-      <div className="row row-cols-2 row-cols-md-3 d-flex justify-content-between my-5">
-        <div className="col">
+      <div className="row">
+        <div className="col-12 col-md-4 mb-4 mb-md-0">
           <ul className="footer-text">
             <li>
               <h3>About</h3>
@@ -48,7 +47,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col">
+        <div className="col-12 col-md-4 mb-4 mb-md-0">
           <ul className="footer-text">
             <li>
               <h3>Informazioni</h3>
@@ -80,7 +79,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col">
+        <div className="col-12 col-md-4 mb-4 mb-md-0">
           <ul className="footer-text">
             <li>
               <h3>Follow Us</h3>
@@ -158,8 +157,8 @@ export default function Footer() {
         </div>
       </div>
       <hr />
-      <div className="row row-cols-1 row-cols-md-2 my-3 justify-content-between align-items-center">
-        <div className="col-6">
+      <div className="row">
+        <div className="col-12 col-md-6 mb-4 mb-md-0 d-flex align-items-center">
           <ul className="payment-methods d-flex justify-content-between px-3">
             <li>
               <i className="fa-brands fa-cc-visa"></i>
@@ -178,7 +177,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-6 d-flex justify-content-end">
+        <div className="col-12 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center justify-content-md-end">
           <img
             src="/trustpilot.png"
             alt="trustpilot"

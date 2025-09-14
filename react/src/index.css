@@ -169,14 +169,12 @@ main {
 ================================ */
 .genre-horror {
   background: linear-gradient(to right, #aa0d0d, #6b0000);
-  
 }
 .genre-action {
-  
   background: linear-gradient(to right, #ff5733, #c70039);
 }
 .genre-adventure {
- background: linear-gradient(to right, #33c1ff, #006297);
+  background: linear-gradient(to right, #33c1ff, #006297);
 }
 .genre-rpg {
   background: linear-gradient(to right, #863fe1, #5b0ab1);
@@ -217,8 +215,6 @@ main {
 .genre-indie {
   background: linear-gradient(to right, #ff9966, #ff5e62);
 }
-
-
 
 span.badge[class*="genre-"],
 span.badge[class*="platform-"] {
@@ -552,9 +548,4 @@ ul {
 
 .btn-sm {
   font-size: 0.75rem;
-}
-
-.card:hover .in-sconto-badge {
-  transform: scale(1.05);
-  transition: transform 0.2s;
 }
