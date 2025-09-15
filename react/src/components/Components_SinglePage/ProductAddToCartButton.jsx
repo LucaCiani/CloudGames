@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function ProductAddToCartButton({ quantity, product }) {
@@ -97,16 +97,23 @@ export default function ProductAddToCartButton({ quantity, product }) {
                     className="mb-3 border-bottom pb-2"
                   >
                     <div className="d-flex">
-                      <img
-                        src={item.image_url || item.image || "/placeholder.jpg"}
-                        alt={item.name || item.title || "Prodotto"}
-                        style={{
-                          width: "60px",
-                          height: "60px",
-                          objectFit: "cover",
-                        }}
-                        className="me-3"
-                      />
+                      <Link
+                        to={`/videogames/${item.slug}`}
+                        className="flex-shrink-0"
+                      >
+                        <img
+                          src={
+                            item.image_url || item.image || "/placeholder.jpg"
+                          }
+                          alt={item.name || item.title || "Prodotto"}
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            objectFit: "cover",
+                          }}
+                          className="me-3 rounded"
+                        />
+                      </Link>
                       <div className="flex-grow-1">
                         <h6 className="mb-1">
                           {item.name || item.title || "Nome non disponibile"}
@@ -149,7 +156,7 @@ export default function ProductAddToCartButton({ quantity, product }) {
                                 (item.cartQuantity || 1) + 1
                               )
                             }
-                            disabled={item.cartQuantity >= (item.quantity || 1)} // <-- aggiungi questa riga
+                            disabled={item.cartQuantity >= (item.quantity || 1)}
                           >
                             +
                           </button>

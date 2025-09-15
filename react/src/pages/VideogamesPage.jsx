@@ -511,10 +511,11 @@ export default function VideogamesPage() {
                                 ? "btn-secondary"
                                 : "btn-warning"
                             }`}
+                            style={{ fontSize: "1rem" }}
                             onClick={() => handleAddToCart(1, videogame)}
                             disabled={hasReachedMaxQuantity(videogame)}
                           >
-                            <i className="bi bi-plus-lg"></i>
+                            <i className="bi bi-cart-plus"></i>
                           </button>
                         </div>
                       </div>
@@ -601,10 +602,11 @@ export default function VideogamesPage() {
                           ? "btn-secondary"
                           : "btn-warning"
                       }`}
+                      style={{ fontSize: "1rem" }}
                       onClick={() => handleAddToCart(1, videogame)}
                       disabled={hasReachedMaxQuantity(videogame)}
                     >
-                      <i className="bi bi-plus-lg"></i>
+                      <i className="bi bi-cart-plus"></i>
                     </button>
                     <div className="text-end ms-2" style={{ minWidth: "80px" }}>
                       {videogame.promo_price ? (

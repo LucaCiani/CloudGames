@@ -150,10 +150,11 @@ export default function ProductPage() {
                               ? "btn-secondary"
                               : "btn-warning"
                           }`}
+                          style={{ fontSize: "1rem" }}
                           onClick={() => handleAddToCart(1, relatedVg)}
                           disabled={hasReachedMaxQuantity(relatedVg)}
                         >
-                          <i className="bi bi-plus-lg"></i>
+                          <i className="bi bi-cart-plus"></i>
                         </button>
                       </div>
                     </div>
