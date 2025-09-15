@@ -22,8 +22,13 @@ router.post("/", async (req, res) => {
     }
 
     const lowerMessage = message.toLowerCase();
-    let systemPrompt =
-      "Sei un assistente amichevole per CloudGames, un sito di videogiochi.";
+    let systemPrompt = `
+Sei CloudGames Assistant, un robottino del cloud esperto di videogiochi.
+Parla sempre in italiano in modo chiaro, professionale e amichevole.
+Fornisci informazioni precise sui giochi: prezzi, piattaforme, sviluppatori, categorie, offerte e sconti.
+Puoi usare un tocco leggero di simpatia e inserire ogni tanto un "beep boop 🤖" per ricordare che sei un assistente digitale.
+Rispondi sempre in modo accurato e utile, parlando solo dei giochi che ti ho fornito.
+`;
 
     // Funzione per chiamare OpenAI
     const callOpenAI = async (finalPrompt) => {
@@ -47,12 +52,12 @@ router.post("/", async (req, res) => {
                 },
                 { role: "user", content: message },
               ],
-              max_tokens: 150 /* lunghezza messaggio bot */,
+              max_tokens: 350 /* lunghezza messaggio bot */,
               temperature: 0.5 /* Creativo o presico === (temp1=creativo) - (temp0=preciso) */,
             }),
           }
         );
-       
+
         const data = await response.json();
         res.json({
           reply: (
@@ -76,7 +81,7 @@ router.post("/", async (req, res) => {
         SELECT v.name, v.price, v.promo_price, v.description, v.developer 
         FROM videogames v 
         ORDER BY RAND()
-        LIMIT 4
+        LIMIT 2
       `,
         (error, games) => {
           if (error) {
@@ -95,7 +100,7 @@ router.post("/", async (req, res) => {
                       g.promo_price ? `(sconto da €${g.price})` : ""
                     } - ${
                       g.description
-                        ? g.description.substring(0, 120) + "..."
+                        ? g.description.substring(0, 130) + "..."
                         : "Descrizione non disponibile"
                     }`
                 )
@@ -119,7 +124,7 @@ router.post("/", async (req, res) => {
         LEFT JOIN videogame_genre vg ON v.id = vg.videogame_id
         LEFT JOIN genres g ON vg.genre_id = g.id
         GROUP BY v.id
-        LIMIT 4
+        LIMIT 2
       `,
         (error, games) => {
           if (error) {
@@ -155,7 +160,7 @@ router.post("/", async (req, res) => {
         FROM videogames 
         WHERE (promo_price IS NOT NULL AND promo_price < 30) OR (promo_price IS NULL AND price < 30)
         ORDER BY COALESCE(promo_price, price) ASC
-        LIMIT 4
+        LIMIT 2
       `,
         (error, games) => {
           if (error) {
@@ -193,7 +198,7 @@ router.post("/", async (req, res) => {
         FROM videogames v
         WHERE v.promo_price IS NOT NULL AND v.promo_price > 0
         ORDER BY ((v.price - v.promo_price) / v.price * 100) DESC
-        LIMIT 4
+        LIMIT 2
       `,
         (error, games) => {
           if (error) {
@@ -234,7 +239,7 @@ router.post("/", async (req, res) => {
         SELECT name, price, promo_price, developer 
         FROM videogames 
         WHERE LOWER(name) LIKE ? OR LOWER(developer) LIKE ? OR SOUNDEX(name) = SOUNDEX(?)
-        LIMIT 4
+        LIMIT 2
       `,
         [`%${gameKeywords}%`, `%${gameKeywords}%`, gameKeywords],
         (error, games) => {
@@ -282,7 +287,7 @@ router.post("/", async (req, res) => {
         LEFT JOIN platform_videogame pv ON v.id = pv.videogame_id
         LEFT JOIN platforms p ON pv.platform_id = p.id
         GROUP BY v.id
-        LIMIT 4
+        LIMIT 2
       `,
         (error, games) => {
           if (error) {
@@ -321,7 +326,7 @@ router.post("/", async (req, res) => {
         WHERE developer IS NOT NULL 
         GROUP BY developer
         ORDER BY game_count DESC
-        LIMIT 4
+        LIMIT 2
       `,
         (error, developers) => {
           if (error) {
@@ -356,7 +361,7 @@ router.post("/", async (req, res) => {
   WHERE release_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
     AND release_date <= CURDATE()
   ORDER BY release_date DESC
-  LIMIT 4
+  LIMIT 2
         `,
         (error, games) => {
           if (error) {
@@ -393,7 +398,7 @@ router.post("/", async (req, res) => {
         SELECT v.name, v.price, v.promo_price, v.developer, v.description
         FROM videogames v 
         WHERE LOWER(v.name) LIKE ? OR LOWER(v.description) LIKE ? OR LOWER(v.developer) LIKE ? OR SOUNDEX(v.name) = SOUNDEX(?)
-        LIMIT 4
+        LIMIT 2
       `,
         [
           `%${lowerMessage}%`,
@@ -420,7 +425,7 @@ router.post("/", async (req, res) => {
             } else {
               // Fallback: mostra giochi casuali
               connection.query(
-                "SELECT name, price, promo_price FROM videogames ORDER BY RAND() LIMIT 4",
+                "SELECT name, price, promo_price FROM videogames ORDER BY RAND() LIMIT 2",
                 (err, randomGames) => {
                   if (!err && randomGames.length > 0) {
                     const random = randomGames.map((g) => g.name).join(", ");
