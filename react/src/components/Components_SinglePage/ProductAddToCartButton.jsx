@@ -12,31 +12,6 @@ export default function ProductAddToCartButton({ quantity, product }) {
   const { cartItems, setCartItems, handleAddToCart } =
     useContext(GlobalContext);
 
-  /* const handleAddToCart = () => {
-    if (quantity === 0 || !product) return;
-
-    const existingItemIndex = cartItems.findIndex(
-      (item) => item.id === product.id
-    );
-    let newCartItems;
-
-    if (existingItemIndex > -1) {
-      newCartItems = [...cartItems];
-      newCartItems[existingItemIndex] = {
-        ...newCartItems[existingItemIndex],
-        cartQuantity: (newCartItems[existingItemIndex].cartQuantity || 1) + 1,
-      };
-    } else {
-      newCartItems = [...cartItems, { ...product, cartQuantity: 1 }];
-    }
-
-    setCartItems(newCartItems); // 👈 Aggiornamento globale
-    localStorage.setItem("videogames", JSON.stringify(newCartItems));
-
-    console.log("Prodotto aggiunto:", product);
-    console.log("Carrello aggiornato:", newCartItems);
-  }; */
-
   const totalQuantity = cartItems.reduce(
     (sum, item) => sum + (item.cartQuantity || 1),
     0
@@ -66,17 +41,24 @@ export default function ProductAddToCartButton({ quantity, product }) {
     return total + price * qty;
   }, 0);
 
+  function hasReachedMaxQuantity(product) {
+    if (!product) return false;
+    const cartItem = cartItems.find((item) => item.id === product.id);
+    if (!cartItem) return false;
+    return cartItem.cartQuantity >= product.quantity;
+  }
+
   return (
     <div>
       {isSingleGamePage && (
         <button
-          className="btn-gradient w-100"
-          disabled={
-            quantity === 0 ||
-            (product &&
-              (cartItems.find((i) => i.id === product.id)?.cartQuantity || 0) >=
-                quantity)
-          }
+          className={`${
+            !hasReachedMaxQuantity(product) && product.quantity > 0
+              ? "btn-gradient"
+              : "empty-btn-gradient"
+          } w-100`}
+          style={{ marginTop: "0px" }}
+          disabled={quantity === 0 || hasReachedMaxQuantity(product)}
           onClick={() => handleAddToCart(1, product)}
           type="button"
           data-bs-toggle="offcanvas"
