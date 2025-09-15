@@ -78,7 +78,7 @@ export default function HeaderComponent() {
                   `nav-link${isActive ? " active" : ""}`
                 }
               >
-                Videogames
+                Videogiochi
               </NavLink>
             </li>
             <li className="nav-item">
@@ -88,7 +88,7 @@ export default function HeaderComponent() {
                   `nav-link${isActive ? " active" : ""}`
                 }
               >
-                About Us
+                Chi siamo
               </NavLink>
             </li>
           </ul>
@@ -103,7 +103,7 @@ export default function HeaderComponent() {
             >
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Cerca..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="form-control"

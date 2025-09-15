@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="col-12 col-md-4 mb-4 mb-md-0">
           <ul className="footer-text">
             <li>
-              <h3>About</h3>
+              <h3>Su di noi</h3>
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
@@ -82,7 +82,7 @@ export default function Footer() {
         <div className="col-12 col-md-4 mb-4 mb-md-0">
           <ul className="footer-text">
             <li>
-              <h3>Follow Us</h3>
+              <h3>I nostri social</h3>
             </li>
             <li>
               <Link to={"#"} className="text-decoration-none text-white">
