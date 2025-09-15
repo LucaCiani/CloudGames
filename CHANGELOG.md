@@ -61,7 +61,7 @@
 - Dashboard amministratore per gestione prodotti e ordini.
 - Statistiche avanzate per vendite e preferenze utenti.
 - Recensioni utenti e sistema di rating.
-- Wishlist
+- Wishlist.
 
 ---
 
