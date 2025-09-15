@@ -542,7 +542,7 @@ export default function VideogamesPage() {
                   >
                     <Link
                       to={`/videogames/${videogame.slug}`}
-                      className="d-flex align-items-center flex-grow-1 text-decoration-none text-white"
+                      className="d-flex align-items-center flex-grow-1 text-decoration-none text-white text-truncate"
                     >
                       <img
                         src={videogame.image_url}
