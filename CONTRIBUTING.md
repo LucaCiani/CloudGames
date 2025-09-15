@@ -6,7 +6,6 @@
 - **Target:** appassionati di videogiochi di tutte le età, sia casual che hardcore gamer.
 - **Obiettivo:** offrire un’esperienza di acquisto semplice, moderna e ricca di funzionalità extra.
 
-
 ---
 
 ## ⚙️ Scelte implementative
@@ -42,14 +41,12 @@
 - Popup di benvenuto con raccolta email.
 - Assistente AI/chatbot integrato.
 
-
 ---
 
 ## 🚩 Milestone raggiunte
 
 - Tutte le milestone obbligatorie completate.
 - Extra completati: doppia visualizzazione, prodotti in promozione, codici sconto, paginazione dei risultati, prodotti correlati, popup benvenuto, gestione quantità, assistente AI.
-
 
 ---
 
@@ -64,4 +61,3 @@
 - Wishlist.
 
 ---
-
