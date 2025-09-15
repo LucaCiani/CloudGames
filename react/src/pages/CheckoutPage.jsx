@@ -1,6 +1,6 @@
 import { useState, useContext, useCallback, useEffect } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function CheckoutPage() {
   const [formData, setFormData] = useState({
@@ -262,7 +262,6 @@ export default function CheckoutPage() {
         message: `Valido: -${data.discount_percentage}%`,
         color: "green",
       });
-      e.target.value = "";
       setDiscountPercentage(data.discount_percentage);
       setDiscountId(data.id);
     } catch (err) {
@@ -391,16 +390,18 @@ export default function CheckoutPage() {
                     key={item.id}
                     className="d-flex align-items-center gap-3 border-bottom pb-3"
                   >
-                    <img
-                      src={item.image_url}
-                      alt={item.name}
-                      style={{
-                        width: "60px",
-                        height: "60px",
-                        objectFit: "cover",
-                      }}
-                      className="rounded"
-                    />
+                    <Link to={`/videogames/${item.slug}`} className="d-flex">
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          objectFit: "cover",
+                        }}
+                        className="rounded"
+                      />
+                    </Link>
                     <div className="flex-grow-1 text-start">
                       <h6 className="mb-1 text-white">{item.name}</h6>
                       <span className="text-secondary">
@@ -429,16 +430,32 @@ export default function CheckoutPage() {
               {cartItems && cartItems.length > 0 && (
                 <>
                   <div className="mt-4">
-                    <h5 className="fw-bold">Codice Sconto</h5>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="codice_sconto"
-                      placeholder="Inserisci il codice"
-                      onKeyDown={handleDiscountCode}
-                      maxLength={20}
-                      minLength={1}
-                    />
+                    <h5 className="fw-bold position-relative">Codice Sconto</h5>
+                    <div className="d-flex gap-2 align-items-center">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="codice_sconto"
+                        placeholder="Inserisci il codice"
+                        onKeyDown={handleDiscountCode}
+                        maxLength={20}
+                        minLength={1}
+                      />
+                      <button
+                        className="btn btn-danger h-100"
+                        disabled={discountId === null}
+                        onClick={() => {
+                          setDiscountId(null);
+                          setDiscountPercentage(null);
+                          setDiscountStatus({
+                            message: "Premi Invio per applicare",
+                            color: "",
+                          });
+                        }}
+                      >
+                        <i className="bi bi-trash-fill"></i>
+                      </button>
+                    </div>
                     <p
                       className="mt-1 mb-0 text-status-code"
                       style={{ color: discountStatus.color }}

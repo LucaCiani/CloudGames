@@ -28,6 +28,13 @@ export default function ProductPage() {
     );
   });
 
+  function hasReachedMaxQuantity(videogame) {
+    if (!videogame) return false;
+    const cartItem = cartItems.find((item) => item.id === videogame.id);
+    if (!cartItem) return false;
+    return cartItem.cartQuantity >= videogame.quantity;
+  }
+
   return (
     <>
       <div className="container my-5">
@@ -138,14 +145,16 @@ export default function ProductPage() {
                           )}
                         </span>
                         <button
-                          className="btn btn-warning btn-sm"
+                          className={`btn btn-sm ${
+                            hasReachedMaxQuantity(relatedVg)
+                              ? "btn-secondary"
+                              : "btn-warning"
+                          }`}
+                          style={{ fontSize: "1rem" }}
                           onClick={() => handleAddToCart(1, relatedVg)}
-                          disabled={
-                            (cartItems.find((item) => item.id === relatedVg.id)
-                              ?.cartQuantity || 0) >= (relatedVg.quantity || 1)
-                          }
+                          disabled={hasReachedMaxQuantity(relatedVg)}
                         >
-                          <i className="bi bi-plus-lg"></i>
+                          <i className="bi bi-cart-plus"></i>
                         </button>
                       </div>
                     </div>

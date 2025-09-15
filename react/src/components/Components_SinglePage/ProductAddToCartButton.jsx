@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function ProductAddToCartButton({ quantity, product }) {
@@ -11,31 +11,6 @@ export default function ProductAddToCartButton({ quantity, product }) {
   // Stato globale
   const { cartItems, setCartItems, handleAddToCart } =
     useContext(GlobalContext);
-
-  /* const handleAddToCart = () => {
-    if (quantity === 0 || !product) return;
-
-    const existingItemIndex = cartItems.findIndex(
-      (item) => item.id === product.id
-    );
-    let newCartItems;
-
-    if (existingItemIndex > -1) {
-      newCartItems = [...cartItems];
-      newCartItems[existingItemIndex] = {
-        ...newCartItems[existingItemIndex],
-        cartQuantity: (newCartItems[existingItemIndex].cartQuantity || 1) + 1,
-      };
-    } else {
-      newCartItems = [...cartItems, { ...product, cartQuantity: 1 }];
-    }
-
-    setCartItems(newCartItems); // 👈 Aggiornamento globale
-    localStorage.setItem("videogames", JSON.stringify(newCartItems));
-
-    console.log("Prodotto aggiunto:", product);
-    console.log("Carrello aggiornato:", newCartItems);
-  }; */
 
   const totalQuantity = cartItems.reduce(
     (sum, item) => sum + (item.cartQuantity || 1),
@@ -66,17 +41,24 @@ export default function ProductAddToCartButton({ quantity, product }) {
     return total + price * qty;
   }, 0);
 
+  function hasReachedMaxQuantity(product) {
+    if (!product) return false;
+    const cartItem = cartItems.find((item) => item.id === product.id);
+    if (!cartItem) return false;
+    return cartItem.cartQuantity >= product.quantity;
+  }
+
   return (
     <div>
       {isSingleGamePage && (
         <button
-          className="btn-gradient w-100"
-          disabled={
-            quantity === 0 ||
-            (product &&
-              (cartItems.find((i) => i.id === product.id)?.cartQuantity || 0) >=
-                quantity)
-          }
+          className={`${
+            !hasReachedMaxQuantity(product) && product.quantity > 0
+              ? "btn-gradient"
+              : "empty-btn-gradient"
+          } w-100`}
+          style={{ marginTop: "0px" }}
+          disabled={quantity === 0 || hasReachedMaxQuantity(product)}
           onClick={() => handleAddToCart(1, product)}
           type="button"
           data-bs-toggle="offcanvas"
@@ -115,16 +97,23 @@ export default function ProductAddToCartButton({ quantity, product }) {
                     className="mb-3 border-bottom pb-2"
                   >
                     <div className="d-flex">
-                      <img
-                        src={item.image_url || item.image || "/placeholder.jpg"}
-                        alt={item.name || item.title || "Prodotto"}
-                        style={{
-                          width: "60px",
-                          height: "60px",
-                          objectFit: "cover",
-                        }}
-                        className="me-3"
-                      />
+                      <Link
+                        to={`/videogames/${item.slug}`}
+                        className="flex-shrink-0"
+                      >
+                        <img
+                          src={
+                            item.image_url || item.image || "/placeholder.jpg"
+                          }
+                          alt={item.name || item.title || "Prodotto"}
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            objectFit: "cover",
+                          }}
+                          className="me-3 rounded"
+                        />
+                      </Link>
                       <div className="flex-grow-1">
                         <h6 className="mb-1">
                           {item.name || item.title || "Nome non disponibile"}
@@ -167,7 +156,7 @@ export default function ProductAddToCartButton({ quantity, product }) {
                                 (item.cartQuantity || 1) + 1
                               )
                             }
-                            disabled={item.cartQuantity >= (item.quantity || 1)} // <-- aggiungi questa riga
+                            disabled={item.cartQuantity >= (item.quantity || 1)}
                           >
                             +
                           </button>

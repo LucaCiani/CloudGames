@@ -67,16 +67,18 @@ export default function CartPage() {
         return (
           <div key={item.id || index} className="mb-3 border-bottom pb-2">
             <div className="d-flex align-items-center">
-              <img
-                src={item.image_url || item.image || "/placeholder.jpg"}
-                alt={item.name || "Prodotto"}
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  objectFit: "cover",
-                }}
-                className="me-3 rounded"
-              />
+              <Link to={`/videogames/${item.slug}`} className="d-flex">
+                <img
+                  src={item.image_url || item.image || "/placeholder.jpg"}
+                  alt={item.name || "Prodotto"}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                  }}
+                  className="me-3 rounded"
+                />
+              </Link>
               <div className="flex-grow-1">
                 <h5 className="mb-1 text-white">{item.name}</h5>
 

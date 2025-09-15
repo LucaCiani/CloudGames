@@ -205,6 +205,13 @@ export default function VideogamesPage() {
     return text.slice(0, max).trimEnd() + "...";
   };
 
+  function hasReachedMaxQuantity(product) {
+    if (!product) return false;
+    const cartItem = cartItems.find((item) => item.id === product.id);
+    if (!cartItem) return false;
+    return cartItem.cartQuantity >= product.quantity;
+  }
+
   return (
     <>
       {/* Contenuto pagina */}
@@ -499,15 +506,16 @@ export default function VideogamesPage() {
                             )}
                           </span>
                           <button
-                            className="btn btn-warning btn-sm"
+                            className={`btn btn-sm ${
+                              hasReachedMaxQuantity(videogame)
+                                ? "btn-secondary"
+                                : "btn-warning"
+                            }`}
+                            style={{ fontSize: "1rem" }}
                             onClick={() => handleAddToCart(1, videogame)}
-                            disabled={
-                              (cartItems.find(
-                                (item) => item.id === videogame.id
-                              )?.cartQuantity || 0) >= (videogame.quantity || 1)
-                            }
+                            disabled={hasReachedMaxQuantity(videogame)}
                           >
-                            <i className="bi bi-plus-lg"></i>
+                            <i className="bi bi-cart-plus"></i>
                           </button>
                         </div>
                       </div>
@@ -589,10 +597,16 @@ export default function VideogamesPage() {
                     </Link>
                     {/* Bottone separato dal Link */}
                     <button
-                      className="btn btn-sm btn-warning ms-2"
+                      className={`btn btn-sm ms-2 ${
+                        hasReachedMaxQuantity(videogame)
+                          ? "btn-secondary"
+                          : "btn-warning"
+                      }`}
+                      style={{ fontSize: "1rem" }}
                       onClick={() => handleAddToCart(1, videogame)}
+                      disabled={hasReachedMaxQuantity(videogame)}
                     >
-                      <i className="bi bi-plus-lg"></i>
+                      <i className="bi bi-cart-plus"></i>
                     </button>
                     <div className="text-end ms-2" style={{ minWidth: "80px" }}>
                       {videogame.promo_price ? (
