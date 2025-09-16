@@ -158,7 +158,9 @@ export default function HomePageDiscount() {
                     )}
 
                     <div className="d-flex justify-content-between align-items-center mt-2 px-1">
-                      <span className="text-truncate">{videogame.name}</span>
+                      <span className="text-truncate fw-bold">
+                        {videogame.name}
+                      </span>
                       <span>
                         {videogame.promo_price ? (
                           <>
