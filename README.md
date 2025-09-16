@@ -38,8 +38,8 @@ Un portale dedicato agli appassionati di videogiochi, sviluppato da un team Full
 
 ---
 <div align="center">
-  <img src="react/public/Home-CloudGames.jpg" alt="Lista videogiochi" width="350"/>
-  <img src="react/public/Videogames-CloudGames.jpg" alt="Griglia videogiochi" width="350"/>
-  <img src="react/public/VIdeogamesList-CloudGames.jpg" alt="Dettaglio videogioco" width="350"/>
-  <img src="react/public/SingleVideogame-CloudGames.jpg" alt="Homepage CloudGames" width="350"/>
+  <img src="react/public/Home-CloudGames.jpg" alt="Lista videogiochi" width="350" height="350"/>
+  <img src="react/public/Videogames-CloudGames.jpg" alt="Griglia videogiochi" width="350" height="350"/>
+  <img src="react/public/VIdeogamesList-CloudGames.jpg" alt="Dettaglio videogioco" width="350" height="350"/>
+  <img src="react/public/SingleVideogame-CloudGames.jpg" alt="Homepage CloudGames" width="350" height="350"/>
 </div>
