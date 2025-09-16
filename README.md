@@ -37,3 +37,9 @@ Un portale dedicato agli appassionati di videogiochi, sviluppato da un team Full
 - **Backend:** Express
 
 ---
+<div align="center">
+  <img src="react/public/screenshot-list.png" alt="Lista videogiochi" width="350"/>
+  <img src="react/public/screenshot-grid.png" alt="Griglia videogiochi" width="350"/>
+  <img src="react/public/screenshot-detail.png" alt="Dettaglio videogioco" width="350"/>
+  <img src="react/public/screenshot-home.png" alt="Homepage CloudGames" width="350"/>
+</div>
